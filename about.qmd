@@ -19,12 +19,15 @@ about:
 
 This comes from the file `about.qmd`.
 
-This is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME.
+This is a website for the final project for MA[46]15 Data Science with R by Team 14.
 The members of this team are below.
 
 ## Tianyu Wu
 
 https://github.com/
+
+## Aiganysh Ulanova
+https://github.com/aulanova
 
 <!-- Please leave in the information below -->
 
