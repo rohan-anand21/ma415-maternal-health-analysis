@@ -1,0 +1,18 @@
+---
+title: "Blog Post 2"
+subtitle: "Data Loading and Cleaning"
+author: "Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
+date: "2023-10-30"
+date-modified: "2023-10-30"
+draft: FALSE
+---
+
+As our data set is very large, the initial step is creating a .rds file that contains a subset of our cleaned data that is manageable to work with. In this file, our cleaned and appropriately-sized data will be in a \"load_and_clean_data.R\" file. The size of our data set is 1.75 GB, meaning that we will, most likely, only use a subset of our data for downstream analysis. Once we have solidified the key questions that we want to explore, we can further subset the data. 
+
+As an initial step in our data cleaning process, we will be removing all entries that have missing values. We will only keep entries that have zero missing values for each of the variables (i.e. columns) we will be using for analysis. 
+
+As our data has over 200 columns and 3,669,928 observations spanning a wide array of variables related to natality such as birth weight, race of the father, type of delivery the mother had, APGAR score for the health of the baby mother\'s habits during the pregnancy (e.g smoking) etc., we carefully filtered and assessed which variables would be important to keep and which ones could be removed for the time being. One column was the \"Reporting Flag\" describing if an entry was present for a particular variable. This compounded unnecessary columns for our data. We have not yet arrived at our completely clean version. Some other columns that we removed are the \"recoded\" columns. For instance, there were numerous variables like mother\'s race and age that were \"recoded\" - i.e. there were multiple columns for the same variable but they were grouped differently. However, we don\'t need 3 columns all describing race. We kept the variable/columns for race that provided the biggest diversity in the possibilities for race. 
+
+Since we don\'t have our questions solidified yet, we tried to keep as many of the columns as possible in order to have as much insight into our data for downstream analysis. 
+
+\
