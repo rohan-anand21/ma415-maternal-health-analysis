@@ -46,12 +46,7 @@ For larger datasets, you'll need to create a new folder in the project root dire
 
 Your [load_and_clean_data.R](/scripts/load_and_clean_data.R) file is how you will load and clean your data. Here is a an example of a very simple one.
 
-```{r}
-source(
-  "scripts/load_and_clean_data.R",
-  echo = TRUE # Use echo=FALSE or omit it to avoid code output  
-)
-```
+
 You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\MA415\\Final_Project\`).
 
 You might consider using the `here` function fomr the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
@@ -82,3 +77,28 @@ You will
 * Organization, clarity, cleanliness of the page
   * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
   * This page should be self-contained.
+  
+![](CDC_logo.jpeg)
+
+How the data was found and collected
+
+The [data](https://www.nber.org/research/data/vital-statistics-natality-birth-data) we explored is called Natality Data and it is taken from the National Vital Statistics System of the National Center for Health Statistics.  The data set itself was found on the page titled Vital Statistics Natality Birth Data on the website of the National Bureau of Economic Research. In essence, the data was collected in order to give both demographic and health data for births occurring in the United States annually. 
+The overarching goal of The National Center for Health Statistics is to collect data, such as this natality data, that can provide information to be used to improve the public health of American citizens by guiding public policy. It is important to note that the NCHS is a unit of the Center for Disease Control and Prevention. We are specifically focusing on births only in the year 2021. The data was collected by the NCHS (National Center for Health Statistics) and thus NCHS should be used for all citations when we refer to this particular data set. The microdata is taken from birth certificates that were filed with the vital statistics offices of each state and the District of Columbia. 
+By using this data we are agreeing to the Data User Agreement as presented by the NCHS. This includes critical elements about data usage such as using the data for statistical analysis and reporting only, and not attempting to uncover the identity of the individuals in the dataset. 
+
+Variables To Explore In The Data Set
+
+We only used the .csv that was available for the year 2021. Although for more data analysis, there is potential to incorporate data from other years—such as before the 2000s. It would be intriguing to analyze how birth rates or certain conditions surrounding births compare in two different years. For 2021, the csv file had approximately 3,669,928 entries and over 200 columns containing various attributes related to the birth of a child in the United States. 
+We will not be using all the variables for our analysis. Some important variables that we will specifically be looking at are the APGAR score of the child (health score given to the child within 5-10 minutes of being born), the race of the mother and father, mother’s characteristics (BMI, weight, height), maternal morbidity, various health factors that could have affected the health of the baby when it was born (smoking in the 3rd trimesters, substance abuse), health insurance of  mothers, demographic data about the mother and the father of the infant. 
+There are many other variables that are included in the over 200 columns in the dataset that we will not be including (and thus will be removed in the data cleaning process). These variables could include variables that have been “recoded”, but we will use the original version of the variable. Moreover, we will be removing variables such as the “Imputed Flags” or “Reporting Flags” for variables. An important file that guided us as we explored the different variables in our data set was the following file, which is the User Guide to the 2021 Natality Public Use File. This is a comprehensive [file](https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/DVS/natality/UserGuide2021.pdf) that includes descriptions of every variable included in the data set, what it means, and how it was scored/computed/collected. This helped in the evaluation of which variables to keep and which ones could be appropriately discarded. 
+
+Cleaned Data Set
+
+In our [load_and_clean_data.R](/scripts/load_and_clean_data.R) file, we didn’t use any R packages outside of those covered in class. For cleaning dataset, here’s our steps:
+1. We first read the .csv file of our dataset, which we only want to show the maximum number of rows is 100,000. Then we save it as an .rds file, which includes 1,000,000 entries and 170 columns.
+2. For the .rds file, we first remove the unnecessary columns. And we use the all_of function to treat the columns_to_remove vector as a list of column names to be removed. It ensures that each element in the columns_to_remove vector is interpreted as a separate column name. 
+3. We create a summary tibble that shows the number of missing values (NAs) per column in the natality_data_cleaned data frame. We apply the sum(is.na(.)) function to every column in the data frame to count the number of missing values (NAs) in each column. The result is a data frame with a single row that contains the count of NAs for each column. We use pivot_longer to transform the summarized data frame from a wide format to a long format. It takes the column names from natality_data_cleanedand the corresponding NA counts and puts them in two new columns: "Column" and "NAs".
+4. Then, we transform and recode the columns related to birth month and birth time, and make them more suitable for analysis and presentation. 
+5. We create a cleaned .csv file from the natality_data_cleaned data frame and save it within the "dataset-ignore" directory.
+6. We also save the data frame as an .RData file, which is a convenient way to save and load R objects, allowing us to preserve the data for future analysis and sharing.
+
