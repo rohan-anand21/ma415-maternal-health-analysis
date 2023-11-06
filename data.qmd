@@ -47,49 +47,6 @@ For larger datasets, you'll need to create a new folder in the project root dire
 Your [load_and_clean_data.R](/scripts/load_and_clean_data.R) file is how you will load and clean your data. Here is a an example of a very simple one.
 
 
-
-> library(tidyverse)
-── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-
-> natality_csv <- read_csv(here::here("dataset-ignore", 
-+     "nat2021us.csv"), n_max = 1e+05, show_col_types = FALSE)
-
-> saveRDS(natality_csv, here::here("dataset-ignore", 
-+     "natality_rds.rds"))
-
-> natality_rds = readRDS(here::here("dataset-ignore", 
-+     "natality_rds.rds"))
-
-> columns_to_remove <- c("mage_impflg", "lmpused", "obgest_flg", 
-+     "compgst_imp", "imp_sex", "fagerpt_flg", "imp_plur", "mar_p", 
-+     "fhisp_r" .... [TRUNCATED] 
-
-> natality_data_cleaned <- select(natality_rds, -all_of(columns_to_remove))
-
-> number_of_nas <- pivot_longer(summarize(natality_data_cleaned, 
-+     across(everything(), ~sum(is.na(.)))), everything(), names_to = "Column", 
-+   .... [TRUNCATED] 
-
-> renamed_cols = c("dob_tt", "dob_mm")
-
-> natality_data_cleaned <- select(mutate(mutate(natality_data_cleaned, 
-+     birth_month = factor(month.name[dob_mm], levels = month.name)), 
-+     t .... [TRUNCATED] 
-
-> write_csv(natality_data_cleaned, file = here::here("dataset-ignore", 
-+     "natality_data_cleaned.csv"))
-
-> save(natality_data_cleaned, file = here::here("dataset-ignore/natality_data_cleaned.RData")
-
 You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\MA415\\Final_Project\`).
 
 You might consider using the `here` function fomr the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
