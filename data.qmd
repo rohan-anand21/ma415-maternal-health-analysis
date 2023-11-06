@@ -5,7 +5,7 @@ toc: true
 draft: false
 ---
 
-![](images/data-import-cheatsheet-thumbs.png)
+![](images/banner.png)
 
 
 This comes from the file `data.qmd`.
@@ -63,9 +63,6 @@ This file might create a derivative data set that you then use for your subseque
 Note that you don't need to run this script from every post/page.
 Instead, you can load in the results of this script, which could be plain text files or `.RData` files. In your data page you'll describe how these results were created. If you have a very large data set, you might save smaller data sets that you can use for exploration purposes.
 To link to this file, you can use `[cleaning script](/scripts/load_and_clean_data.R)` wich appears as [cleaning script](/scripts/load_and_clean_data.R). 
-
-
-
 ----
 
 ## Rubric: On this page
