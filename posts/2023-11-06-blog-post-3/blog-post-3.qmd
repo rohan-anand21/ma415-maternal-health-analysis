@@ -1,0 +1,18 @@
+---
+title: "Blog Post 3"
+subtitle: "Data Equity"
+author: "Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
+date: "2023-11-06"
+date-modified: "2023-11-06"
+draft: FALSE
+---
+
+In evaluating our data for equity, the first principle relating to our data set is transparency about the limits of our data. Although we can draw some potential relationships between the race of a mother and a baby\'s low APGAR score (result of preliminary health test), we need to emphasize that this is only a correlation. We cannot claim causation without further testing which is why we have to be transparent about the nature of the relationships we can easily draw from our data. In further projects, we will clearly state the correlative nature of our findings and avoid suggesting causality where none has been established and will include an accessible explanation of what APGAR scores represent and the potential multifactorial influences on these scores beyond the variables we have studied.
+
+In our large natality dataset, the principle of beneficence is paramount, demanding that the handling, analysis, and dissemination of data maximize benefits and minimize harm. Our findings have the potential to shape public health efforts, allocate maternal and child health resources, and inform policies that affect expectant individuals and infants. In keeping with beneficence, we approach data cleaning with diligence to avoid unintentionally sidelining vulnerable groups, particularly when eliminating records with missing information, which could lead to biases against those with lesser access to healthcare.
+
+Furthermore, integrating statistical methods that counteract bias, like multiple imputation, is critical to ensure the validity and relevance of our research. Our duty in managing data is to safeguard individual privacy; it is essential to secure comprehensive anonymization to protect those from smaller groups who might be identifiable. Vigilance is necessary when handling data that might not be entirely reflective of the population, as this could cause misinterpretations influencing public health policies to the detriment of underserved communities. The possibility of exploiting sensitive health data in discriminatory ways highlights the necessity of diligent data handling. Our dedication to conscientious and advantageous data analysis is unwavering, firmly rooted in the principle of beneficence.
+
+We acknowledge the limitations within our dataset, including the lack of information such as socio-economic status, educational background, and healthcare accessibility. For our studies, we aim to present the intricate nature of human health and avoid creating a bias against the populations which could be made out of overgeneralization. We are also aware that data can be misinterpreted, potentially imbuing harmful narratives or unjust policies. To mitigate this, we attempt to demonstrate our data with clear explanations to prevent misunderstandings that could damage communities. We are dedicated to broadening our research, seeking insights from experts in public health and epidemiology to ensure that our conclusions are supported by well-established research and best practices.
+
+\
