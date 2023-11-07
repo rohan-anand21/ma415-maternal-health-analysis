@@ -4,7 +4,6 @@ description: We describe the sources of our data and the cleaning process.
 toc: true
 draft: false
 ---
-
 ![](images/banner.png)
 
 
@@ -82,9 +81,7 @@ You will
 
 How the data was found and collected
 
-The [data](https://www.nber.org/research/data/vital-statistics-natality-birth-data) we explored is called Natality Data and it is taken from the National Vital Statistics System of the National Center for Health Statistics.  The data set itself was found on the page titled Vital Statistics Natality Birth Data on the website of the National Bureau of Economic Research. In essence, the data was collected in order to give both demographic and health data for births occurring in the United States annually. 
-The overarching goal of The National Center for Health Statistics is to collect data, such as this natality data, that can provide information to be used to improve the public health of American citizens by guiding public policy. It is important to note that the NCHS is a unit of the Center for Disease Control and Prevention. We are specifically focusing on births only in the year 2021. The data was collected by the NCHS (National Center for Health Statistics) and thus NCHS should be used for all citations when we refer to this particular data set. The microdata is taken from birth certificates that were filed with the vital statistics offices of each state and the District of Columbia. 
-By using this data we are agreeing to the Data User Agreement as presented by the NCHS. This includes critical elements about data usage such as using the data for statistical analysis and reporting only, and not attempting to uncover the identity of the individuals in the dataset. 
+The [data](https://www.nber.org/research/data/vital-statistics-natality-birth-data) we explored is called Natality Data and it is taken from the National Vital Statistics System of the National Center for Health Statistics. The data set itself was found on the page titled Vital Statistics Natality Birth Data on the website of the National Bureau of Economic Research. In essence, the data was collected in order to give both demographic and health data for births occurring in the United States annually. The data is based on a 100-percent sample of birth certificates from some states and on a 50-percent sample from the remaining states. The overarching goal of The National Center for Health Statistics is to collect data, such as this natality data, that can provide information to be used to improve the public health of American citizens by guiding public policy. It is important to note that the NCHS is a unit of the Center for Disease Control and Prevention. We are specifically focusing on births only in the year 2021. The data was collected by the NCHS (National Center for Health Statistics) and thus NCHS should be used for all citations when we refer to this particular data set. The microdata is taken from birth certificates that were filed with the vital statistics offices of each state and the District of Columbia. By using this data we are agreeing to the Data User Agreement as presented by the NCHS. This includes critical elements about data usage such as using the data for statistical analysis and reporting only, and not attempting to uncover the identity of the individuals in the dataset. 
 
 Variables To Explore In The Data Set
 
@@ -98,7 +95,7 @@ In our [load_and_clean_data.R](/scripts/load_and_clean_data.R) file, we didn’t
 1. We first read the .csv file of our dataset, which we only want to show the maximum number of rows is 100,000. Then we save it as an .rds file, which includes 1,000,000 entries and 170 columns.
 2. For the .rds file, we first remove the unnecessary columns. And we use the all_of function to treat the columns_to_remove vector as a list of column names to be removed. It ensures that each element in the columns_to_remove vector is interpreted as a separate column name. 
 3. We create a summary tibble that shows the number of missing values (NAs) per column in the natality_data_cleaned data frame. We apply the sum(is.na(.)) function to every column in the data frame to count the number of missing values (NAs) in each column. The result is a data frame with a single row that contains the count of NAs for each column. We use pivot_longer to transform the summarized data frame from a wide format to a long format. It takes the column names from natality_data_cleanedand the corresponding NA counts and puts them in two new columns: "Column" and "NAs".
-4. Then, we transform and recode the columns related to birth month and birth time, and make them more suitable for analysis and presentation. 
+4. Then, we transform and recode the columns related to birth month and birth time, and make them more suitable for analysis and presentation. We will continue to recode the columns. 
 5. We create a cleaned .csv file from the natality_data_cleaned data frame and save it within the "dataset-ignore" directory.
 6. We also save the data frame as an .RData file, which is a convenient way to save and load R objects, allowing us to preserve the data for future analysis and sharing.
 
