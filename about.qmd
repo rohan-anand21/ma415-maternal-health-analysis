@@ -24,10 +24,20 @@ The members of this team are below.
 
 ## Tianyu Wu
 
-https://github.com/
+https://github.com/tianyuwu2
 
 ## Aiganysh Ulanova
 https://github.com/aulanova
+
+## Rohan Anand
+https://github.com/rohan-anand21
+
+## Jin Kyu (Jaden) Cho
+https://github.com/jaden4034
+
+## Seokhoon Shin
+https://github.com/seokhoonshin
+
 
 
 <!-- Please leave in the information below -->
@@ -35,3 +45,6 @@ https://github.com/aulanova
 ### About this Template.
 
 This is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463).
+
+
+
