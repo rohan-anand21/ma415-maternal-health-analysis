@@ -3,7 +3,7 @@ library(tidyverse)
 
 ##Read data
 #read csv data into variable
-natality_csv <- read_csv(here::here('dataset-ignore','nat2021us.csv'), n_max = 2000000, show_col_types = FALSE)
+natality_csv <- read_csv(here::here('dataset-ignore','nat2021us.csv'), n_max = 10000, show_col_types = FALSE)
 
 #save it as an rds file
 saveRDS(natality_csv, here::here('dataset-ignore', 'natality_rds.rds'))
@@ -23,7 +23,6 @@ natality_data_cleaned <- natality_rds |>
 number_of_nas <- natality_data_cleaned |>
   summarize(across(everything(), ~ sum(is.na(.))) ) |>
   pivot_longer(everything(), names_to = "Column", values_to = "NAs")
-#print(number_of_nas, n = 176)
 
 #recode columns: birth month, birth time
 renamed_cols = c('dob_tt', 'dob_mm')
