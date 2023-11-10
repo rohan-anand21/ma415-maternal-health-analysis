@@ -3,7 +3,7 @@ library(tidyverse)
 
 ##Read data
 #read csv data into variable
-natality_csv <- read_csv(here::here('dataset-ignore','nat2021us.csv'), n_max = 2000000, show_col_types = FALSE)
+natality_csv <- read_csv(here::here('dataset-ignore','nat2021us.csv'), n_max = 10000, show_col_types = FALSE)
 
 #save it as an rds file
 saveRDS(natality_csv, here::here('dataset-ignore', 'natality_rds.rds'))
@@ -41,3 +41,4 @@ write_csv(natality_data_cleaned, file = here::here("dataset-ignore", "natality_d
 
 #save data as R file
 save(natality_data_cleaned, file = here::here("dataset-ignore/natality_data_cleaned.RData"))
+
