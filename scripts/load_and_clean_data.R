@@ -23,7 +23,6 @@ natality_data_cleaned <- natality_rds |>
 number_of_nas <- natality_data_cleaned |>
   summarize(across(everything(), ~ sum(is.na(.))) ) |>
   pivot_longer(everything(), names_to = "Column", values_to = "NAs")
-#print(number_of_nas, n = 176)
 
 #recode columns: birth month, birth time
 renamed_cols = c('dob_tt', 'dob_mm')
