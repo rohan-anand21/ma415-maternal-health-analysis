@@ -1,0 +1,89 @@
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Read the dataset
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned.csv'))
+
+# Filter out unknown education and unknown smoking status
+filtered_data <- data[data$meduc != 9 & data$cig0_r != 6, ]
+
+# Creating a cross-tabulation of mother's education and smoking before pregnancy
+education_smoking_crosstab <- table(filtered_data$meduc, filtered_data$cig0_r) 
+education_smoking_crosstab <- prop.table(education_smoking_crosstab, 1) # Normalize by row
+
+# Converting the table to a dataframe for ggplot
+df <- as.data.frame(education_smoking_crosstab)
+colnames(df) <- c('Education', 'Smoking', 'Proportion')
+
+# Renaming education levels and smoking categories for better readability
+df$Education <- factor(df$Education, levels = c(1:8),
+                       labels = c('8th grade or less', '9th-12th with no diploma', 
+                                  'High school/GED', 'Some college', 'Associate degree', 
+                                  'Bachelor’s degree', 'Master’s degree', 'Doctorate/Professional'))
+
+df$Smoking <- factor(df$Smoking, levels = c(0:5),
+                     labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                                '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes'))
+
+# Plotting the grouped bar chart
+ggplot(df, aes(fill=Smoking, y=Proportion, x=Education)) + 
+    geom_bar(position="fill", stat="identity") + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(x = "Mother’s Education Level", y = "Proportion of Mothers", 
+         fill = "Cigarettes Before Pregnancy", 
+         title = "Cigarette Consumption Before Pregnancy by Mother’s Education Level")
+```
+I chose the variable "cig0_r", which represents cigarette consumption before pregnancy, and the variable "meduc" which represents the mother's education, to conduct the exploratory data analysis. I created a bar chart to see is there a relationship between smoking habits before pregnancy and different levels of mother's education.
+
+The bar chart above displays the proportions of smokers among mothers before pregnancy vs. various levels of education. We can see that 
+
+1. As the education level increases, higher proportion of nonsmokers is observed. This is particularly noticeable in "Bachelor’s degree", "Master’s degree", and "Doctorate/Professional", where a significant majority of mothers did not smoke before pregnancy.
+
+2. As the education level increases, lower proportion of mothers consume 1-20 cigarettes. Mothers with lower education levels "8th grade or less", "9th-12th with no diploma" have higher proportions in these smoking categories.
+
+3. Although mothers who consume 21 or more cigarettes have a small proportion, there is a noticeable decrease of their proportion as the education level increases.
+
+So there is a correlation between higher education levels and lower rates of smoking before pregnancy.
+
+```{r}
+# Filter out unknown education and unknown smoking status
+filtered_data_new <- data[data$mrace15 != 15 & data$cig0_r != 6, ]
+
+# Creating a cross-tabulation of mother's education and smoking before pregnancy
+race_smoking_crosstab <- table(filtered_data_new$mrace15, filtered_data_new$cig0_r) 
+race_smoking_crosstab <- prop.table(race_smoking_crosstab, 1) # Normalize by row
+
+# Converting the table to a dataframe for ggplot
+df_new <- as.data.frame(race_smoking_crosstab)
+colnames(df_new) <- c('Race', 'Smoking', 'Proportion')
+
+# Renaming education levels and smoking categories for better readability
+df_new$Race <- factor(df_new$Race, levels = c(1:14),
+                       labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
+                                  'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
+                                  'Hawaiian', 'Guamanian', 'Samoan', 'Other pacific Islander'))
+
+df_new$Smoking <- factor(df_new$Smoking, levels = c(0:5),
+                     labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                                '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes'))
+
+# Plotting the grouped bar chart
+ggplot(df_new, aes(fill=Smoking, y=Proportion, x=Race)) + 
+    geom_bar(position="fill", stat="identity") + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(x = "Mother’s Race", y = "Proportion of Mothers", 
+         fill = "Cigarettes Before Pregnancy", 
+         title = "Cigarette Consumption Before Pregnancy by Mother’s Race")
+```
+I chose the variable "cig0_r", which represents cigarette consumption before pregnancy, and the variable "mrace15" which represents the mother's race, to conduct the exploratory data analysis. I created a bar chart to see if is there a relationship between smoking habits before pregnancy and different races of mothers.
+
+The bar chart above displays the proportions of smokers among mothers before pregnancy vs. various races of mothers. We can see that 
+
+1. AIAN mothers have the highest proportion of smokers before pregnancy. Asian Indian, Chinese, Filipino, and Vietnamese mothers have the lowest proportion of smokers before pregnancy.
+
+2. AIAN mothers have the highest proportion of 1-5 cigarettes and 41 or more cigarettes consumed per day before pregnancy among all races. Hawaiian mothers have the highest proportion of 6-10 cigarette consumption per day before pregnancy among all races.
+
+So there is a correlation between race and consumption of cigarettes before pregnancy.
