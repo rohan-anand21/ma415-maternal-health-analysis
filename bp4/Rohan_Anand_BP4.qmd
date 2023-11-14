@@ -4,7 +4,7 @@ library(tidyverse)
 nat <- read_csv(here::here("dataset-ignore/natality_data_cleaned.csv"), show_col_types = FALSE) |>
   filter(precare != 99) |>
   filter(combgest != 99) |>
-  filter(previs != 99) |>
+  filter(previs != 99) |> 
   filter(ab_nicu != 'U') |>
   mutate(ab_nicu = as.integer(ifelse(ab_nicu == 'Y', 1, ifelse(ab_nicu == 'N', 0, ab_nicu)))) |>
   filter(mm_aicu != 'U') |>
