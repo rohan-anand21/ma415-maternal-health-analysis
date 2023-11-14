@@ -14,7 +14,8 @@ We have chosen 1 table, 1 plot and 1 statistical model for our exploratory data 
 library(data.table) 
 library(tidyverse)
 
-natality_data_cleaned <- read_csv(here::here("dataset-ignore/natality_data_cleaned.csv")); setDT(natality_data_cleaned) 
+natality_data_cleaned <- read_csv(here::here("dataset-ignore/natality_data_cleaned.csv"), show_col_types = FALSE)
+setDT(natality_data_cleaned) 
 
 # Relabel mrace31 
 race_labels <- c("White (only)", "Black (only)", "AIAN (only)", "Asian (only)", "NHOPI (only)", "Black and White", "Black and AIAN", "Black and Asian", "Black and NHOPI", "AIAN and White", "AIAN and Asian", "AIAN and NHOPI", "Asian and White", "Asian and NHOPI", "NHOPI and White", "Black, AIAN, and White", "Black, AIAN, and Asian", "Black, AIAN, and NHOPI", "Black, Asian, and White", "Black, Asian, and NHOPI", "Black, NHOPI, and White", "AIAN, Asian, and White", "AIAN, NHOPI, and White", "AIAN, Asian, and NHOPI", "Asian, NHOPI, and White", "Black, AIAN, Asian, and White", "Black, AIAN, Asian, and NHOPI", "Black, AIAN, NHOPI, and White", "Black, Asian, NHOPI, and White", "AIAN, Asian, NHOPI, and White") 
@@ -102,4 +103,3 @@ plot(birth_weight, predicted_birth_weight, xlab = "Observed Birth Weight", ylab 
 abline(0, 1, col = "red")
 ```
 The statistical model we choose is linear regression. We did linear regression to predict birth weight based on a number of variables such as mothers age, start of prenatal care, race and whether they smoked cigarettes before pregnancy. We fitted the model and plotted a scatter plot of observed by predicted. There is significant variation since the all of the points are not aggregated around the red line, indicating that transformations, such as log or other, should be made on the variables. However, a non-substantial amount of points aggregate around the line, indicating that the variables used in the predictor are capable of producing accurate predictions. Therefore, there is a slight correlation between birth weight and smoking status, mothers age, start of prenatal care and race. 
-
