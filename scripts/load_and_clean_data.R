@@ -24,16 +24,6 @@ number_of_nas <- natality_data_cleaned |>
   summarize(across(everything(), ~ sum(is.na(.))) ) |>
   pivot_longer(everything(), names_to = "Column", values_to = "NAs")
 
-#recode columns: birth month, birth time
-renamed_cols = c('dob_tt', 'dob_mm')
-
-natality_data_cleaned <- natality_data_cleaned |>
-  mutate(birth_month = factor(month.name[dob_mm], levels = month.name)) |>
-  mutate(time_of_birth = sprintf("%04d", dob_tt),
-         time_of_birth = sub("^(..)(..)$", "\\1:\\2", time_of_birth), 
-         time_of_birth = as.character(time_of_birth)) |>
-  select(-all_of(renamed_cols))
-
 
 #create cleaned csv with values
 write_csv(natality_data_cleaned, file = here::here("dataset-ignore", "natality_data_cleaned.csv"))

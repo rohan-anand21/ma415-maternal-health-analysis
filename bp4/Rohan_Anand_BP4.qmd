@@ -1,0 +1,43 @@
+```{r}
+library(tidyverse)
+
+nat <- read_csv(here::here("dataset-ignore/natality_data_cleaned.csv"), show_col_types = FALSE) |>
+  filter(precare != 99) |>
+  filter(combgest != 99) |>
+  filter(previs != 99) |>
+  filter(ab_nicu != 'U') |>
+  mutate(ab_nicu = as.integer(ifelse(ab_nicu == 'Y', 1, ifelse(ab_nicu == 'N', 0, ab_nicu)))) |>
+  filter(mm_aicu != 'U') |>
+  mutate(mm_aicu = as.integer(ifelse(mm_aicu == 'Y', 1, ifelse(mm_aicu == 'N', 0, mm_aicu)))) |>
+  filter(gestrec3 != 3) |>
+  mutate(gestrec3 = gestrec3 - 1)
+  
+
+birth_weight = nat$dbwt
+mager = nat$mager
+prenatal_care_start = nat$precare
+mrace = nat$mrace31
+smoking_status = nat$cig0_r
+gest_age = nat$combgest
+num_prenatal_visits = nat$previs
+bmi = nat$bmi
+admiss_to_nicu = nat$ab_nicu
+preg_complications = nat$mm_aicu
+preterm_birth = nat$gestrec3
+
+#Linear
+model1 <- lm(birth_weight ~ mager + prenatal_care_start + mrace + smoking_status, data = nat)
+summary(model1)
+
+model2 <- lm(gest_age ~ mager + num_prenatal_visits + mrace + bmi, data = nat)
+summary(model2)
+
+# Logistic
+model3 <- glm(admiss_to_nicu ~  prenatal_care_start + mrace + smoking_status, family = binomial(), data = nat)
+summary(model3)
+
+model4 <- glm(preterm_birth ~ num_prenatal_visits + mrace + preg_complications, family = binomial(), data = nat)
+summary(model4)
+
+```
+
