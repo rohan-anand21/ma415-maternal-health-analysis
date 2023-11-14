@@ -30,3 +30,4 @@ write_csv(natality_data_cleaned, file = here::here("dataset-ignore", "natality_d
 
 #save data as R file
 save(natality_data_cleaned, file = here::here("dataset-ignore/natality_data_cleaned.RData"))
+
