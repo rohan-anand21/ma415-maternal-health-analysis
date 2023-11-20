@@ -31,7 +31,7 @@ race_counts_by_year_week <- natality_data_cleaned[, .N, by = .(dob_yy, dob_wk, m
 relationship_table <- merge(avg_age_by_year_week, race_counts_by_year_week, by = c("dob_yy", "dob_wk"), all = TRUE) 
 
 # View the table 
-print(head(relationship_table)) 
+relationship_table
 ```
 
 For the first table, we have chosen the 'average_age' across years and weeks (‘dob_yy’ and 'dob_wk') that could reveal seasonal patterns in maternal age (‘mrace31’). Moreover, it breaks down the numbers by race and ethnicity, indicating the number of births for different racial and ethnic combinations (White, Black, AIAN(American Indian or Alaska Native), Asian, NHPI(Native Hawaiian or other Pacific Islander), and combinations thereof). The average age of individuals seems around 29 for all entries and does not change much. Furthermore, the numerical values are highest for the ‘White (only)’ category and lowest for the combination of ‘Black’, ‘AIAN’, ‘Asian’, and ‘NHOPI’.
