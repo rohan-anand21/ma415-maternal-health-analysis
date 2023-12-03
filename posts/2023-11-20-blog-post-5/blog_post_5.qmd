@@ -1,3 +1,17 @@
+---
+title: "Blog Post 5"
+subtitle: "Dataset Extension"
+author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
+date: "2023-11-20"
+date-modified: "2023-11-20"
+draft: FALSE
+---
+The datasets that we look to combine are natality data sets from previous years from the same source. We will be using natality data spanning from 2004 to 2021 (17 individual data sets—one for each year) in order to identify historical trends in the data. Due to the large nature of our data set, we will not be combining the data sets directly. Instead, we will apply the same cleaning script to each dataset, which works since they have the same columns, and concatenate the necessary subset of each data set for our specific models. For example, a regression model on a subset of variables does not require a singular dataset, but rather we can pull the necessary columns from each year and combine them into a single smaller dataset. This will make it much more efficient to conduct our analyses as we will be able to have a larger variation of smaller subsets of data that will be more accessible to use across our team members. 
+
+By using data sets from different years, this will allow us to look at trends over time in-depth. We are curious to find out if some features of maternal statistics have decreased, increased, or stayed the same as the years went by and the conditions around maternal health have changed. Some key statistics we would like to look into is wether the BMI of mothers and its correlation to their baby's health scores (APGAR scores) has changed as the obesity epidemic in the U.S. has increased over the past 2 decades. Another interesting feature we would like to look into is to see if the age at which women are getting pregnant has changed. There has been a shift in culture over the past two decades surrounding women getting pregnant at a later age than women from the generation prior. We can examine if the data shows a statistically significant difference. 
+
+Since we are using the same source of new dataset as the previous one, the data format or data type, like inconsistent numeric, character type, or recode, won’t happen in our dataset. For difficulties we are facing in combining the data the length of rows we are looking at might be different. In that case, we need to make the dataset the same length in order to plot. Also, we need to deal with the missing values.
+
 ```{r}
 library(tidyverse) 
 library(RColorBrewer) 
@@ -6,7 +20,6 @@ selected_columns <- data[, c("bmi_r", "apgar5")] # defining BMI categories
 BMI_categories <- c("Underweight", "Normal", "Overweight", "Obesity I", "Obesity II", "Extreme Obesity III", "Unknown or not stated") # converting numerical BMI values into BMI categories in selected_columns data frame 
 
 selected_columns$bmi_r <- factor(selected_columns$bmi_r, levels = c(1, 2, 3, 4, 5, 6, 9), labels = BMI_categories, exclude = c(7, 8)) 
-selected_columns 
 bmi_and_apgar5 <- selected_columns[selected_columns$apgar5 != 99,] 
 bmi_and_apgar5 <- bmi_and_apgar5[bmi_and_apgar5$bmi_r != "Unknown or not stated", ] 
 bmi_and_apgar5$bmi_r <- as.factor(bmi_and_apgar5$bmi_r) 
@@ -21,11 +34,10 @@ selected_columns <- data[, c("bmi_r", "apgar5")] # defining BMI categories
 BMI_categories <- c("Underweight", "Normal", "Overweight", "Obesity I", "Obesity II", "Extreme Obesity III", "Unknown or not stated") # converting numerical BMI values into BMI categories in selected_columns data frame 
 
 selected_columns$bmi_r <- factor(selected_columns$bmi_r, levels = c(1, 2, 3, 4, 5, 6, 9), labels = BMI_categories, exclude = c(7, 8)) 
-selected_columns 
 bmi_and_apgar5 <- selected_columns[selected_columns$apgar5 != 99,] 
 bmi_and_apgar5 <- bmi_and_apgar5[bmi_and_apgar5$bmi_r != "Unknown or not stated", ] 
 bmi_and_apgar5$bmi_r <- as.factor(bmi_and_apgar5$bmi_r) 
 average_apgar <- aggregate(apgar5 ~ bmi_r, data = bmi_and_apgar5, mean) 
 ggplot(bmi_and_apgar5, aes(x = bmi_r, y = apgar5, fill = bmi_r)) + geom_bar(stat = "summary", fun = "mean") +   geom_text(data = average_apgar, aes(x = bmi_r, y = apgar5, label = sprintf("%.2f", apgar5)), vjust = -0.5, size = 3, color = "black") +   labs(title = "Average APGAR Score for Each Maternal BMI Category", x = "BMI Category", y = "Average APGAR Score") + scale_fill_brewer(palette = "Set3") +  ylim(0, 10) +   theme(legend.position = "bottom", plot.title = element_text(hjust = 0.5)) +   guides(fill = guide_legend(title = NULL))
 ```
-
+Based on the plots above, our initial findings indicate that there is little change between the correlation between BMI and average APGAR score. 
