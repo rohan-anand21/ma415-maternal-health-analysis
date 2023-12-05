@@ -1,11 +1,21 @@
 ```{r}
+#read csv data into variable
+nat2014 <- read_csv(here::here('dataset-ignore', 'data-ignore', 'natl2014.csv'), n_max = 100000, show_col_types = FALSE)
+
+nat2018 <- read_csv(here::here('dataset-ignore', 'data-ignore', 'nat2018us.csv'), n_max = 100000, show_col_types = FALSE)
+
+nat2021 <- read_csv(here::here('dataset-ignore', 'data-ignore', 'nat2021us.csv'), n_max = 100000, show_col_types = FALSE)
+```
+
+
+```{r}
 # Load necessary libraries
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 
 # Read the dataset
-data <- read.csv(here::here('dataset-ignore','natality_data_cleaned.csv'))
+data <- nat2021
 
 # Filter out unknown education and unknown smoking status
 filtered_data <- data[data$meduc != 9 & data$cig0_r != 6, ]
@@ -49,10 +59,13 @@ The bar chart above displays the proportions of smokers among mothers before pre
 So there is a correlation between higher education levels and lower rates of smoking before pregnancy.
 
 ```{r}
-# Filter out unknown education and unknown smoking status
+# Read the dataset
+data <- nat2021
+
+# Filter out unknown race and unknown smoking status
 filtered_data_new <- data[data$mrace15 != 15 & data$cig0_r != 6, ]
 
-# Creating a cross-tabulation of mother's education and smoking before pregnancy
+# Creating a cross-tabulation of mother's race and smoking before pregnancy
 race_smoking_crosstab <- table(filtered_data_new$mrace15, filtered_data_new$cig0_r) 
 race_smoking_crosstab <- prop.table(race_smoking_crosstab, 1) # Normalize by row
 
@@ -60,7 +73,7 @@ race_smoking_crosstab <- prop.table(race_smoking_crosstab, 1) # Normalize by row
 df_new <- as.data.frame(race_smoking_crosstab)
 colnames(df_new) <- c('Race', 'Smoking', 'Proportion')
 
-# Renaming education levels and smoking categories for better readability
+# Renaming races and smoking categories for better readability
 df_new$Race <- factor(df_new$Race, levels = c(1:14),
                        labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
                                   'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
@@ -87,3 +100,406 @@ The bar chart above displays the proportions of smokers among mothers before pre
 2. AIAN mothers have the highest proportion of 1-5 cigarettes and 41 or more cigarettes consumed per day before pregnancy among all races. Hawaiian mothers have the highest proportion of 6-10 cigarette consumption per day before pregnancy among all races.
 
 So there is a correlation between race and consumption of cigarettes before pregnancy.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(here)
+
+# Load datasets
+data_2014 <- nat2014
+data_2020 <- nat2020
+
+# Function to preprocess and create proportion table
+prepare_data <- function(data, year) {
+  filtered_data <- data[data$meduc != 9 & data$cig0_r != 6, ]
+  education_smoking_crosstab <- prop.table(table(filtered_data$meduc, filtered_data$cig0_r), 1)
+  df <- as.data.frame(education_smoking_crosstab)
+  colnames(df) <- c('Education', 'Smoking', 'Proportion')
+  df$Year <- as.factor(year)
+  return(df)
+}
+
+# Prepare data for each year
+df_2014 <- prepare_data(data_2014, 2014)
+df_2020 <- prepare_data(data_2020, 2020)
+
+# Combine data
+combined_df <- rbind(df_2014, df_2020)
+
+# Renaming education levels and smoking categories
+combined_df$Education <- factor(combined_df$Education, levels = c(1:8),
+                                labels = c('8th grade or less', '9th-12th with no diploma', 
+                                           'High school/GED', 'Some college', 'Associate degree', 
+                                           'Bachelor’s degree', 'Master’s degree', 'Doctorate/Professional'))
+
+combined_df$Smoking <- factor(combined_df$Smoking, levels = c(0:5),
+                              labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                                         '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes'))
+
+# Plotting
+ggplot(combined_df, aes(fill=Smoking, y=Proportion, x=Education)) + 
+  geom_bar(position="fill", stat="identity") + 
+  facet_wrap(~Year, scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Mother’s Education Level", y = "Proportion of Mothers", 
+       fill = "Cigarettes Before Pregnancy", 
+       title = "Comparison of Cigarette Consumption Before Pregnancy by Mother’s Education Level in 2014 and 2020")
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(here)
+
+# Function to preprocess and create proportion table
+prepare_data <- function(data, year) {
+  filtered_data <- data[data$mrace15 != 15 & data$cig0_r != 6, ]
+  race_smoking_crosstab <- prop.table(table(filtered_data$mrace15, filtered_data$cig0_r), 1)
+  df <- as.data.frame(race_smoking_crosstab)
+  colnames(df) <- c('Race', 'Smoking', 'Proportion')
+  df$Year <- as.factor(year)
+  return(df)
+}
+
+# Prepare data for each year
+df_2014 <- prepare_data(nat2014, 2014)
+df_2018 <- prepare_data(nat2018, 2018)
+df_2021 <- prepare_data(nat2021, 2021)
+
+# Combine data
+combined_df <- rbind(df_2014, df_2018, df_2021)
+
+
+# Renaming races and smoking categories
+race_labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
+                'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
+                'Hawaiian', 'Guamanian', 'Samoan', 'Other Pacific Islander')
+smoking_labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                   '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes')
+
+combined_df$Race <- factor(combined_df$Race, levels = c(1:14), labels = race_labels)
+combined_df$Smoking <- factor(combined_df$Smoking, levels = c(0:5), labels = smoking_labels)
+
+# Plotting
+ggplot(combined_df, aes(x=Race, y=Proportion, fill=Year)) + 
+  geom_bar(position="dodge", stat="identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Mother’s Race", y = "Proportion of Mothers", 
+       fill = "Year", 
+       title = "Cigarette Consumption Before Pregnancy by Mother’s Race from 2014, 2018, 2021")
+```
+GOOD ONE
+```{r}
+# Function to preprocess and create proportion table
+prepare_data <- function(data, year) {
+  filtered_data <- data|>
+    filter(mrace15 != 15 & cig0_r != 6) |>
+    mutate(RaceCategory = recode(mrace15,
+                                 `1` = 'White',
+                                 `2` = 'Black',
+                                 `3` = 'AIAN',
+                                 `4` = 'Asian',
+                                 `5` = 'Asian',
+                                 `6` = 'Asian',
+                                 `7` = 'Asian',
+                                 `8` = 'Asian',
+                                 `9` = 'Asian',
+                                 `10` = 'Asian',
+                                 `11` = 'NHOPI',
+                                 `12` = 'NHOPI',
+                                 `13` = 'NHOPI',
+                                 `14` = 'NHOPI'))
+  race_smoking_crosstab <- prop.table(table(filtered_data$RaceCategory, filtered_data$cig0_r), 1)
+  df <- as.data.frame(race_smoking_crosstab)
+  colnames(df) <- c('Race', 'Smoking', 'Proportion')
+  df$Year <- as.factor(year)
+  return(df)
+}
+
+# Prepare data for each year
+df_2014 <- prepare_data(nat2014, 2014)
+df_2018 <- prepare_data(nat2018, 2018)
+df_2021 <- prepare_data(nat2021, 2021)
+
+# Combine data
+combined_df <- rbind(df_2014, df_2018, df_2021)
+
+# Rename the race categories
+combined_df$Race <- factor(combined_df$Race,
+                           levels = c('White', 'Black', 'AIAN', 'Asian', 'NHOPI'))
+
+# Rename the smoking categories
+combined_df$Smoking <- factor(combined_df$Smoking,
+                              levels = c('0', '1', '2', '3', '4', '5'),
+                              labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                                         '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes'))
+
+# Plotting
+ggplot(combined_df, aes(x=Race, y=Proportion, fill=Year)) + 
+  geom_bar(position="dodge", stat="identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Mother’s Race Category", y = "Proportion of Mothers", 
+       fill = "Year", 
+       title = "Cigarette Consumption Before Pregnancy by Mother’s Race in 2014, 2018, 2020")
+```
+
+
+Preterm variables
+```{r}
+library(ggplot2)
+
+# Read the dataset
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned.csv'))
+
+# Filter out unknown race
+filtered_data <- data[data$mrace15 != 15, ]
+
+# Categorize gestational age into preterm birth categories
+filtered_data$PretermCategory <- with(filtered_data, ifelse(oegest_comb < 34, "Early Preterm",
+                                                            ifelse(oegest_comb >= 34 & oegest_comb < 37, "Late Preterm", "Preterm")))
+
+# Filter out Term births as we're only interested in preterm categories
+filtered_data <- filtered_data[filtered_data$PretermCategory != "Preterm", ]
+
+# Creating a cross-tabulation of mother's race and preterm birth categories
+race_preterm_crosstab <- table(filtered_data$mrace15, filtered_data$PretermCategory) 
+race_preterm_crosstab <- prop.table(race_preterm_crosstab, 1) # Normalize by row
+
+# Converting proportions to percentages
+race_preterm_crosstab <- race_preterm_crosstab * 100
+
+# Converting the table to a dataframe for ggplot
+df <- as.data.frame(race_preterm_crosstab)
+colnames(df) <- c('Race', 'PretermCategory', 'Percentage')
+
+# Renaming races for better readability
+df$Race <- factor(df$Race, levels = c(1:14),
+                  labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
+                             'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
+                             'Hawaiian', 'Guamanian', 'Samoan', 'Other Pacific Islander'))
+
+# Plotting the grouped bar chart with percentages
+ggplot(df, aes(fill=PretermCategory, y=Percentage, x=Race)) + 
+    geom_bar(position="fill", stat="identity") + 
+    geom_text(aes(label = sprintf("%.1f%%", Percentage)), 
+              position = position_fill(vjust = 0.5), 
+              color = "black", 
+              angle = 45, 
+              size = 3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(x = "Mother’s Race", y = "Percentage of Births", 
+         fill = "Preterm Birth Category", 
+         title = "Percentage of Preterm Births by Mother’s Race")
+```
+
+```{r}
+library(ggplot2)
+
+# Read the dataset
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned.csv'))
+
+# Filter out unknown race
+filtered_data <- data[data$mrace15 != 15, ]
+
+# Categorize gestational age into preterm and full-term birth categories
+filtered_data$BirthCategory <- with(filtered_data, ifelse(oegest_comb < 34, "Early Preterm",
+                                                          ifelse(oegest_comb >= 34 & oegest_comb < 37, "Late Preterm",
+                                                                 "Full Term")))
+
+# Creating a cross-tabulation of mother's race and birth categories
+race_birth_crosstab <- table(filtered_data$mrace15, filtered_data$BirthCategory) 
+race_birth_crosstab <- prop.table(race_birth_crosstab, 1) # Normalize by row
+
+# Converting proportions to percentages
+race_birth_crosstab <- race_birth_crosstab * 100
+
+# Converting the table to a dataframe for ggplot
+df <- as.data.frame(race_birth_crosstab)
+colnames(df) <- c('Race', 'BirthCategory', 'Percentage')
+
+# Renaming races for better readability
+df$Race <- factor(df$Race, levels = c(1:14),
+                  labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
+                             'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
+                             'Hawaiian', 'Guamanian', 'Samoan', 'Other Pacific Islander'))
+
+# Plotting the grouped bar chart with percentages
+ggplot(df, aes(fill=BirthCategory, y=Percentage, x=Race)) + 
+    geom_bar(position="fill", stat="identity") + 
+    geom_text(aes(label = sprintf("%.1f%%", Percentage)), 
+              position = position_fill(vjust = 0.5), 
+              color = "black", 
+              angle = 45, 
+              size = 3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(x = "Mother’s Race", y = "Percentage of Births", 
+         fill = "Birth Category", 
+         title = "Percentage of Late Preterm, Early Preterm, and Full-Term Births by Mother’s Race")
+```
+GOOD ONE
+```{r}
+library(ggplot2)
+
+# Read the dataset
+data <- read.csv(here::here('dataset-ignore', 'data-ignore', 'nat2021us.csv'))
+
+# Filter out unknown race
+filtered_data <- data[data$mrace15 != 15, ]
+
+# Create a new column 'RaceCategory' based on the 'Race' with the new categories
+filtered_data$RaceCategory <- filtered_data$mrace15
+
+# Map the original race codes to the new categories
+filtered_data$RaceCategory <- recode(filtered_data$RaceCategory,
+                                     `1` = 'White',
+                                     `2` = 'Black',
+                                     `3` = 'AIAN',
+                                     `4` = 'Asian',
+                                     `5` = 'Asian',
+                                     `6` = 'Asian',
+                                     `7` = 'Asian',
+                                     `8` = 'Asian',
+                                     `9` = 'Asian',
+                                     `10` = 'Asian',
+                                     `11` = 'NHOPI',
+                                     `12` = 'NHOPI',
+                                     `13` = 'NHOPI',
+                                     `14` = 'NHOPI')
+
+# Categorize gestational age into preterm and full-term birth categories
+filtered_data$BirthCategory <- with(filtered_data, ifelse(oegest_comb < 34, "Early Preterm",
+                                                          ifelse(oegest_comb >= 34 & oegest_comb < 37, "Late Preterm",
+                                                                 "Full Term")))
+
+# Creating a cross-tabulation of mother's race and birth categories
+race_birth_crosstab <- table(filtered_data$RaceCategory, filtered_data$BirthCategory) 
+race_birth_crosstab <- prop.table(race_birth_crosstab, 1) # Normalize by row
+
+# Converting proportions to percentages
+race_birth_crosstab <- race_birth_crosstab * 100
+
+# Converting the table to a dataframe for ggplot
+df <- as.data.frame(race_birth_crosstab)
+colnames(df) <- c('Race', 'BirthCategory', 'Percentage')
+
+# Plotting the grouped bar chart with percentages
+ggplot(df, aes(fill=BirthCategory, y=Percentage, x=Race)) + 
+    geom_bar(position="fill", stat="identity") + 
+    geom_text(aes(label = sprintf("%.1f%%", Percentage)), 
+              position = position_fill(vjust = 0.5), 
+              color = "black", 
+              angle = 45, 
+              size = 3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(x = "Mother’s Race", y = "Percentage of Births", 
+         fill = "Birth Category", 
+         title = "Percentage of Late Preterm, Early Preterm, and Full-Term Births by Mother’s Race")
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Read the dataset
+data <- nat2021
+
+# Define a function to categorize preterm births
+categorize_preterm <- function(weeks) {
+    if (weeks < 34) {
+        return('Early Preterm')
+    } else if (weeks >= 34 & weeks <= 36) {
+        return('Late Preterm')
+    } else {
+        return('Full Term')
+    }
+}
+
+# Apply the categorization to the dataset
+data$preterm_category <- sapply(data$oegest_comb, categorize_preterm)
+
+# Renaming the race variable
+data$Race <- factor(data$mrace15, levels = c(1:14),
+                    labels = c('White', 'Black', 'AIAN', 'Asian Indian', 'Chinese', 
+                               'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian',
+                               'Hawaiian', 'Guamanian', 'Samoan', 'Other Pacific Islander'))
+
+# Calculate percentages
+data_grouped <- data %>%
+    group_by(Race, preterm_category) %>%
+    summarise(count = n()) %>%
+    mutate(total = sum(count), 
+           percent = (count / total) * 100)
+
+# Create the plot
+ggplot(data_grouped, aes(x = Race, y = percent, fill = preterm_category)) +
+    geom_bar(stat = 'identity', position = 'dodge') +
+  geom_text(aes(label = sprintf("%.1f%%", percent)), 
+              position = position_dodge(width = 0.9),    # Adjust to align with bars
+              vjust = -0.6,  
+              size = 2,
+              angle = 45) +
+    labs(title = 'Percentage of Preterm Births by Race of Mother',
+         x = 'Race of Mother',
+         y = 'Percentage') +
+    scale_fill_manual(values = c('Early Preterm' = 'red', 'Late Preterm' = 'blue', 'Full Term' = 'green')) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Function to process dataset
+process_data <- function(data, year) {
+  filtered_data <- data[data$mrace15 != 15, ]
+  filtered_data$RaceCategory <- recode(filtered_data$mrace15,
+                                     `1` = 'White',
+                                     `2` = 'Black',
+                                     `3` = 'AIAN',
+                                     `4` = 'Asian',
+                                     `5` = 'Asian',
+                                     `6` = 'Asian',
+                                     `7` = 'Asian',
+                                     `8` = 'Asian',
+                                     `9` = 'Asian',
+                                     `10` = 'Asian',
+                                     `11` = 'NHOPI',
+                                     `12` = 'NHOPI',
+                                     `13` = 'NHOPI',
+                                     `14` = 'NHOPI')
+  filtered_data$BirthCategory <- with(filtered_data, ifelse(oegest_comb < 34, "Early Preterm",
+                                                            ifelse(oegest_comb >= 34 & oegest_comb < 37, "Late Preterm",
+                                                                   "Full Term")))
+  race_birth_crosstab <- prop.table(table(filtered_data$RaceCategory, filtered_data$BirthCategory), 1) * 100
+  df <- as.data.frame(race_birth_crosstab)
+  colnames(df) <- c('Race', 'BirthCategory', 'Percentage')
+  df$Year <- as.factor(year)
+  return(df)
+}
+
+# Process each dataset
+df_2014 <- process_data(nat2014, 2014)
+df_2018 <- process_data(nat2018, 2018)
+df_2021 <- process_data(nat2021, 2021)
+
+# Combine data
+combined_df <- rbind(df_2014, df_2018, df_2021)
+
+# Plotting with bars for each year side by side
+ggplot(combined_df, aes(fill=BirthCategory, y=Percentage, x=Race)) + 
+    geom_bar(position="fill", stat="identity") + 
+    geom_text(aes(label = sprintf("%.1f%%", Percentage)), 
+              position = position_fill(vjust = 0.5), 
+              color = "black", 
+              angle = 45, 
+              size = 3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    facet_wrap(~Year) +
+    labs(x = "Mother’s Race", y = "Percentage of Births", 
+         fill = "Birth Category", 
+         title = "Percentage of Late Preterm, Early Preterm, and Full-Term Births by Mother’s Race (2014, 2018, 2021)")
+```
+
