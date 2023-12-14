@@ -14,14 +14,109 @@ We describe here our detailed data analysis.
 This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
 You'll also reflect on next steps and further analysis.
 
-
 ```{r}
 library(tidyverse)
-print(getwd())
-data <- read_csv(here::here("dataset/loan_refusal_clean.csv"))
-load(here::here("dataset/loan_refusal.RData"))
-print(ls())
+library(RColorBrewer) 
+data <- read_csv(here::here('dataset-ignore','natality_data_cleaned_2021.csv'))
 ```
+
+```{r}
+head(data)
+num_rows <- nrow(data)
+num_columns <- ncol(data)
+
+
+print(num_rows)
+print(num_columns)
+
+# extracting specific columns I need
+filtered_data_smoking <- data %>%
+  select(cig0_r, cig1_r, cig2_r, cig3_r, apgar5, apgar10, mracehisp, dbwt) %>%
+  filter(
+    cig0_r != 6,
+    cig1_r != 6,
+    cig3_r != 6,
+    apgar5 != 99,
+    apgar10 != 88,
+    apgar10 != 99,
+    mracehisp != 8,
+    dbwt != 9999
+  ) %>%
+  rename(Before_Pregnancy = cig0_r, Trimester_One = cig1_r, Trimester_Two = cig2_r, Trimester_Three = cig3_r, APGAR_FIVE = apgar5, APGAR_10 = apgar10, Birthweight_KG = dbwt) %>%
+  
+  mutate_at(vars(Before_Pregnancy, Trimester_One, Trimester_Two, Trimester_Three), ~case_when(
+    . == 0 ~ "Nonsmoker",
+    . == 1 ~ "1-5",
+    . == 2 ~ "6-10",
+    . == 3 ~ "11-20",
+    . == 4 ~ "21-40",
+    . == 5 ~ " 41 or more",
+    TRUE ~ as.character(.)
+  )) %>%
+  
+  rename(Race = mracehisp) %>%
+  
+  mutate(Race = case_when(
+    Race == 1 ~ "White (only)",
+    Race == 2 ~ "Black (only)",
+    Race == 3 ~ "AIAN (only)",
+    Race == 4 ~ "Asian (only)",
+    Race == 5 ~ "NHOPI (only)",
+    Race == 6 ~ "More than one race (non-hispanic)",
+    Race == 7 ~ "Hispanic (only)",
+    TRUE ~ as.character(Race)
+  ))%>%
+
+  mutate(Birthweight_KG = Birthweight_KG / 1000)
+
+print(filtered_data_smoking)
+
+```
+```{r}
+# Finding the proportions that smoke
+smoking_proportions_by_race <- filtered_data_smoking %>%
+  group_by(Race) %>%
+  summarize(
+    Proportion_Smokers_Before_Pregnancy = round((sum(Before_Pregnancy != "Nonsmoker") / n()) * 100, 2),
+    Proportion_Smokers_Trimester_One = round((sum(Trimester_One != "Nonsmoker") / n()) * 100, 2),
+    Proportion_Smokers_Trimester_Two = round((sum(Trimester_Two != "Nonsmoker") / n()) * 100, 2),
+    Proportion_Smokers_Trimester_Three = round((sum(Trimester_Three != "Nonsmoker") / n()) * 100, 2)
+  ) %>%
+  arrange(desc(Proportion_Smokers_Before_Pregnancy))
+
+# Install and load the necessary packages
+if (!requireNamespace("gt", quietly = TRUE)) {
+  install.packages("gt")
+}
+library(gt)
+library(dplyr)
+
+# Renaming the columns
+smoking_proportions_by_race <- smoking_proportions_by_race %>%
+  rename(
+    "Before Pregnancy (%)" = Proportion_Smokers_Before_Pregnancy,
+    "Trimester One (%)" = Proportion_Smokers_Trimester_One,
+    "Trimester Two (%)" = Proportion_Smokers_Trimester_Two,
+    "Trimester Three (%)" = Proportion_Smokers_Trimester_Three
+  )
+
+
+table_gt <- gt(smoking_proportions_by_race) %>%
+  tab_header(
+    title = md("**Figure 1: Percentage of mothers who smoked cigarettes before and during pregnancy, by trimester and race in the United States, 2021**"),
+    subtitle = "Source: National Center for Health Statistics, National Vital Statistics System, Natality"
+  ) %>%
+  tab_spanner(
+    label = "Proportion of mothers who smoked by trimester (%)",
+    columns = vars(starts_with("Smoking"))
+  )
+
+# Printing the table
+table_gt
+
+```
+
+
 
 ## Note on Attribution
 

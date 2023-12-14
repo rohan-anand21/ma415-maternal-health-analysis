@@ -29,7 +29,8 @@ ggplot(bmi_and_apgar5, aes(x = bmi_r, y = apgar5, fill = bmi_r)) + geom_bar(stat
 ```{r}
 library(tidyverse) 
 library(RColorBrewer) 
-data <- read_csv(here::here('dataset-ignore','natality_data_cleaned_2016.csv')) 
+
+data <- read_csv(here::here('dataset-ignore','natality_data_cleaned_2021.csv')) 
 selected_columns <- data[, c("bmi_r", "apgar5")] # defining BMI categories 
 BMI_categories <- c("Underweight", "Normal", "Overweight", "Obesity I", "Obesity II", "Extreme Obesity III", "Unknown or not stated") # converting numerical BMI values into BMI categories in selected_columns data frame 
 

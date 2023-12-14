@@ -93,7 +93,7 @@ clean_data <- function(data, columns_to_remove) {
 } #26
 
 # Define the columns to remove 
-columns_to_remove <- c('f_rf_ncesar', 'f_rf_cesar', 'f_rf_inf_art', 'f_rf_inf_drg', 'f_rf_ppb', 'f_rf_eclamp', 'f_rf_ghyper', 'f_rf_phyper', 'f_rf_gdiab', 'f_rf_pdiab', 'f_wtgain', 'wtgain_rec', 'f_dwgt', 'f_pwgt', 'bmi_r', 'f_m_ht', 'f_tobaco', 'cig_rec', 'f_cigs_3', 'f_cigs_2', 'f_cigs_1', 'f_cigs_0', 'cig3_r', 'cig2_r', 'cig1_r', 'cig0_r', 'f_wic', 'f_tpcv', 'previs_rec', 'precare5', 'f_mpcb', 'ilp_r11', 'ilp_r', 'ilop_r11', 'ilop_r', 'illb_r11', 'fracehisp', 'f_fhisp', 'fhisp_r', 'frace15', 'frace6', 'fagecomb', 'fagerpt_flg', 'f_meduc', 'f_mar_p', 'mar_imp', 'f_facility', 'bfacil3', 'mage_impflg', 'mage_repflg', 'mager14', 'mager9', 'mrace6', 'mrace15', 'mraceimp', 'f_mhisp')
+columns_to_remove <- c('f_rf_ncesar', 'f_rf_cesar', 'f_rf_inf_art', 'f_rf_inf_drg', 'f_rf_ppb', 'f_rf_eclamp', 'f_rf_ghyper', 'f_rf_phyper', 'f_rf_gdiab', 'f_rf_pdiab', 'f_wtgain', 'wtgain_rec', 'f_dwgt', 'f_pwgt', 'f_m_ht', 'f_tobaco', 'cig_rec', 'f_cigs_3', 'f_cigs_2', 'f_cigs_1', 'f_cigs_0', 'f_wic', 'f_tpcv', 'previs_rec', 'precare5', 'f_mpcb', 'ilp_r11', 'ilp_r', 'ilop_r11', 'ilop_r', 'illb_r11', 'fracehisp', 'f_fhisp', 'fhisp_r', 'frace15', 'frace6', 'fagecomb', 'fagerpt_flg', 'f_meduc', 'f_mar_p', 'mar_imp', 'f_facility', 'bfacil3', 'mage_impflg', 'mage_repflg', 'mager14', 'mager9', 'mrace6', 'mrace15', 'mraceimp', 'f_mhisp')
 
 natality_data_cleaned_2021 <- clean_data(natality_csv_historical, columns_to_remove)
 natality_data_cleaned_historical <- clean_data(natality_csv_2021, columns_to_remove)
@@ -113,3 +113,4 @@ save(natality_data_cleaned_historical, file = here::here("dataset-ignore/natalit
 #save it as an rds file
 saveRDS(natality_data_cleaned_2021, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
 saveRDS(natality_data_cleaned_2021, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
+
