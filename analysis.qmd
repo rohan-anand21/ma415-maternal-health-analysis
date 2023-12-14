@@ -14,20 +14,21 @@ We describe here our detailed data analysis.
 This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
 You'll also reflect on next steps and further analysis.
 
-```{r}
+```{r, echo = FALSE}
+#| echo: FALSE
 library(tidyverse)
 library(RColorBrewer) 
-data <- read_csv(here::here('dataset-ignore','natality_data_cleaned_2021.csv'))
+data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
+
 ```
 
-```{r}
+```{r, echo = FALSE}
+#| echo: FALSE
 head(data)
 num_rows <- nrow(data)
 num_columns <- ncol(data)
 
 
-print(num_rows)
-print(num_columns)
 
 # extracting specific columns I need
 filtered_data_smoking <- data %>%
@@ -69,10 +70,11 @@ filtered_data_smoking <- data %>%
 
   mutate(Birthweight_KG = Birthweight_KG / 1000)
 
-print(filtered_data_smoking)
+
 
 ```
-```{r}
+```{r, echo=FALSE, results='asis'}
+#| echo: FALSE
 # Finding the proportions that smoke
 smoking_proportions_by_race <- filtered_data_smoking %>%
   group_by(Race) %>%
