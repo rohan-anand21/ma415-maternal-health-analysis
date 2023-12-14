@@ -5,7 +5,7 @@ library(readr)
 
 ##Read data
 #read csv data into variable, from years 2006 - 2021
-natality_csv_2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 500000, show_col_types = FALSE)
 natality_csv_2020 <- read_csv(here('dataset-ignore/data-ignore', 'nat2020us.csv'), n_max = 1000, show_col_types = FALSE)
 natality_csv_2019 <- read_csv(here('dataset-ignore/data-ignore', 'nat2019us.csv'), n_max = 1000, show_col_types = FALSE)
 natality_csv_2018 <- read_csv(here('dataset-ignore/data-ignore', 'nat2018us.csv'), n_max = 1000, show_col_types = FALSE)
