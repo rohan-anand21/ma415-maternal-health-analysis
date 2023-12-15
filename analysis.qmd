@@ -7,14 +7,31 @@ draft: false
 
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
+## **Maternal Smoking During Pregnancy: America's Ongoing Crisis** 
+### An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States
 
-This comes from the file `analysis.qmd`.
+<hr>
+#### **Motivations for the exploration:**
+<div style="text-align: left; width: 800px; margin: 0 auto;">
 
-We describe here our detailed data analysis.
-This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
-You'll also reflect on next steps and further analysis.
+As noted by Yang et al. (2014), maternal smoking is a significant health concern in the United States. Smoking during pregnancy has ramifications at both the individual level and at the societal level. From an individualistic perspective, smoking is known to be one of the most serious risk factors for poor pregnancy outcomes—having consequences for both the mother and the child. On a large-scale societal level, maternal smoking has been determined to increase economic costs. In 1994, the CDC reported that smoking during pregnancy led to more than $366 M in neonatal expenditures; this cost equates to approximately 704 dollars per maternal smoker. Maternal smoking during pregnancy is a highly preventable risk factor, despite its widespread prevalence. 
 
-```{r, echo = FALSE}
+Thus, Group 14 was interested in taking a closer look into the current landscape of maternal smoking in the United States through the lens of health outcomes for the infant—specifically exploring birth weight and APGAR scores as metrics. Beyond smoking as a risk factor, we also explored a wealth of other variables that relate to infant health outcomes—such as the BMI of the mother. 
+
+</div>
+
+<hr>
+#### **Summary of key findings:**<br>
+1) The race with the highest proportion of mothers who smoke before <br>
+2) There has been a consistent and considerable decline in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
+3) Additional key finding...<br>
+4) Another key finding...
+
+<hr>
+#### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?
+
+There are racial disparities in ...
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
 library(tidyverse)
 library(RColorBrewer) 
@@ -22,7 +39,7 @@ data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 
 ```
 
-```{r, echo = FALSE}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 #| echo: FALSE
 head(data)
 num_rows <- nrow(data)
@@ -70,10 +87,8 @@ filtered_data_smoking <- data %>%
 
   mutate(Birthweight_KG = Birthweight_KG / 1000)
 
-
-
 ```
-```{r, echo=FALSE, results='asis'}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
 # Finding the proportions that smoke
 smoking_proportions_by_race <- filtered_data_smoking %>%
@@ -120,6 +135,311 @@ table_gt
 
 
 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(dplyr)
+library(tidyverse)
+library(RColorBrewer) 
+# Read data
+data_2016 <- read_csv(here::here('dataset-ignore', 'natality_csv_2016.csv'))
+data_2014 <- read_csv(here::here('dataset-ignore', 'natality_csv_2014.csv'))
+data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
+
+# Combine data frames into a list
+data_list <- list(data_2016, data_2014, data_2021)
+
+# Define a function to clean and filter data
+clean_and_filter_data <- function(df, year) {
+  df %>%
+    select(cig_1, cig_2, cig_3, mracehisp) %>%
+    filter(
+      cig_1 != 99,
+      cig_2 != 99,
+      cig_3 != 99,
+      mracehisp != 8
+    ) %>%
+    mutate(smoker = ifelse(cig_1 != "0" | cig_2 != "0" | cig_3 != "0", TRUE, FALSE),
+           Year = year) %>%
+    rename(Race = mracehisp) %>%
+    mutate(Race = case_when(
+      Race == 1 ~ "White",
+      Race == 2 ~ "Black",
+      Race == 3 ~ "AIAN",
+      Race == 4 ~ "Asian",
+      Race == 5 ~ "NHOPI",
+      Race == 6 ~ "More than one race",
+      Race == 7 ~ "Hispanic",
+      TRUE ~ as.character(Race)
+    ))
+}
+
+# Apply the filter to all data frames
+filtered_data_list <- mapply(clean_and_filter_data, data_list, year = c(2016, 2014, 2021), SIMPLIFY = FALSE)
+
+# Combine filtered data frames into a single data frame
+all_data <- bind_rows(filtered_data_list)
+
+
+result <- all_data %>%
+  group_by(Year, Race) %>%
+  summarize(PercentageSmokers = mean(smoker) * 100)
+
+
+
+```
+
+
+
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+
+library(ggplot2)
+library(ggthemes)
+
+
+
+result$Year <- factor(result$Year)
+
+ggplot(result, aes(x = Race, y = PercentageSmokers, fill = Year)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.2), width = 2.0, color = "white") +
+  geom_text(data = subset(result, Year == "2014"), 
+            aes(label = paste0(sprintf("%.2f", PercentageSmokers)),
+                y = PercentageSmokers),
+            position = position_dodge(width = 0.2),
+            vjust = -0.5,
+            size = 3,
+            color = "black") +  
+  labs(title = "Figure 2: Percentage of mothers who smoked cigarettes during pregnancy,\nby race",
+       subtitle = c("Source: National Center for Health Statistics, National Vital Statistics System, Natality"),
+       y = "Mothers who smoked cigarettes during pregnancy (%)",
+       x = NULL) +
+  scale_fill_manual(values = c("#4B6A88", "#6C7E99", "#8C95AA"), name = "Year") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_blank(),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        plot.subtitle = element_text(size = 10, color = "#666666"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.title = element_text(size = 10, face = "bold", color = "#333333"),
+        legend.text = element_text(size = 10, color = "#333333"),
+        legend.position = "right",
+        legend.box = "horizontal",
+        legend.key = element_rect(fill = "white", color = "white"),
+        legend.spacing.y = unit(0.2, "cm")) +
+  scale_y_continuous(limits = c(0, 13), expand = c(0, 0), breaks = seq(0, 13, by = 2)) +
+  geom_hline(yintercept = 0, color = "black", linetype = "solid", size = 1) +
+  theme(plot.background = element_rect(fill = "white"),
+        panel.background = element_rect(fill = "white"),
+        plot.subtitle = element_text(hjust = 0.5),
+        legend.background = element_rect(fill = "white"),
+        legend.key.width = unit(1, "cm"))
+
+```
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+data_new <- read_csv(here::here('Natality_New_3.csv'))
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+
+# Load U.S. states spatial data
+us_states <- ne_states(country = "united states of america", returnclass = "sf")
+
+
+state_data <- data_new %>%
+  filter(!is.na(State_of_Residence)) %>%
+  filter(OE_Gestational_Age_Weekly_Code != 99)%>%
+  group_by(State_of_Residence) %>%
+  summarise(
+    total_smoker_births = sum(Births * (Tobacco_Use == "Yes"), na.rm = TRUE),
+    total_births = sum(Births, na.rm = TRUE),
+    proportion_smokers = (total_smoker_births / total_births) * 100,
+    average_gestational_age = weighted.mean(OE_Gestational_Age_Weekly_Code, Births)
+
+  )
+
+# Assuming 'us_states' has a column 'name' containing full state names
+merged_data <- left_join(us_states, state_data, by = c("name" = "State_of_Residence"))
+
+
+centroid_data <- st_centroid(merged_data)
+centroid_coordinates <- st_coordinates(centroid_data)
+
+# Set boundaries for the entire United States
+latitude_range <- c(24, 50)
+longitude_range <- c(-125, -66)
+
+
+ggplot() +
+  geom_sf(
+    data = merged_data,
+    aes(fill = proportion_smokers),
+    size = 0.2,
+    color = "black"
+  ) +
+  geom_text(
+    data = as.data.frame(centroid_coordinates),
+    aes(x = X, y = Y, label = sprintf("%.1f", merged_data$average_gestational_age)),
+    size = 1.5,
+    color = "black",
+    position = position_nudge(x = 0, y = -0.3)
+  ) +
+  labs(
+    title = "Figure 3: Average gestational period\nfor mothers in the United States,\nby state",
+    subtitle = "States labeled by mean gestional period (weeks)\nand colored by the percentage of mothers\nin each state that smoked during pregnancy",
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, hjust = 0.5),
+    plot.subtitle = element_text(size = 8, hjust = 0.5), 
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    plot.margin = unit(rep(2, 4), "cm")
+  ) +
+  scale_fill_gradient(
+    name = "Percentage of mothers who smoked\nduring pregnancy (%)",  
+    low = "#FFD700",
+    high = "#FF0000"
+  ) +
+  coord_sf(
+    xlim = c(longitude_range[1], longitude_range[2]),
+    ylim = c(latitude_range[1], latitude_range[2]),
+    crs = st_crs(us_states),
+    datum = NA
+  ) +
+  theme(
+    legend.position = "right",
+    legend.title = element_text(size = 6),  
+    legend.text = element_text(size = 6)
+  ) +
+  theme(legend.position = "right") +
+  theme(legend.key.size = unit(0.6, "cm"))
+
+```
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+install.packages("broom")
+library(broom)
+library(tidyverse)
+
+
+```
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results = 'hide'}
+
+filtered_data_smoking <- data %>%
+  select(cig0_r, cig1_r, cig2_r, cig3_r, dbwt) %>%
+  filter(
+    cig0_r != 6,
+    cig1_r != 6,
+    cig3_r != 6,
+    dbwt != 9999
+  ) %>%
+  
+  # Yes_cigarettes_ is cigarettes for trimester 3, it's labelled like this so it makes sense in the final output of the model
+  rename(
+    Before_Pregnancy = cig0_r,
+    Trimester_One = cig1_r,
+    Trimester_Two = cig2_r,
+    Yes_cigarettes_ = cig3_r,
+    Birthweight_KG = dbwt
+  ) %>%
+  mutate(across(c(Before_Pregnancy, Trimester_One, Trimester_Two, Yes_cigarettes_), ~ case_when(
+    . == 0 ~ "0",
+    . == 1 ~ "1-5",
+    . == 2 ~ "6-10",
+    . == 3 ~ "11-20",
+    . %in% c(4, 5) ~ "21-40",
+    TRUE ~ as.character(.)
+  ) %>%
+  factor(levels = c("0", "1-5", "6-10", "11-20", "21-40"))))
+
+filtered_data_smoking
+
+```
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+library(gt)
+# Fit the linear regression model
+model <- lm(Birthweight_KG ~ Yes_cigarettes_, data = filtered_data_smoking)
+
+
+model_output <- tidy(model)
+
+
+output_table_gt <- gt(model_output) %>%
+  fmt_number(
+    columns = vars(estimate, std.error, statistic, p.value),
+    decimals = 2
+  ) %>%
+  tab_header(
+    title = "Table 2: Multivariate analysis of smoking and birth weight of infants"
+  ) %>%
+  tab_spanner(
+    label = "Model parameters",
+    columns = c(estimate, std.error, statistic, p.value)
+  ) %>%
+  cols_label(
+    term = "Predictor",
+    estimate = "Esimtate",
+    std.error = "Standard error",
+    statistic = "t-statistic",
+    p.value = "p-value"
+  )
+
+# Print the gt table
+print(output_table_gt)
+
+```
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+# model looking at gestation
+filtered_data_model_2 <- data %>%
+  select(cig1_r, cig2_r, cig3_r, dbwt, oegest_comb) %>%
+  filter(
+    cig1_r != 6,
+    cig2_r != 6,
+    cig3_r != 6,
+    dbwt != 9999
+  ) %>%
+  mutate(Smoker = ifelse(cig1_r != 0 & cig2_r != 0 & cig3_r != 0, 1, 0))
+
+
+filtered_data_model_2
+
+# Assuming you have filtered_data_model_2 from your previous code
+# Replace 'filtered_data_model_2' with the actual name of your data frame
+
+linear_model <- lm(dbwt ~ oegest_comb + Smoker, data = filtered_data_model_2)
+
+# Print the summary of the linear regression model
+summary(linear_model)
+
+# Extract coefficients, standard errors, t-values, and p-values from the summary
+coef_table <- coef(summary(linear_model))
+
+# Create a data frame
+table_data <- as.data.frame(coef_table)
+
+# Add a row for the F-statistic with a different variable name
+table_data <- rbind(table_data, F_statistic = c(F_stat = linear_model$fstatistic[1], DF1 = linear_model$fstatistic[2], DF2 = linear_model$fstatistic[3]))
+
+# Rename the columns
+colnames(table_data) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+
+# Print the data frame
+table_data
+
+
+```
 ## Note on Attribution
 
 In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
