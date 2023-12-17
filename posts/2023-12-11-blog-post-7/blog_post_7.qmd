@@ -1,0 +1,27 @@
+---
+title: "Blog Post 7"
+author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
+date: "2023-12-11"
+date-modified: "2023-12-11"
+draft: FALSE
+---
+Generalized Thesis
+
+Our thesis is exploring the impact of the mother smoking on the health of the baby. Our first plot explores this by graphing maternal age groups with groups of cigarettes smoked. We found that the number of cigarettes smoked is positively correlated with birth weight. We incorporated historical data by looking at cigarette consumption by race before pregnancy from 2014 to 2021. We found that although some races smoke less than others, there is a positive trend in the number of cigarettes smoked. Our thesis expands by including external factors such as BMI, prenatal care start date, race of the mother in order to predict the birth weight of the baby. Our linear regression found that smoking status, as expected, was extremely statistically significant, while mothers' race was not. Similarly, we used the same features for a logistic regression model, achieving an AUC = 0.59, meaning it is able to predict birth weight by more than random chances, indicating the features are good predictors. 
+
+
+Polishing Plots
+
+We first want to make titles of each plot to only include key information for a more organized look, such as illustrating the variables like “Preterm Percentage by Mother’s Race”. We also have to ensure the titles are concise and informative. For example, “Average Birth Weight by Maternal Age and Smoking Status.” Then, more specific information will be included in the subtitles. For example, we can add years and races we used for that plot since we do not use continuous years for our visualization, and we recode race categories for only grouping by major races.
+
+We will either use “annotate()” to add a note on the plot, like the significant trend, or “scale_fill_manual” to highlight key groups using different colors.
+
+We will set our plots to the same color by adding “scale_fill_brewer(palette = "Set3")”. This kind of color is more distinct for our data, since years and more than one percentage variable need to be shown in one plot.
+
+We will also add more plots having at least one same variable as other plots to make our storyline more cohesive and consistent. Since the plots we have all include different variables and it seems like there are no straightforward relationships between each plot.
+
+We will also try to standardize the variables we are using since the RMSE value we get for now is 500<, and standardizing the variable can help us solve this issue.
+
+We received the feedback that treating a continuous variable as a binary outcome can reduce the amount of information, so we will probably try to use logistic regression for further analysis.
+
+We need to adjust the x-axis text degree for some plots as they have some labels overlapped. We also need to set a consistent axis value range to provide a better look at the relationship of variables when analyzing two plots together.

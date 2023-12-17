@@ -132,6 +132,57 @@ table_gt <- gt(smoking_proportions_by_race) %>%
 table_gt
 
 ```
+```{r echo = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
+
+smoker_data <- data |>
+  mutate(mrace = case_when(
+    mrace15 == "1" ~ "White",
+    mrace15 == "2" ~ "Black",
+    mrace15 == "3" ~ "AIAN",
+    mrace15 %in% c("4", "5", "6", "7", "8", "9", "10") ~ "Asian",
+    mrace15 %in% c("11", "12", "13", "14") ~ "NHOPI",
+    mrace15 == "15" ~ "Multiple Race",
+    TRUE ~ as.character(mrace15)
+  )) |>
+  filter(dbwt != 9999, apgar5 != 99, cig_0 != 99, cig_1 != 99, cig_2 != 99, cig_3 != 99) |>
+  group_by(mrace) |>
+  summarise(
+    proportion_who_smoke = round(mean(cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0, na.rm = TRUE) * 100),
+    proportion_who_do_not_smoke = round(mean(cig_0 == 0 & cig_1 == 0 & cig_2 == 0 & cig_3 == 0, na.rm = TRUE) * 100),
+    average_birthweight_of_smokers = round(mean(dbwt[cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0], na.rm = TRUE)),
+    average_birthweight_of_non_smokers = round(mean(dbwt[cig_0 == 0 & cig_1 == 0 & cig_2 == 0 & cig_3 == 0], na.rm = TRUE)),
+    average_apgar_score_of_smokers = round(mean(apgar5[cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0], na.rm = TRUE), 2),
+    average_apgar_score_of_non_smokers = round(mean(apgar5[cig_0 == 0 & cig_1 == 0 & cig_2 == 0 & cig_3 == 0], na.rm = TRUE), 2)
+  ) |>
+  rename(
+    `Race` = mrace,
+    `Smoker During Pregnancy (%)` = proportion_who_smoke,
+    `Non-Smoker During Pregnancy (%)` = proportion_who_do_not_smoke,
+    `Mean Birthweight of Smokers` = average_birthweight_of_smokers,
+    `Mean Birthweight of Non-Smokers` = average_birthweight_of_non_smokers,
+    `Mean Apgar Score of Smokers` = average_apgar_score_of_smokers,
+    `Mean Apgar Score of Non-Smokers` = average_apgar_score_of_non_smokers
+  ) |>
+  mutate(
+    `Mean Apgar Score of Non-Smokers` = paste0(`Mean Apgar Score of Non-Smokers`, 
+                                               " (+", round(`Mean Apgar Score of Non-Smokers` - `Mean Apgar Score of Smokers`, 2), ")"),
+    `Mean Birthweight of Non-Smokers` = paste0(`Mean Birthweight of Non-Smokers`, 
+                                               " (+", round(`Mean Birthweight of Non-Smokers` - `Mean Birthweight of Smokers`), ")")
+  )
+
+race_order <- c("White", "Black", "Asian", "AIAN", "NHOPI", "Multiple Race")
+smoker_data <- smoker_data |>
+  mutate(Race = factor(Race, levels = race_order)) |>
+  arrange(Race)
+
+smoker_gt <- gt(smoker_data) |>
+  tab_header(
+    title = md("**Figure 2: Proportion of Smokers by Race and Corresponding Average Birth Weight and Apgar5 Score**"),
+    subtitle = "Higher Apgar Score/Birth Weight = Healthier Baby"
+  ) 
+
+smoker_gt
+```
 
 
 

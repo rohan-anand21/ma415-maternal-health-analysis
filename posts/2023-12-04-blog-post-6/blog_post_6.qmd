@@ -1,0 +1,278 @@
+---
+title: "Data Exploration and Preliminary Visualization"
+author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
+date: "2023-12-04"
+date-modified: "2023-12-04"
+draft: FALSE
+---
+```{r} 
+library(ggplot2) 
+library(dplyr) 
+library(tidyverse)
+ 
+# Reading the dataset 
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned_2021.csv'))
+
+# Filtering out cases where maternal age is NA or smoking status is unknown or not applicable 
+filtered_data <- data %>% filter(!is.na(mager)) 
+ 
+# Creating age groups without NAs 
+filtered_data$age_group <- cut(filtered_data$mager, breaks = c(15, 20, 25, 30, 35, 40, 45),  right = FALSE, labels = c("15-19", "20-24", "25-29", "30-34", "35-39", "40-44"), exclude = NA) 
+ 
+# Removing NA in the graphs 
+filtered_data <- filtered_data[!is.na(filtered_data$age_group), ] 
+ 
+# Defining smoking status labels 
+cig_labels <- c("Nonsmoker", "1-5 cigarettes", "6-10 cigarettes", "11-20 cigarettes", "21-40 cigarettes", "41 or more cigarettes") 
+ 
+# Converting 'cig0_r' to a factor with the defined labels 
+filtered_data$cig0_r <- factor(filtered_data$cig_0, levels = 0:5, labels = cig_labels) 
+ 
+# Plotting the bar chart of Birth Weight vs Maternal Age Groups 
+ggplot(filtered_data, aes(x = age_group, y = dbwt, fill = age_group)) + geom_bar(stat = "summary", fun = "mean", position = "dodge") +   labs(title = "Birth Weight vs Maternal Age Groups", x = "Maternal Age Groups", y = "Average Birth Weight (g)") + scale_fill_brewer(palette = "Pastel1") + theme_minimal() + theme(legend.position = "none") 
+ 
+# Plotting the bar chart of the Impact of Smoking on Birth Weight across Maternal Age Groups 
+
+ggplot(filtered_data, aes(x = age_group, y = dbwt, fill = cig0_r)) + geom_bar(stat = "summary", fun = "mean", position = position_dodge()) +   labs(title = "Impact of Smoking on Birth Weight across Maternal Age Groups", x = "Maternal Age Groups", y = "Average Birth Weight (g)", fill = "Cigarettes Before Pregnancy") +  scale_fill_brewer(palette = "Set3") + theme_minimal() + theme(legend.position = "right")
+```
+
+In the exploratory data analysis, we present two bar charts to visualize the relationships between maternal age and two different variables: average birth weight of newborns and maternal smoking status before pregnancy. The first bar chart focuses on the “dbwt” variable, which represents the average birth weight of newborns, with “mager” serving as the categorical predictor variable to delineate maternal age groups. This visual exploration seeks to discover whether the average birth weight changes with maternal age and to observe the distribution of birth weights across the defined age categories. The chart reveals that the average birth weight seems to be the highest when the age falls within 30-34, but relatively stable across the different maternal age groups. The limitation for the graph would be that it does not suggest a clear trend or pattern, indicating that maternal age alone may not be a strong predictor of birth weight in this dataset.
+
+The second bar chart introduces 'cig_0' as the categorical variable, which classifies the smoking status before pregnancy into distinct groups ranging from nonsmokers to those who smoked 41 or more cigarettes. By positioning this alongside maternal age groups, we can investigate potential patterns in smoking behavior relative to age. The chart displays a uniform distribution of smoking categories across maternal ages, suggesting mother’s age between 30-34 tend to have healthier babies whose mother is nonsmoker, and generally, we see the pattern that the more mothers smoke cigarettes, the lower the newborns’ weights decrease (newborns unhealthy), which is logically right. The limitation for the graph would be  there is no immediate trend of increased or decreased smoking habits in relation to maternal age. However, this chart is insightful as it brings attention to the prevalence of smoking across the age groups, with no single age group distinctly standing out. 
+
+```{r}
+library(here)
+
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned_historical.csv'))
+
+nat2014 <- read_csv(here('dataset-ignore/data-ignore', 'natl2014.csv'), n_max = 1000, show_col_types = FALSE) 
+nat2018 <- read_csv(here('dataset-ignore/data-ignore', 'nat2018us.csv'), n_max = 1000, show_col_types = FALSE)
+nat2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 1000, show_col_types = FALSE)
+
+
+# Function to preprocess and create proportion table
+prepare_data <- function(data, year) {
+  filtered_data <- data|>
+    filter(mrace15 != 15 & cig0_r != 6) |>
+    mutate(RaceCategory = recode(mrace15,
+                                 `1` = 'White',
+                                 `2` = 'Black',
+                                 `3` = 'AIAN',
+                                 `4` = 'Asian',
+                                 `5` = 'Asian',
+                                 `6` = 'Asian',
+                                 `7` = 'Asian',
+                                 `8` = 'Asian',
+                                 `9` = 'Asian',
+                                 `10` = 'Asian',
+                                 `11` = 'NHOPI',
+                                 `12` = 'NHOPI',
+                                 `13` = 'NHOPI',
+                                 `14` = 'NHOPI'))
+  race_smoking_crosstab <- prop.table(table(filtered_data$RaceCategory, filtered_data$cig0_r), 1)
+  df <- as.data.frame(race_smoking_crosstab)
+  colnames(df) <- c('Race', 'Smoking', 'Proportion')
+  df$Year <- as.factor(year)
+  return(df)
+}
+
+# Prepare data for each year
+df_2014 <- prepare_data(nat2014, 2014)
+df_2018 <- prepare_data(nat2018, 2018)
+df_2021 <- prepare_data(nat2021, 2021)
+
+# Combine data
+combined_df <- rbind(df_2014, df_2018, df_2021)
+
+# Rename the race categories
+combined_df$Race <- factor(combined_df$Race,
+                           levels = c('White', 'Black', 'AIAN', 'Asian', 'NHOPI'))
+
+# Rename the smoking categories 
+combined_df$Smoking <- factor(combined_df$Smoking,
+                              levels = c('0', '1', '2', '3', '4', '5'),
+                              labels = c('Nonsmoker', '1-5 cigarettes', '6-10 cigarettes', 
+                                         '11-20 cigarettes', '21-40 cigarettes', '41 or more cigarettes'))
+
+# Plotting
+ggplot(combined_df, aes(x=Race, y=Proportion, fill=Year)) + 
+  geom_bar(position="dodge", stat="identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Mother’s Race Category", y = "Proportion of Mothers", 
+       fill = "Year", 
+       title = "Cigarette Consumption Before Pregnancy by Mother’s Race in 2014, 2018, 2020")
+```
+
+
+This is a grouped bar chart comparing the proportion of mothers by race who smoked cigarettes before pregnancy across three different years: 2014, 2018, and 2021. From the plot, it seems like the proportion of mothers who smoked before pregnancy is relatively stable across the years for each racial group, with only a small amount of increase in race White, Black, and Asian. So the tentative thesis is there hasn't been a drastic change in smoking habits among pregnant women of different races in the years presented. This thesis helps us understand temporal trends in smoking behavior before pregnancy among different racial groups. It is useful to identify if there are any significant changes or ongoing disparities that need to be addressed through public health interventions.
+
+```{r}
+suppressWarnings({
+  library(tidymodels)
+  library(modelr)
+  library(readr)
+  library(dplyr)
+  library(here)
+  library(data.table)
+
+  # Reading and preparing the data
+  nat <- read_csv(here::here("dataset-ignore/natality_data_cleaned_2021.csv"), show_col_types = FALSE) |>
+    filter(precare != 99) |>
+    filter(combgest != 99) |>
+    filter(previs != 99) |> 
+    filter(ab_nicu != 'U') |>
+    mutate(ab_nicu = as.integer(ifelse(ab_nicu == 'Y', 1, ifelse(ab_nicu == 'N', 0, ab_nicu)))) |>
+    filter(mm_aicu != 'U') |>
+    mutate(mm_aicu = as.integer(ifelse(mm_aicu == 'Y', 1, ifelse(mm_aicu == 'N', 0, mm_aicu)))) |>
+    filter(gestrec3 != 3) |>
+    mutate(gestrec3 = gestrec3 - 1)
+
+  # Creating variables
+  birth_weight = nat$dbwt
+  prenatal_care_start = nat$precare
+  mrace = nat$mrace31
+  smoking_status = nat$cig_0
+
+  # Splitting the data into training, testing, and validation
+  init_split <- initial_split(nat, prop = 0.7)
+  training_testing_split <- training(init_split)
+  validation_split <- testing(init_split)
+
+  second_split <- initial_split(training_testing_split, prop = 0.7)
+  training_split <- training(second_split)
+  testing_split <- testing(second_split)
+  
+  features = prenatal_care_start + smoking_status
+
+  # Building the model on training data
+  model1 <- lm(birth_weight ~ features, data = training_split)
+
+  # Computing and printing RMSE on training, testing, and validation sets
+  rmse_training <- rmse(model1, training_split)
+  rmse_testing <- rmse(model1, testing_split)
+  rmse_validation <- rmse(model1, validation_split)
+
+  print(paste("RMSE on Training Data:", rmse_training))
+  print(paste("RMSE on Testing Data:", rmse_testing))
+  print(paste("RMSE on Validation Data:", rmse_validation))
+  
+  # Cross-validation
+  mod_cv <- 
+    vfold_cv(training_testing_split, v = 10) |> 
+    mutate(mod = map(
+      splits,
+      ~lm(birth_weight ~ prenatal_care_start + smoking_status, training(.x))
+    )) |> 
+    mutate( 
+      rmse = map2_dbl(splits, mod, ~rmse(.y, testing(.x)))
+    )
+
+  cv_results <- mod_cv |> select(rmse) |> summarize(rmse = mean(rmse))
+  print(paste("Average RMSE from Cross-Validation:", cv_results$rmse))
+})
+
+```
+I am continuing my exploratory data analysis by adding more features to my current linear regression model. I am trying the determine which variables are highly correlated with birth weight. From the model, it is clear to see that prenatal_care_start, which is when the mother takes prenatal vitams, if at all, as well as smoking status are extremely correlated with birth weight based on the p values of the t-test. On the other hand, the race of the mother is not correlated at 0.4, which is much higher than an acceptable scientific threshold of an alpha of 0.05. Next, I will incorporate other variables such as BMI, prior children, etc. to determine if there are variables with a more significant p-value. For my final visualization, I plan to create a plot of observed and predicted birth weights based on the variables, which acts as a residual plot, to show that my variables when used in the model are good predictors of actual birth weight. 
+```{r}
+calculate_print_squared_correlations <- function(df) {
+  # Check if 'dbwt' is in the data frame
+  if (!'dbwt' %in% names(df)) {
+    stop("Data frame does not have a 'dbwt' column")
+  }
+  
+  # Initialize a named vector to store squared correlations
+  correlations <- numeric(length = length(df) - 1)
+  names(correlations) <- setdiff(names(df), 'dbwt')
+  
+  # Loop through each column
+  for (col_name in names(correlations)) {
+    # Check if the column is numeric (continuous)
+    if (is.numeric(df[[col_name]]) && !is.integer(df[[col_name]])) {
+      # Calculate and square the correlation
+      corr <- cor(df[[col_name]], df$dbwt, use = "complete.obs")^2
+      correlations[col_name] <- corr
+    } else {
+      correlations[col_name] <- NA  # Assign NA for non-continuous columns
+    }
+  }
+  
+  # Remove NAs and sort the correlations in descending order
+  correlations <- sort(correlations, decreasing = TRUE, na.last = NA)
+
+  # Print the sorted squared correlations
+  print(correlations)
+}
+
+calculate_print_squared_correlations(nat)
+print(nat$cig_1)
+
+```
+
+```{r}
+# loading in the necessary packages and data
+library(tidyverse)
+library(RColorBrewer)
+library(ggplot2)
+library(pROC)
+
+data <- read.csv(here::here('dataset-ignore','natality_data_cleaned_2021.csv'))
+
+# only selecting a subset of the data that I will be working with to build a logistic regression model
+filtered_data <- data %>%
+  select(bmi, oegest_comb, mager, dbwt, apgar5) %>%
+  filter(bmi != 99.9,
+         apgar5 != 99,
+         oegest_comb != 99,
+         !(mager %in% c(12, 50)),
+         dbwt != 9999) %>%
+  rename(BMI = bmi, Gestation_Period = oegest_comb, Age_Mother = mager, Birthweight_KG = dbwt) %>%
+  mutate(Birthweight_KG = Birthweight_KG / 1000)
+
+# removing rows with missing values
+filtered_data <- na.omit(filtered_data)
+
+# fit a logistic regression model to predict if a baby's apgar core after 5 minutes is below 7
+logistic_regression_model <- glm(apgar5 <= 7 ~ BMI + Gestation_Period +  Birthweight_KG + Age_Mother , family = binomial(link = "logit"), data = filtered_data)
+
+# printing the summary of the logistic regression model
+print(summary(logistic_regression_model))
+
+
+# making predictions
+predictions <- predict(logistic_regression_model, type = "response")
+
+# converting predicted probabilities to binary predictions 
+# we can change the threshold
+threshold <- 0.5  # 
+binary_predictions <- ifelse(predictions > threshold, TRUE, FALSE)
+
+# this is the confusion matrix
+conf_matrix <- table(filtered_data$apgar5 <= 7, binary_predictions)
+
+# important to calcualte the sensitivity and specificity of the model
+sensitivity <- conf_matrix[2, 2] / sum(conf_matrix[2, ])
+specificity <- conf_matrix[1, 1] / sum(conf_matrix[1, ])
+
+
+cat("Sensitivity:", sensitivity, "\n")
+cat("Specificity:", specificity, "\n")
+
+# the ROC curve with sensitivity and specificity points
+roc_curve <- roc(filtered_data$apgar5 <= 7, predictions)
+auc_value <- auc(roc_curve)
+
+# graphing the roc curve
+plot(roc_curve, main = "ROC Curve", col = "blue", lwd = 2)
+abline(a = 0, b = 1, col = "gray", lty = 2)  
+
+
+points(1 - specificity, sensitivity, col = "red", pch = 16, cex = 1.5)
+text(1 - specificity, sensitivity, labels = "Threshold 0.5", pos = 2, col = "red")
+
+
+legend("bottomright", legend = paste("AUC =", round(auc_value, 2)), col = "blue", lty = 1, cex = 0.8)
+
+```
+In the next stage of the exploratory analysis, the goal was to build a statistical model that would identify risk factors for babies with a low APGAR score 5 minutes after being born. More specifically, we wanted to find the risk factors for babies with an APGAR score lower than 7. Therefore, a binary classification model would be used such as a logistic regression model. After doing a literature analysis, we gathered based on previous research, gestational period, a mother’s BMI, a mother’s age, and the birth weight of the baby are the key predictors of a baby’s APGAR being lower than 7. Therefore, these were the main variables used when building the model. As can be seen from the summary table, only 2 of the variables had a statistically significant p-value. Thus, gestation period and a mother’s BMI are predictor variables that have a statistically significant association with the response variable—i.e. APGAR score being less than 7. The age of the mother and the birthweight of the baby were statistically significant predictor variables. 
+
+In order to validate the model, an ROC was plotted. A ROC plot is essentially a way to investigate if a model is able to discriminate between two classes by varying the threshold. In the example here, the threshold was set at 0.5, which is a standard threshold. The AUC (Area Under The ROC Curve) quantifies the overall performance of the model. An AUC of 0.5 suggests no discrimination beyond it randomly happening. Conversely, an AUC of 1.0 indicates perfect discrimination. The ROC value of 0.63 indicates that our model has moderate discriminatory power to distinguish between 2 different classes. In the next steps of the statistical modeling analysis, we will focus on refining the model in order to obtain a higher AUC. 
