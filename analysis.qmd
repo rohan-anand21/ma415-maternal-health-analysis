@@ -45,8 +45,6 @@ head(data)
 num_rows <- nrow(data)
 num_columns <- ncol(data)
 
-
-
 # extracting specific columns I need
 filtered_data_smoking <- data %>%
   select(cig0_r, cig1_r, cig2_r, cig3_r, apgar5, apgar10, mracehisp, dbwt) %>%
@@ -86,7 +84,6 @@ filtered_data_smoking <- data %>%
   ))%>%
 
   mutate(Birthweight_KG = Birthweight_KG / 1000)
-
 ```
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
@@ -101,10 +98,7 @@ smoking_proportions_by_race <- filtered_data_smoking %>%
   ) %>%
   arrange(desc(Proportion_Smokers_Before_Pregnancy))
 
-# Install and load the necessary packages
-if (!requireNamespace("gt", quietly = TRUE)) {
-  install.packages("gt")
-}
+
 library(gt)
 library(dplyr)
 
@@ -165,9 +159,9 @@ smoker_data <- data |>
   ) |>
   mutate(
     `Mean Apgar Score of Non-Smokers` = paste0(`Mean Apgar Score of Non-Smokers`, 
-                                               " (+", round(`Mean Apgar Score of Non-Smokers` - `Mean Apgar Score of Smokers`, 2), ")"),
+                                               " (+ ", round(`Mean Apgar Score of Non-Smokers` - `Mean Apgar Score of Smokers`, 2), ")"),
     `Mean Birthweight of Non-Smokers` = paste0(`Mean Birthweight of Non-Smokers`, 
-                                               " (+", round(`Mean Birthweight of Non-Smokers` - `Mean Birthweight of Smokers`), ")")
+                                               " ( + ", round(`Mean Birthweight of Non-Smokers` - `Mean Birthweight of Smokers`), ")")
   )
 
 race_order <- c("White", "Black", "Asian", "AIAN", "NHOPI", "Multiple Race")
@@ -236,18 +230,14 @@ result <- all_data %>%
   summarize(PercentageSmokers = mean(smoker) * 100)
 
 
-
+result
 ```
-
-
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 
 library(ggplot2)
 library(ggthemes)
-
-
 
 result$Year <- factor(result$Year)
 
@@ -377,12 +367,10 @@ ggplot() +
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
-install.packages("broom")
 library(broom)
 library(tidyverse)
-
-
 ```
+
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results = 'hide'}
 
@@ -412,9 +400,6 @@ filtered_data_smoking <- data %>%
     TRUE ~ as.character(.)
   ) %>%
   factor(levels = c("0", "1-5", "6-10", "11-20", "21-40"))))
-
-filtered_data_smoking
-
 ```
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
@@ -422,9 +407,7 @@ library(gt)
 # Fit the linear regression model
 model <- lm(Birthweight_KG ~ Yes_cigarettes_, data = filtered_data_smoking)
 
-
 model_output <- tidy(model)
-
 
 output_table_gt <- gt(model_output) %>%
   fmt_number(
@@ -448,7 +431,6 @@ output_table_gt <- gt(model_output) %>%
 
 # Print the gt table
 print(output_table_gt)
-
 ```
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
