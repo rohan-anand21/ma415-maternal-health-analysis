@@ -16,6 +16,7 @@ Think of this page as your 538/Upshot style article. This means that you should 
 
 ---
 #### **The Rise of Risk Factors in Maternal Health: Preterm Births, Socioeconomic Influences, and Racial Disparities **
+<div style="text-align: left; width: 800px; margin: 0 auto;"> 
 
 The state of maternal health is a multifaceted issue influenced by a variety of factors including race, age, and socioeconomic conditions. Inadequate maternal health can lead to pregnancy risks and poor infant health outcomes. 
 
@@ -35,7 +36,7 @@ data_2018 <- read_csv(here::here('dataset-ignore', 'natality_csv_2018.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 ```
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 #| echo: FALSE
 is_smoker <- function(cig) {
   as.numeric(cig) > 0 & as.numeric(cig) < 98
