@@ -20,6 +20,253 @@ Obesity rates have increased amongst pregnant mothers in the United States in th
 
 ---
 
+## Introduction
+
+The state of maternal health is a multifaceted issue influenced by a variety of factors including race, age, and socioeconomic conditions. Inadequate maternal health can lead to pregnancy risks and poor infant health outcomes. 
+  
+Preterm birth, defined as delivery before 37 weeks of gestation, is a leading cause of neonatal morbidity and mortality in the United States and globally. It can further impact on the child’s growth with long-term health complications, including developmental delays and chronic respiratory problems. According to the research conducted by the March of Dimes Perinatal Data Center with the data supplied by the government agencies, the preterm birth rate was 10.5% of live births in 2021, with considerable variation across states and demographic groups in the U.S. Black infants have the highest rates of preterm birth at 14.4%, nearly double that of Asian/Pacific Islanders at 9.0%. Other racial and ethnic disparities persist, reflecting broader inequalities in health and healthcare access.
+
+Risk factors for preterm birth are diverse, ranging from maternal age, with women over 40 having the highest rates, to smoking, multiple births, and short intervals between pregnancies. Besides the health issues, socioeconomic factors, such as inadequate health insurance coverage, also play a significant role. While these do not directly cause preterm birth, it increases the risk of complications.
+
+Maternal body mass index (BMI) before pregnancy is another critical factor. In 2019, the prevalence of obesity among women of childbearing age has been on the rise, with nearly 3 in 10 women in the U.S. having obesity prior to becoming pregnant according to CDC. This increase is seen across all ages, races, and educational levels, and obesity is linked with adverse outcomes in maternal health including gestational diabetes, cesarean delivery, and preterm delivery. These conditions can directly impact infant health, contributing to preterm birth and associated risks.
+
+Understanding and addressing these complex, interrelated factors is crucial for improving maternal health, and ultimately to address infant health outcomes. In order to promote health prenatal practices, more efforts towards alleviating the correlation between risk factors and maternal health should be made through holistic approach, including healthcare policy reform, targeted interventions for high-risk populations, and broad-based public health campaigns.
+
+Stemming from this point, our group focuses on scrutinizing the correlation between the biological, behavioral, and sociological factors impacting preterm birth, ultimately the overall impact on maternal health. In particular, we delve into the impact of smoking and overweight to preterm birth upon the racial disparities. 
+
+---
+
+Based on our goal of analyzing the risk factors that affect mothers and their babies. We will divide our main goal into various parts. First, smoking is a well-known risk that can bring an amount of adverse outcomes, like preterm birth. So we first analyze smoking rates across different racial groups. By doing this, we are able to identify which populations are at higher risk and develop equitable healthcare policies and interventions.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(readr)
+library(gt)
+library(ggplot2)
+
+data_2016 <- read_csv(here::here('dataset-ignore', 'natality_csv_2016.csv'))
+data_2014 <- read_csv(here::here('dataset-ignore', 'natality_csv_2014.csv'))
+data_2018 <- read_csv(here::here('dataset-ignore', 'natality_csv_2018.csv'))
+data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
+```
+
+```{r}
+is_smoker <- function(cig) {
+  as.numeric(cig) > 0 & as.numeric(cig) < 98
+}
+
+smoking_by_race <- data_2021 |>
+  filter(
+    cig0_r != 6,
+    cig1_r != 6,
+    cig3_r != 6,
+    mracehisp != 8
+  ) |>
+  mutate(
+    Smoker = is_smoker(cig_0) | is_smoker(cig_1) | is_smoker(cig_2) | is_smoker(cig_3),
+    Race = case_when(
+      mracehisp == 1 ~ "White",
+      mracehisp == 2 ~ "Black",
+      mracehisp == 3 ~ "AIAN",  # American Indian or Alaska Native
+      mracehisp == 4 ~ "Asian",
+      mracehisp == 5 ~ "NHOPI", # Native Hawaiian or Other Pacific Islander
+      mracehisp == 6 ~ "More than one race",
+      mracehisp == 7 ~ "Hispanic"
+    )
+  ) |>
+  group_by(Race) |>
+  summarise(Proportion_Smokers = round((sum(Smoker) / n()) * 100, 2)) |>
+  arrange(desc(Proportion_Smokers)) |>
+  rename("Smoker Proportion (%)" = Proportion_Smokers)
+
+table_sp <- gt(smoking_by_race) |>
+  tab_header(
+    title = md("**Figure 1: Percentage of mothers who smoked cigarettes by race in the United States, 2021**"),
+    subtitle = "Source: National Center for Health Statistics, National Vital Statistics System, Natality"
+  ) |>
+  tab_spanner(
+    label = "Proportion of mothers who smoked (%)",
+    columns = vars(starts_with("Smoking"))
+  )
+
+table_sp
+```
+
+The plot shows that AIAN mothers have the highest proportion of smokers at 10.42%, which is more than double the rate of the next highest group. Then we believe that this race may be at high risk of preterm, low birth weight, and developmental issues.
+
+Then, we move on to the next risk factor BMI. High BMI, which represents obesity, is associated with increased risks of diabetes, while low BMI can indicate undernutrition.
+
+
+```{r}
+filtered_bmi_data <- data_2021 |>
+  filter(bmi_r != 9)
+
+filtered_bmi_data$bmi_category <- factor(filtered_bmi_data$bmi_r, levels = 1:6, labels = c(
+  "Underweight <18.5",
+  "Normal 18.5-24.9",
+  "Overweight 25.0-29.9",
+  "Obesity I 30.0-34.9",
+  "Obesity II 35.0-39.9",
+  "Extreme Obesity III ≥ 40.0"
+))
+bmi_proportions <- filtered_bmi_data |>
+  group_by(bmi_category) |>
+  summarise(count = n()) |>
+  mutate(proportion = count / sum(count))
+
+total_mothers <- nrow(filtered_bmi_data)
+
+bmi_histogram <- ggplot(bmi_proportions, aes(x = bmi_category, y = proportion, fill = bmi_category)) +
+  geom_bar(stat = "identity", color = "black") +
+  scale_fill_brewer(palette = "Blues", direction = -1) +
+  theme_minimal() +
+  labs(
+    title = "Figure 2: Proportion of Mothers' BMI catergories in 2021",
+    x = "BMI Category",
+    y = "Proportion of Mothers"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        plot.subtitle = element_text(size = 10, color = "#666666", hjust = 0.5),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.position = "none" )
+
+bmi_histogram
+```
+
+This bar graph presents the distribution of American mothers across different BMI categories in 2021. The highest proportion of mothers falls within the “Normal” BMI range, which is considered healthy and carries a lower risk for chronic diseases related to obesity. The next significant groups are the “Overweight” and “Obesity” category, which indicate high health risks.
+
+Then, we look at the changes in the average BMI among different racial groups over a period from 2014 to 2020.
+
+```{r}
+data_2016$Year <- 2016
+data_2014$Year <- 2014
+data_2018$Year <- 2018
+data_2021$Year <- 2021
+
+combined_data <- bind_rows(data_2014, data_2016, data_2018, data_2021)
+
+proportion_overweight_by_race_year <- combined_data |>
+  filter(mracehisp != 8) |>
+  mutate(
+    Race = case_when(
+      mracehisp == 1 ~ "White",
+      mracehisp == 2 ~ "Black",
+      mracehisp == 3 ~ "AIAN",  # American Indian or Alaska Native
+      mracehisp == 4 ~ "Asian",
+      mracehisp == 5 ~ "NHOPI", # Native Hawaiian or Other Pacific Islander
+      mracehisp == 6 ~ "More than one race",
+      mracehisp == 7 ~ "Hispanic"
+    ),
+    Overweight = bmi_r >= 4) |>
+  group_by(Year, Race) |>
+  summarise(Proportion_Overweight = mean(Overweight, na.rm = TRUE) * 100, .groups = 'drop')  
+
+overweight_trend_plot <- ggplot(proportion_overweight_by_race_year, aes(x = Year, y = Proportion_Overweight, group = Race, color = Race)) +
+  geom_line() +
+  labs(
+    title = "Figure 3: Trend of Proportion of Obesity Across Years",
+    x = "Year",
+    y = "Proportion Obesity (%)",
+    color = "Race"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.position = "right")
+
+overweight_trend_plot
+```
+
+This bar plot shows racial disparities in the proportion of overweight, which is BMI larger than or equal 30. It shows that in most races, the proportion of overweight individuals has either increased or remained relatively stable over these years. The NHOPI race shows the highest proportion of overweight individuals, with above 50% across the years, which suggests that they could face more health risk by mothers and babies. 
+
+After analyzing some risk factors, we want to see if there are obvious influences of mothers and babies. We choose to look at the proportion of preterm births over years.
+
+
+```{r}
+process_data <- function(data, year) {
+  data$mracehisp <- as.numeric(as.character(data$mracehisp))
+  
+  filtered_data <- data %>% 
+    filter(!is.na(mracehisp), mracehisp != 9) %>%
+    mutate(RaceCategory = recode(mracehisp,
+                                 `1` = 'White',
+                                 `2` = 'Black',
+                                 `3` = 'AIAN',
+                                 `4` = 'Asian',
+                                 `5` = 'NHOPI',
+                                 `6` = 'More than one race',
+                                 `7` = 'Hispanic'),
+           BirthCategory = case_when(
+             oegest_comb < 34 ~ "Early Preterm",
+             oegest_comb >= 34 & oegest_comb < 37 ~ "Late Preterm",
+             TRUE ~ "Full Term"
+           ))
+  
+  race_birth_crosstab <- table(filtered_data$RaceCategory, filtered_data$BirthCategory)
+  race_birth_crosstab <- prop.table(race_birth_crosstab, 1) * 100
+  df <- as.data.frame(race_birth_crosstab)
+  df <- subset(df, Var2 != "Full Term") # Exclude Full Term
+  names(df) <- c('Race', 'BirthCategory', 'Percentage')
+  df$Year <- as.factor(year)
+  
+  return(df)
+}
+
+data_2014_processed <- process_data(data_2014, 2014)
+data_2016_processed <- process_data(data_2016, 2016)
+data_2018_processed <- process_data(data_2018, 2018)
+data_2021_processed <- process_data(data_2021, 2021)
+
+combined_df <- bind_rows(data_2014_processed, data_2016_processed, data_2018_processed, data_2021_processed)
+
+preterm_plot <- ggplot(combined_df, aes(x = Race, y = Percentage, fill = Year)) + 
+  geom_bar(stat = "identity", position = position_dodge(width = 0.7), color = "white") +
+  scale_fill_brewer(palette = "Blues", direction = -1, name = "Year") +
+  labs(title = "Figure 4: Percentage of births classified as pre-term (< 37 weeks)",
+       subtitle = "Cross years 2014, 2016, 2018, 2021 by race of mothers",
+       y = "Percentage of Births",
+       x = "Mother’s Race") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"))
+
+preterm_plot
+```
+
+This plot shows the proportion of preterm births by mother's race across years 2014, 2016, 2018, and 2021. For most races, there is an increase in the percentage of preterm births from 2014 to 2021. AIAN and Asian shows a slight decrease, followed by an increase. Black and Hispanic races show some fluctuations, but the pattern isn't clear. Figure 3 shows NHOPI and Black races have a higher percentage of preterm births, which could lead to higher risk of preterm births. This matches with figure 4 that Black and NHOPI have the highest percentage of preterm births.
+
+
+
+
+
 ## Rubric: On this page
 
 You will
