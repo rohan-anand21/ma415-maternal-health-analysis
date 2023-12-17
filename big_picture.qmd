@@ -15,7 +15,7 @@ Think of this page as your 538/Upshot style article. This means that you should 
 <hr>
 
 ---
-#### **The Rise of Risk Factors in Maternal Health: Preterm Births, Socioeconomic Influences, and Racial Disparities ** 
+#### **The Rise of Risk Factors in Maternal Health: Preterm Births, Socioeconomic Influences, and Racial Disparities **
 
 The state of maternal health is a multifaceted issue influenced by a variety of factors including race, age, and socioeconomic conditions. Inadequate maternal health can lead to pregnancy risks and poor infant health outcomes. 
 
