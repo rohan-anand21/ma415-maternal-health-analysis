@@ -35,7 +35,8 @@ There are racial disparities in ...
 #| echo: FALSE
 library(tidyverse)
 library(RColorBrewer) 
-data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
+data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021_analysis.csv'))
+
 
 ```
 
@@ -189,6 +190,8 @@ library(RColorBrewer)
 data_2016 <- read_csv(here::here('dataset-ignore', 'natality_csv_2016.csv'))
 data_2014 <- read_csv(here::here('dataset-ignore', 'natality_csv_2014.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
+
+print(nrow(data_2016))
 
 # Combine data frames into a list
 data_list <- list(data_2016, data_2014, data_2021)
