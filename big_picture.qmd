@@ -5,7 +5,6 @@ toc: true
 draft: FALSE
 ---
 
-![](images/The_Big_Picture_2.jpeg)
 ![](images/Baby.png)
 
 This comes from the file `big_picture.Rmd`.
@@ -13,18 +12,12 @@ This comes from the file `big_picture.Rmd`.
 Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Importantly, these should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression. Focus on interpretation and visualizations.
 
 ## American's ongoing challenge with maternal pregnancy: a dive into risk factors plaguing American mothers and their babies
-<hr>
-
-Obesity rates have increased amongst pregnant mothers in the United States in the past decade. 
-
-
 
 ---
-
+#### **The Rise of Risk Factors in Maternal Health: Preterm Births, Socioeconomic Influences, and Racial Disparities ** 
+<div style="text-align: left; width: 800px; margin: 0 auto;">
 
 The state of maternal health is a multifaceted issue influenced by a variety of factors including race, age, and socioeconomic conditions. Inadequate maternal health can lead to pregnancy risks and poor infant health outcomes. 
- 
----
 
 Based on our goal of analyzing the risk factors that affect mothers and their babies. We will divide our main goal into various parts. First, smoking is a well-known risk that can bring an amount of adverse outcomes, like preterm birth. So we first analyze smoking rates across different racial groups. By doing this, we are able to identify which populations are at higher risk and develop equitable healthcare policies and interventions.
 
@@ -42,7 +35,7 @@ data_2018 <- read_csv(here::here('dataset-ignore', 'natality_csv_2018.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 ```
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
 is_smoker <- function(cig) {
   as.numeric(cig) > 0 & as.numeric(cig) < 98
