@@ -36,7 +36,7 @@ data_2018 <- read_csv(here::here('dataset-ignore', 'natality_csv_2018.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 ```
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
 is_smoker <- function(cig) {
   as.numeric(cig) > 0 & as.numeric(cig) < 98
