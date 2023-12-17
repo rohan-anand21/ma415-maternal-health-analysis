@@ -23,21 +23,27 @@ There are many other variables that are included in the over 200 columns in the 
 
 ---
 
-### Cleaning the Data
+### Creating the Datasets
 
 In our [load_and_clean_data.R](/scripts/load_and_clean_data.R) file, we did not use any R packages outside of those covered in class. 
 
 To clean our data set, we followed these steps:
 
-1. We first read the .csv file of our dataset, which we only want to show the maximum number of rows is 100,000. Then we save it as an .rds file, which includes 1,000,000 entries and 170 columns.
 
-2. For the .rds file, we first remove the unnecessary columns. And we use the all_of function to treat the columns_to_remove vector as a list of column names to be removed. It ensures that each element in the columns_to_remove vector is interpreted as a separate column name. 
+###Part 1: Current Dataset
 
-3. We create a summary tibble that shows the number of missing values (NAs) per column in the natality_data_cleaned data frame. We apply the sum(is.na(.)) function to every column in the data frame to count the number of missing values (NAs) in each column. The result is a data frame with a single row that contains the count of NAs for each column. We use pivot_longer to transform the summarized data frame from a wide format to a long format. It takes the column names from natality_data_cleanedand the corresponding NA counts and puts them in two new columns: "Column" and "NAs".
+1. We first read the csv file for 2021 data into a tibble, limiting the maximum number of rows to 1,000,000, due to the time constraints of creating plots with such a large data set. 
 
-4. Then, we transform and recode the columns related to birth month and birth time, and make them more suitable for analysis and presentation. We will continue to recode the columns. 
+2. We wrote the tibble into a csv under a new, more descriptive name. This csv became the primary way in which we accessed the data in order to create our plots. 
 
-5. We create a cleaned .csv file from the natality_data_cleaned data frame and save it within the "dataset-ignore" directory.
+3. We also saved the new created csv as both an R and rds file, ensuring that any future analysis that requires those file types are ready to be used immediately. 
 
-6. We also save the data frame as an .RData file, which is a convenient way to save and load R objects, allowing us to preserve the data for future analysis and sharing.
+
+###Part 2: Historical Dataset
+
+1. We started by reading all the csv files for the years 2006-2020, similar to how we read the 2021 file. However, in this case, I limited the number of rows per year to 1000, in order to ensure the data would compile quickly. This can and will be changed when plots/models for specific years are made. 
+
+2. We wrote a function in order to combine the data for all the years. In order to normalize the columns, we used the columns in the 2021 data set as the baseline. For all incompatible columns in previous years, I removed them as they were different recodes of race, age etc. that could be done manually if needed. If there were columns not found in the previous years, I simply added them and filled them with NAs. By doing so, we were able to retain the pertinent data and conduct our analysis without limitations.
+
+
 

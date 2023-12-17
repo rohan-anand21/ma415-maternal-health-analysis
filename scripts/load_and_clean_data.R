@@ -38,53 +38,30 @@ combine_data <- function(data, reference) {
   return(combined)
 }
 
-#data <- list(natality_csv_2020, natality_csv_2019, natality_csv_2018, natality_csv_2017, natality_csv_2016, 
-             #natality_csv_2015, natality_csv_2014, natality_csv_2013, natality_csv_2012, natality_csv_2011,
-             #natality_csv_2010, natality_csv_2009, natality_csv_2008, natality_csv_2007, natality_csv_2006)
+data <- list(natality_csv_2020, natality_csv_2019, natality_csv_2018, natality_csv_2017, natality_csv_2016, 
+             natality_csv_2015, natality_csv_2014, natality_csv_2013, natality_csv_2012, natality_csv_2011,
+             natality_csv_2010, natality_csv_2009, natality_csv_2008, natality_csv_2007, natality_csv_2006)
 
-<<<<<<< HEAD
 #create historical natality data
 natality_csv_historical <- combine_data(data, natality_csv_2021)
-=======
-#natality_csv_historical <- combine_data(data, natality_csv_2021)
->>>>>>> 05d825604ad3c602e16035d3efee0ef608a81ee9
 
 # code to load rds file
 # natality_rds_2021 = readRDS(here::here('dataset-ignore','natality_rds_2021.rds'))
 # natality_rds_historical = readRDS(here::here('dataset-ignore','natality_rds_historical.rds'))
 
-<<<<<<< HEAD
-#create cleaned 2021 + historical csv with values
-=======
 #create cleaned csv with values
-write_csv(natality_csv_2016, file = here::here("dataset-ignore", "natality_csv_2016.csv"))
-write_csv(natality_csv_2014, file = here::here("dataset-ignore", "natality_csv_2014.csv"))
->>>>>>> 05d825604ad3c602e16035d3efee0ef608a81ee9
 write_csv(natality_csv_2021, file = here::here("dataset-ignore", "natality_csv_2021.csv"))
-write_csv(natality_csv_2018, file = here::here("dataset-ignore", "natality_csv_2018.csv"))
-#write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality_data_historical.csv"))
-
-#create cleaned csv with values
-# write_csv(natality_csv_2021, file = here::here("dataset-ignore", "natality_csv_2021.csv"))
-# write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality_data_historical.csv"))
+write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality_data_historical.csv"))
 
 #create separate csvs for any year for analysis
 write_csv(natality_csv_2014, file = here::here("dataset-ignore", "natality_csv_2014.csv"))
 write_csv(natality_csv_2016, file = here::here("dataset-ignore", "natality_csv_2016.csv"))
+write_csv(natality_csv_2018, file = here::here("dataset-ignore", "natality_csv_2018.csv"))
 
 #save data as R file
-# save(natality_csv_2021, file = here::here("dataset-ignore/natality_csv_2021.RData"))
-# save(natality_csv_historical, file = here::here("dataset-ignore/natality_data_cleaned_2016.RData"))
+save(natality_csv_2021, file = here::here("dataset-ignore/natality_csv_2021.RData"))
+save(natality_csv_historical, file = here::here("dataset-ignore/natality_data_cleaned_2016.RData"))
 
 #save it as an rds file
-<<<<<<< HEAD
 saveRDS(natality_csv_2021, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
 saveRDS(natality_csv_historical, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
-=======
-# saveRDS(natality_csv_2021, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
-# saveRDS(natality_csv_historical, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
-
-
-#identical(natality_csv_2021$mracehisp, natality_data_cleaned_2021$mracehisp)
-
->>>>>>> 05d825604ad3c602e16035d3efee0ef608a81ee9
