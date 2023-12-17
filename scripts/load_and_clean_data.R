@@ -4,16 +4,17 @@ library(ggplot2)
 library(here)
 library(readr)
 
+
 ##Read data
 #read csv data into variable, from years 2006 - 2021
-natality_csv_2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 1000000, show_col_types = FALSE)
-natality_csv_2020 <- read_csv(here('dataset-ignore/data-ignore', 'nat2020us.csv'), n_max = 100000, show_col_types = FALSE)
-natality_csv_2019 <- read_csv(here('dataset-ignore/data-ignore', 'nat2019us.csv'), n_max = 100000, show_col_types = FALSE)
-natality_csv_2018 <- read_csv(here('dataset-ignore/data-ignore', 'nat2018us.csv'), n_max = 100000, show_col_types = FALSE)
-natality_csv_2017 <- read_csv(here('dataset-ignore/data-ignore', 'natl2017.csv'), n_max = 100000, show_col_types = FALSE)
-natality_csv_2016 <- read_csv(here('dataset-ignore/data-ignore', 'natl2016.csv'), n_max = 100000, show_col_types = FALSE)
+natality_csv_2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 500000, show_col_types = FALSE)
+natality_csv_2020 <- read_csv(here('dataset-ignore/data-ignore', 'nat2020us.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2019 <- read_csv(here('dataset-ignore/data-ignore', 'nat2019us.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2018 <- read_csv(here('dataset-ignore/data-ignore', 'nat2018us.csv'), n_max = 500000, show_col_types = FALSE)
+natality_csv_2017 <- read_csv(here('dataset-ignore/data-ignore', 'natl2017.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2016 <- read_csv(here('dataset-ignore/data-ignore', 'natl2016.csv'), n_max = 500000, show_col_types = FALSE)
 natality_csv_2015 <- read_csv(here('dataset-ignore/data-ignore', 'natl2015.csv'), n_max = 1000, show_col_types = FALSE)
-natality_csv_2014 <- read_csv(here('dataset-ignore/data-ignore', 'natl2014.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2014 <- read_csv(here('dataset-ignore/data-ignore', 'natl2014.csv'), n_max = 500000, show_col_types = FALSE)
 natality_csv_2013 <- read_csv(here('dataset-ignore/data-ignore', 'natl2013.csv'), n_max = 1000, show_col_types = FALSE)
 natality_csv_2012 <- read_csv(here('dataset-ignore/data-ignore', 'natl2012.csv'), n_max = 1000, show_col_types = FALSE)
 natality_csv_2011 <- read_csv(here('dataset-ignore/data-ignore', 'natl2011.csv'), n_max = 1000, show_col_types = FALSE)
@@ -65,3 +66,4 @@ save(natality_csv_historical, file = here::here("dataset-ignore/natality_data_cl
 #save it as an rds file
 saveRDS(natality_csv_2021, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
 saveRDS(natality_csv_historical, here::here('dataset-ignore', 'natality_data_cleaned_2021.rds'))
+
