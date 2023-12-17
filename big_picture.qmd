@@ -12,6 +12,7 @@ This comes from the file `big_picture.Rmd`.
 Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Importantly, these should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression. Focus on interpretation and visualizations.
 
 ## American's ongoing challenge with maternal pregnancy: a dive into risk factors plaguing American mothers and their babies
+<hr>
 
 ---
 #### **The Rise of Risk Factors in Maternal Health: Preterm Births, Socioeconomic Influences, and Racial Disparities ** 
