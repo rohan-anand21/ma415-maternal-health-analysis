@@ -6,6 +6,7 @@ draft: FALSE
 ---
 
 ![](images/The_Big_Picture_2.jpeg)
+![](images/Baby.png)
 
 This comes from the file `big_picture.Rmd`.
 
@@ -20,25 +21,15 @@ Obesity rates have increased amongst pregnant mothers in the United States in th
 
 ---
 
-## Introduction
 
 The state of maternal health is a multifaceted issue influenced by a variety of factors including race, age, and socioeconomic conditions. Inadequate maternal health can lead to pregnancy risks and poor infant health outcomes. 
-  
-Preterm birth, defined as delivery before 37 weeks of gestation, is a leading cause of neonatal morbidity and mortality in the United States and globally. It can further impact on the child’s growth with long-term health complications, including developmental delays and chronic respiratory problems. According to the research conducted by the March of Dimes Perinatal Data Center with the data supplied by the government agencies, the preterm birth rate was 10.5% of live births in 2021, with considerable variation across states and demographic groups in the U.S. Black infants have the highest rates of preterm birth at 14.4%, nearly double that of Asian/Pacific Islanders at 9.0%. Other racial and ethnic disparities persist, reflecting broader inequalities in health and healthcare access.
-
-Risk factors for preterm birth are diverse, ranging from maternal age, with women over 40 having the highest rates, to smoking, multiple births, and short intervals between pregnancies. Besides the health issues, socioeconomic factors, such as inadequate health insurance coverage, also play a significant role. While these do not directly cause preterm birth, it increases the risk of complications.
-
-Maternal body mass index (BMI) before pregnancy is another critical factor. In 2019, the prevalence of obesity among women of childbearing age has been on the rise, with nearly 3 in 10 women in the U.S. having obesity prior to becoming pregnant according to CDC. This increase is seen across all ages, races, and educational levels, and obesity is linked with adverse outcomes in maternal health including gestational diabetes, cesarean delivery, and preterm delivery. These conditions can directly impact infant health, contributing to preterm birth and associated risks.
-
-Understanding and addressing these complex, interrelated factors is crucial for improving maternal health, and ultimately to address infant health outcomes. In order to promote health prenatal practices, more efforts towards alleviating the correlation between risk factors and maternal health should be made through holistic approach, including healthcare policy reform, targeted interventions for high-risk populations, and broad-based public health campaigns.
-
-Stemming from this point, our group focuses on scrutinizing the correlation between the biological, behavioral, and sociological factors impacting preterm birth, ultimately the overall impact on maternal health. In particular, we delve into the impact of smoking and overweight to preterm birth upon the racial disparities. 
-
+ 
 ---
 
 Based on our goal of analyzing the risk factors that affect mothers and their babies. We will divide our main goal into various parts. First, smoking is a well-known risk that can bring an amount of adverse outcomes, like preterm birth. So we first analyze smoking rates across different racial groups. By doing this, we are able to identify which populations are at higher risk and develop equitable healthcare policies and interventions.
 
-```{r}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
 library(dplyr)
 library(tidyverse)
 library(readr)
@@ -51,7 +42,8 @@ data_2018 <- read_csv(here::here('dataset-ignore', 'natality_csv_2018.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 ```
 
-```{r}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
 is_smoker <- function(cig) {
   as.numeric(cig) > 0 & as.numeric(cig) < 98
 }
@@ -95,10 +87,11 @@ table_sp
 
 The plot shows that AIAN mothers have the highest proportion of smokers at 10.42%, which is more than double the rate of the next highest group. Then we believe that this race may be at high risk of preterm, low birth weight, and developmental issues.
 
-Then, we move on to the next risk factor BMI. High BMI, which represents obesity, is associated with increased risks of diabetes, while low BMI can indicate undernutrition.
+Then, we move on to the next risk factor Maternal body mass index (BMI). BMI before pregnancy is another critical factor. In 2019, the prevalence of obesity among women of childbearing age has been on the rise, with nearly 3 in 10 women in the U.S. having obesity prior to becoming pregnant according to CDC. This increase is seen across all ages, races, and educational levels, and obesity is linked with adverse outcomes in maternal health including gestational diabetes, cesarean delivery, and preterm delivery. These conditions can directly impact infant health, contributing to preterm birth and associated risks.
 
 
-```{r}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
 filtered_bmi_data <- data_2021 |>
   filter(bmi_r != 9)
 
@@ -147,7 +140,8 @@ This bar graph presents the distribution of American mothers across different BM
 
 Then, we look at the changes in the average BMI among different racial groups over a period from 2014 to 2020.
 
-```{r}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
 data_2016$Year <- 2016
 data_2014$Year <- 2014
 data_2018$Year <- 2018
@@ -198,10 +192,11 @@ overweight_trend_plot
 
 This bar plot shows racial disparities in the proportion of overweight, which is BMI larger than or equal 30. It shows that in most races, the proportion of overweight individuals has either increased or remained relatively stable over these years. The NHOPI race shows the highest proportion of overweight individuals, with above 50% across the years, which suggests that they could face more health risk by mothers and babies. 
 
-After analyzing some risk factors, we want to see if there are obvious influences of mothers and babies. We choose to look at the proportion of preterm births over years.
+After analyzing some risk factors, we want to see if there are obvious influences of mothers and babies. We choose to look at the proportion of preterm births over years. Preterm birth, defined as delivery before 37 weeks of gestation, is a leading cause of neonatal morbidity and mortality in the United States and globally. It can further impact on the child’s growth with long-term health complications, including developmental delays and chronic respiratory problems. According to the research conducted by the March of Dimes Perinatal Data Center with the data supplied by the government agencies, the preterm birth rate was 10.5% of live births in 2021, with considerable variation across states and demographic groups in the U.S. Black infants have the highest rates of preterm birth at 14.4%, nearly double that of Asian/Pacific Islanders at 9.0%. Other racial and ethnic disparities persist, reflecting broader inequalities in health and healthcare access. 
 
 
-```{r}
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
 process_data <- function(data, year) {
   data$mracehisp <- as.numeric(as.character(data$mracehisp))
   
@@ -263,7 +258,11 @@ preterm_plot
 
 This plot shows the proportion of preterm births by mother's race across years 2014, 2016, 2018, and 2021. For most races, there is an increase in the percentage of preterm births from 2014 to 2021. AIAN and Asian shows a slight decrease, followed by an increase. Black and Hispanic races show some fluctuations, but the pattern isn't clear. Figure 3 shows NHOPI and Black races have a higher percentage of preterm births, which could lead to higher risk of preterm births. This matches with figure 4 that Black and NHOPI have the highest percentage of preterm births.
 
+Risk factors for preterm birth are diverse, ranging from maternal age, with women over 40 having the highest rates, to smoking, multiple births, and short intervals between pregnancies. Besides the health issues, socioeconomic factors, such as inadequate health insurance coverage, also play a significant role. While these do not directly cause preterm birth, it increases the risk of complications. 
 
+Understanding and addressing these complex, interrelated factors is crucial for improving maternal health, and ultimately to address infant health outcomes. In order to promote health prenatal practices, more efforts towards alleviating the correlation between risk factors and maternal health should be made through holistic approach, including healthcare policy reform, targeted interventions for high-risk populations, and broad-based public health campaigns. 
+ 
+Stemming from this point, our group focuses on scrutinizing the correlation between the biological, behavioral, and sociological factors impacting preterm birth, ultimately the overall impact on maternal health. In particular, we delve into the impact of smoking and overweight to preterm birth upon the racial disparities. 
 
 
 
