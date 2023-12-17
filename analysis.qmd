@@ -31,11 +31,21 @@ Thus, Group 14 was interested in taking a closer look into the current landscape
 #### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?
 
 There are racial disparities in ...
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+install.packages("ggthemes")
+install.packages("sf")
+install.packages("rnaturalearth")
+library(broom)
+library(tidyverse)
+```
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE
 library(tidyverse)
 library(RColorBrewer) 
-data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021_analysis.csv'))
+data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 
 
 ```
@@ -99,6 +109,7 @@ smoking_proportions_by_race <- filtered_data_smoking %>%
   ) %>%
   arrange(desc(Proportion_Smokers_Before_Pregnancy))
 
+install.packages("gt")
 
 library(gt)
 library(dplyr)
@@ -286,6 +297,17 @@ ggplot(result, aes(x = Race, y = PercentageSmokers, fill = Year)) +
 ```
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 data_new <- read_csv(here::here('Natality_New_3.csv'))
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+
+# Load the devtools package
+library(devtools)
+
+devtools::install_github("ropensci/rnaturalearthhires")
+
+# Load the rnaturalearth package
+library(rnaturalearth)
 library(dplyr)
 library(ggplot2)
 library(sf)
