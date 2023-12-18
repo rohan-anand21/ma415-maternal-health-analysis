@@ -242,7 +242,7 @@ preterm_plot <- ggplot(combined_df, aes(x = Race, y = Percentage, fill = Year)) 
 preterm_plot
 ```
 
-This plot shows the proportion of preterm births by mother's race across years 2014, 2016, 2018, and 2021. For most races, there is an increase in the percentage of preterm births from 2014 to 2021. AIAN and Asian shows a slight decrease, followed by an increase. Black and Hispanic races show some fluctuations, but the pattern isn't clear. Figure 3 shows NHOPI and Black races have a higher percentage of preterm births, which could lead to higher risk of preterm births. This matches with figure 4 that Black and NHOPI have the highest percentage of preterm births.
+This plot shows the proportion of preterm births by mother's race across years 2014, 2016, 2018, and 2021. For most races, there is an increase in the percentage of preterm births from 2014 to 2021. AIAN, Asian, and NHOPI show a slight decrease, followed by an increase. Figure 3 shows NHOPI, AIAN, and Black races have a higher percentage of preterm births, which could lead to higher risk of preterm births. This matches with figure 4 that NHOPI, AIAN, and Black have the highest percentage of preterm births.
 
 Risk factors for preterm birth are diverse, ranging from maternal age, with women over 40 having the highest rates, to smoking, multiple births, and short intervals between pregnancies. Besides the health issues, socioeconomic factors, such as inadequate health insurance coverage, also play a significant role. While these do not directly cause preterm birth, it increases the risk of complications. 
 
