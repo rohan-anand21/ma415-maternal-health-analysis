@@ -25,11 +25,6 @@ natality_csv_2007 <- read_csv(here('dataset-ignore/data-ignore', 'natl2007.csv')
 natality_csv_2006 <- read_csv(here('dataset-ignore/data-ignore', 'natl2006.csv'), n_max = 1000, show_col_types = FALSE)
 
 
-natality_csv_2021_analysis <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 1000000, show_col_types = FALSE)
-natality_csv_2016_analysis <- read_csv(here('dataset-ignore/data-ignore', 'natl2016.csv'), n_max = 1000000, show_col_types = FALSE)
-natality_csv_2014_analysis <- read_csv(here('dataset-ignore/data-ignore', 'natl2014.csv'), n_max = 1000000, show_col_types = FALSE)
-
-
 #combines data together (uses 2021 columns, removes incompatible columns, fills unknown values from 2021 columns with NA)
 combine_data <- function(data, reference) {
   tibbles <- lapply(data, function(tibble) {
@@ -64,12 +59,6 @@ write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality
 write_csv(natality_csv_2014, file = here::here("dataset-ignore", "natality_csv_2014.csv"))
 write_csv(natality_csv_2016, file = here::here("dataset-ignore", "natality_csv_2016.csv"))
 write_csv(natality_csv_2018, file = here::here("dataset-ignore", "natality_csv_2018.csv"))
-
-write_csv(natality_csv_2014_analysis, file = here::here("dataset-ignore", "natality_csv_2014_analysis.csv"))
-write_csv(natality_csv_2016_analysis, file = here::here("dataset-ignore", "natality_csv_2016_analysis.csv"))
-write_csv(natality_csv_2021_analysis, file = here::here("dataset-ignore", "natality_csv_2021_analysis.csv"))
-
-
 
 #save data as R file
 save(natality_csv_2021, file = here::here("dataset-ignore/natality_csv_2021.RData"))

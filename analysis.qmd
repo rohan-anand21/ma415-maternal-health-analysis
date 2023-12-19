@@ -5,7 +5,7 @@ toc: true
 draft: false
 ---
 
-![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
+![](images/analysis.jpeg)
 
 ## **Maternal Smoking During Pregnancy: America's Ongoing Crisis** 
 ### An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States
@@ -34,10 +34,6 @@ There are racial disparities in ...
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 options(repos = c(CRAN = "https://cloud.r-project.org"))
-
-install.packages("ggthemes")
-install.packages("sf")
-install.packages("rnaturalearth")
 library(broom)
 library(tidyverse)
 ```
@@ -108,8 +104,6 @@ smoking_proportions_by_race <- filtered_data_smoking %>%
     Proportion_Smokers_Trimester_Three = round((sum(Trimester_Three != "Nonsmoker") / n()) * 100, 2)
   ) %>%
   arrange(desc(Proportion_Smokers_Before_Pregnancy))
-
-install.packages("gt")
 
 library(gt)
 library(dplyr)
@@ -457,7 +451,6 @@ output_table_gt <- gt(model_output) %>%
 # Print the gt table
 print(output_table_gt)
 ```
-
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 # model looking at gestation
 filtered_data_model_2 <- data %>%
@@ -512,6 +505,108 @@ If you are directly quoting from a source, please make that clear. You can show 
 > To be or not to be.
 
 -------
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+#recode race column in data
+#1- white, 2 - black, 3 - aian, 4 - asian, 5 - nhopi, 6 - multiple race
+
+data_mod <- data |>
+  mutate(mrace = case_when(
+    mrace15 == "1" ~ 1,
+    mrace15 == "2" ~ 2,
+    mrace15 == "3" ~ 3,
+    mrace15 %in% c("4", "5", "6", "7", "8", "9", "10") ~ 4,
+    mrace15 %in% c("11", "12", "13", "14") ~ 5,
+    mrace15 == "15" ~ 6,
+  ))
+
+#select relevant columns from original dataset, filtering unknown column values
+
+data_mod <- data_mod |>
+  select(apgar5, dob_yy, mrace, meduc, previs, cig_0, cig_1, cig_2, cig_3, bmi, rf_pdiab, rf_gdiab, rf_fedrg) |>
+  filter(apgar5 != 99) |>
+  filter(meduc != 9) |>
+  filter(previs != 99) |>
+  filter(cig_0 != 99) |>
+  filter(cig_1 != 99) |>
+  filter(cig_2 != 99) |>
+  filter(cig_3 != 99) |>
+  filter(bmi != 99.9) |>
+  filter(rf_pdiab != 'U') |>
+  filter(rf_gdiab != 'U') |>
+  filter(rf_fedrg != 'U') |>
+  filter(rf_fedrg != 'U')
+
+#renaming columns for readability
+  
+apgar5 = data_mod$apgar5
+birth_weight = data_mod$dob_yy
+mothers_race = data_mod$mrace
+mothers_education = data_mod$meduc
+prenatal_visits = data_mod$previs
+prior_cig = data_mod$cig_0
+cig_1st = data_mod$cig_1
+cig_2nd = data_mod$cig_2
+cig_3rd = data_mod$cig_3
+bmi = data_mod$bmi
+prior_diabetes = data_mod$rf_pdiab
+current_diabetes = data_mod$rf_gdiab
+fertility_drugs = data_mod$rf_fedrg
+
+#creates a table with p-values, from most significant to least significant
+create_pvalue_tibble <- function(model) {
+  summary_df <- summary(model)$coefficients
+  result_tibble <- tibble(
+    variable = rownames(summary_df)[-1],  
+    p_value = summary_df[-1, "Pr(>|t|)"]
+  )
+  ordered_tibble <- arrange(result_tibble, p_value)
+  return(ordered_tibble)
+}
+
+#features accessibility
+# mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs
+
+# Original and updated models for apgar5
+apgar5_model <- lm(apgar5 ~ mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + 
+  cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs, data = data_mod)
+updated_apgar5_model <- lm(apgar5 ~ prenatal_visits + prior_cig, data = data_mod)
+
+# Calculating differences for apgar5 model
+diff_adj_r_squared_apgar5 <- summary(updated_apgar5_model)$adj.r.squared - summary(apgar5_model)$adj.r.squared
+diff_aic_apgar5 <- AIC(updated_apgar5_model) - AIC(apgar5_model)
+
+# Conditional checks for increase or decrease in values
+adj_r_squared_change_apgar5 <- ifelse(diff_adj_r_squared_apgar5 > 0, "increased", "decreased")
+aic_change_apgar5 <- ifelse(diff_aic_apgar5 > 0, "increased", "decreased")
+
+# Print statements for apgar5 model
+print(paste0("The adjusted R-squared value and AIC for the original apgar5 model is ", summary(apgar5_model)$adj.r.squared, " and ", AIC(apgar5_model), "."))
+print(paste("The top 5 features for the apgar5 model are:", paste(create_pvalue_tibble(apgar5_model)$variable[1:5], collapse = ", "), "."))
+print(paste0("The updated adjusted R-squared value and AIC for the updated apgar5 model is ", summary(updated_apgar5_model)$adj.r.squared, " and ", AIC(updated_apgar5_model), "."))
+print(paste0("The adjusted R-squared ", adj_r_squared_change_apgar5, " by ", abs(diff_adj_r_squared_apgar5), " and the AIC ", aic_change_apgar5, " by ", abs(diff_aic_apgar5), " from the original to the updated apgar5 model."))
+
+# Original and updated models for birth weight
+birth_weight_model <- lm(birth_weight ~ mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + 
+  cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs, data = data_mod)
+updated_birth_weight_model <- lm(birth_weight ~ current_diabetes + bmi + prenatal_visits + mothers_race + mothers_education, data = data_mod)
+
+# Calculating differences for birth weight model
+diff_adj_r_squared_birth_weight <- summary(updated_birth_weight_model)$adj.r.squared - summary(birth_weight_model)$adj.r.squared
+diff_aic_birth_weight <- AIC(updated_birth_weight_model) - AIC(birth_weight_model)
+
+# Conditional checks for increase or decrease in values
+adj_r_squared_change_birth_weight <- ifelse(diff_adj_r_squared_birth_weight > 0, "increased", "decreased")
+aic_change_birth_weight <- ifelse(diff_aic_birth_weight > 0, "increased", "decreased")
+
+# Print statements for birth weight model
+print(paste0("The adjusted R-squared value and AIC for the original birth weight model is ", 
+summary(birth_weight_model)$adj.r.squared, " and ", AIC(birth_weight_model), "."))
+print(paste("The top 5 features for the birth weight model are:", paste(create_pvalue_tibble(birth_weight_model)$variable[1:5], collapse = ", "), "."))
+print(paste0("The updated adjusted R-squared value and AIC for the updated birth weight model is ", summary(updated_birth_weight_model)$adj.r.squared, " and ", AIC(updated_birth_weight_model), "."))
+print(paste0("The adjusted R-squared ", adj_r_squared_change_birth_weight, " by ", abs(diff_adj_r_squared_birth_weight), " and the AIC ", aic_change_birth_weight, " by ", abs(diff_aic_birth_weight), " from the original to the updated birth weight model."))
+```
+
 
 
 ## Rubric: On this page
