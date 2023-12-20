@@ -131,6 +131,7 @@ table_gt <- gt(smoking_proportions_by_race) %>%
 table_gt
 
 ```
+
 ```{r echo = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
 
 smoker_data <- data |>
