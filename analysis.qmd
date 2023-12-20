@@ -5,7 +5,7 @@ toc: true
 draft: false
 ---
 
-![](images/analysis.jpeg)
+![](images/analysis_baby.jpeg)
 
 ## **Maternal Smoking During Pregnancy: America's Ongoing Crisis** 
 ### An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States
@@ -48,7 +48,6 @@ data <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 #| echo: FALSE
-head(data)
 num_rows <- nrow(data)
 num_columns <- ncol(data)
 
@@ -120,7 +119,7 @@ smoking_proportions_by_race <- smoking_proportions_by_race %>%
 
 table_gt <- gt(smoking_proportions_by_race) %>%
   tab_header(
-    title = md("**Figure 1: Percentage of mothers who smoked cigarettes before and during pregnancy, by trimester and race in the United States, 2021**"),
+    title = md("**Table 1: Percentage of mothers who smoked cigarettes before and during pregnancy, by trimester and race in the United States, 2021**"),
     subtitle = "Source: National Center for Health Statistics, National Vital Statistics System, Natality"
   ) %>%
   tab_spanner(
@@ -177,7 +176,7 @@ smoker_data <- smoker_data |>
 
 smoker_gt <- gt(smoker_data) |>
   tab_header(
-    title = md("**Figure 2: Proportion of Smokers by Race and Corresponding Average Birth Weight and Apgar5 Score**"),
+    title = md("**Table 2: Proportion of Smokers by Race and Corresponding Average Birth Weight and Apgar5 Score**"),
     subtitle = "Higher Apgar Score/Birth Weight = Healthier Baby"
   ) 
 
@@ -196,7 +195,7 @@ data_2016 <- read_csv(here::here('dataset-ignore', 'natality_csv_2016.csv'))
 data_2014 <- read_csv(here::here('dataset-ignore', 'natality_csv_2014.csv'))
 data_2021 <- read_csv(here::here('dataset-ignore', 'natality_csv_2021.csv'))
 
-print(nrow(data_2016))
+#print(nrow(data_2016))
 
 # Combine data frames into a list
 data_list <- list(data_2016, data_2014, data_2021)
@@ -236,9 +235,148 @@ all_data <- bind_rows(filtered_data_list)
 result <- all_data %>%
   group_by(Year, Race) %>%
   summarize(PercentageSmokers = mean(smoker) * 100)
+```
 
 
-result
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
+#| echo: FALSE
+
+is_smoker <- function(cig) {
+  as.numeric(cig) > 0 & as.numeric(cig) < 98
+}
+
+smoking_mothers_data <- data_2021 |>
+  filter(
+    (cig0_r != 6) & (cig1_r != 6) & (cig3_r != 6) & (mracehisp != 8), (bwtr12 != 12),
+    is_smoker(cig_0) | is_smoker(cig_1) | is_smoker(cig_2) | is_smoker(cig_3)
+  )
+
+midpoints <- c(363, 750, 1250, 1750, 2250, 2750, 3250, 3750, 4250, 4750, 6583)
+
+smoking_mothers_data$BirthWeightMidpoint <- factor(smoking_mothers_data$bwtr12, 
+  levels = 1:11,
+  labels = midpoints
+)
+
+total_count <- nrow(smoking_mothers_data)
+category_proportions <- smoking_mothers_data |>
+  group_by(BirthWeightMidpoint) |>
+  summarise(Count = n()) |>
+  mutate(Proportion = Count / total_count)
+
+midpoints_map <- c(363, 750, 1250, 1750, 2250, 2750, 3250, 3750, 4250, 4750, 6583)
+smoking_mothers_data$estimated_birth_weight <- midpoints_map[smoking_mothers_data$bwtr12]
+
+mean_smoke <- mean(smoking_mothers_data$estimated_birth_weight, na.rm = TRUE)
+sd_smoke <- sd(smoking_mothers_data$estimated_birth_weight, na.rm = TRUE)
+
+smoke_bw <- ggplot(smoking_mothers_data, aes(x = BirthWeightMidpoint, y = ..prop.., group = 1, fill = BirthWeightMidpoint)) + 
+  geom_bar(stat = "count", width = 1, fill = 'lightblue', color = 'black') +
+  geom_line(data = category_proportions, aes(x = BirthWeightMidpoint, y = Proportion), group = 1, size = .5, linetype = "dashed") +
+  scale_fill_brewer(palette = "Blues") +
+  labs(title = "Birth Weight Proportion of Mothers Who Smoked",
+       x = "Birth Weight Range (grams)",
+       y = "Proportion of Births") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.position = "none") +
+        annotate("text", x = Inf, y = Inf, label = paste("Mean: ", round(mean_smoke, 2), "g\nStandard Deviation: ", round(sd_smoke, 2), "g"), hjust = 1.1, vjust = 1.1, size = 3.5, color = "black")
+
+library(ggplot2)
+nonsmoking_mothers_data <- data_2021 |>
+  filter(
+    (cig0_r = 0) | (cig1_r = 0) | (cig3_r = 0) | (mracehisp != 8), (bwtr12 != 12),
+    !(is_smoker(cig_0) | is_smoker(cig_1) | is_smoker(cig_2) | is_smoker(cig_3))
+  )
+
+midpoints <- c(363, 750, 1250, 1750, 2250, 2750, 3250, 3750, 4250, 4750, 6583)
+
+nonsmoking_mothers_data$BirthWeightMidpoint <- factor(nonsmoking_mothers_data$bwtr12, 
+  levels = 1:11,
+  labels = midpoints
+)
+
+total_count <- nrow(nonsmoking_mothers_data)
+
+category_count <- nonsmoking_mothers_data |>
+  group_by(BirthWeightMidpoint) |>
+  summarise(Count = n()) |>
+  mutate(Proportion = Count / total_count)
+
+midpoints_map <- c(363, 750, 1250, 1750, 2250, 2750, 3250, 3750, 4250, 4750, 6583)
+nonsmoking_mothers_data$estimated_birth_weight <- midpoints_map[nonsmoking_mothers_data$bwtr12]
+
+mean_nonsmoke <- mean(nonsmoking_mothers_data$estimated_birth_weight, na.rm = TRUE)
+sd_nonsmoke <- sd(nonsmoking_mothers_data$estimated_birth_weight, na.rm = TRUE)
+
+nonsmoke_bw <- ggplot(nonsmoking_mothers_data, aes(x = BirthWeightMidpoint, y = ..prop.., group = 1, fill = BirthWeightMidpoint)) + 
+  geom_bar(stat = "count", width = 1, fill = 'lightblue', color = 'black') +
+  geom_line(data = category_count, aes(x = BirthWeightMidpoint, y = Proportion), group = 1, size = .5, linetype = "dashed") +
+  scale_fill_brewer(palette = "Blues") +
+  labs(title = "Birth Weight Proportion of Non-Smoking Mothers",
+       x = "Midpoint of Birth Weight Range (grams)",
+       y = "Proportion of Births") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.position = "none") +
+        annotate("text", x = Inf, y = Inf, label = paste("Mean: ", round(mean_nonsmoke, 2), "g\nStandard Deviation: ", round(sd_nonsmoke, 2), "g"), hjust = 1.1, vjust = 1.1, size = 3.5, color = "black")
+```
+```{r}
+combined_data <- rbind(mutate(smoking_mothers_data, SmokingStatus = 'Smoker'),
+                       mutate(nonsmoking_mothers_data, SmokingStatus = 'Non-Smoker'))
+
+# Recalculate proportions for the combined data
+total_count <- nrow(combined_data)
+combined_data <- combined_data |>
+  group_by(BirthWeightMidpoint, SmokingStatus) |>
+  summarise(Count = n()) |>
+  mutate(Proportion = Count / total_count)
+
+# Create the plot
+combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proportion, fill = BirthWeightMidpoint)) +
+  geom_bar(stat = "identity", width = 1, color = 'black') +
+  geom_line(aes(group = SmokingStatus), size = .5, linetype = "dashed") +
+  scale_fill_brewer(palette = "Blues") +
+  facet_wrap(~ SmokingStatus, scales = 'free_y') +
+  labs(title = "Birth Weight Proportion by Smoking Status",
+       x = "Midpoint of Birth Weight Range (grams)",
+       y = "Proportion of Births") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
+        axis.text.y = element_text(size = 12, color = "#333333"),
+        axis.ticks.x = element_line(color = "black", size = 0.5),
+        axis.ticks.y = element_line(color = "black", size = 0.5),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        plot.title = element_text(face = "bold", size = 12, color = "#333333"),
+        axis.title = element_text(face = "bold", size = 10, color = "#333333"),
+        legend.position = "none",
+        aspect.ratio = 1/1.3)
+
+print(combined_plot)
 ```
 
 
@@ -464,7 +602,7 @@ filtered_data_model_2 <- data %>%
   mutate(Smoker = ifelse(cig1_r != 0 & cig2_r != 0 & cig3_r != 0, 1, 0))
 
 
-filtered_data_model_2
+#filtered_data_model_2
 
 # Assuming you have filtered_data_model_2 from your previous code
 # Replace 'filtered_data_model_2' with the actual name of your data frame
@@ -472,7 +610,7 @@ filtered_data_model_2
 linear_model <- lm(dbwt ~ oegest_comb + Smoker, data = filtered_data_model_2)
 
 # Print the summary of the linear regression model
-summary(linear_model)
+#summary(linear_model)
 
 # Extract coefficients, standard errors, t-values, and p-values from the summary
 coef_table <- coef(summary(linear_model))
@@ -487,7 +625,7 @@ table_data <- rbind(table_data, F_statistic = c(F_stat = linear_model$fstatistic
 colnames(table_data) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
 
 # Print the data frame
-table_data
+#table_data
 
 
 ```
@@ -567,44 +705,111 @@ create_pvalue_tibble <- function(model) {
 #features accessibility
 # mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs
 
-# Original and updated models for apgar5
+# apgar5
 apgar5_model <- lm(apgar5 ~ mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + 
   cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs, data = data_mod)
-updated_apgar5_model <- lm(apgar5 ~ prenatal_visits + prior_cig, data = data_mod)
 
-# Calculating differences for apgar5 model
-diff_adj_r_squared_apgar5 <- summary(updated_apgar5_model)$adj.r.squared - summary(apgar5_model)$adj.r.squared
-diff_aic_apgar5 <- AIC(updated_apgar5_model) - AIC(apgar5_model)
+apgar_model_5_features <- lm(apgar5 ~ bmi + prenatal_visits + prior_diabetes + fertility_drugs + prior_cig, data = data_mod)
 
-# Conditional checks for increase or decrease in values
-adj_r_squared_change_apgar5 <- ifelse(diff_adj_r_squared_apgar5 > 0, "increased", "decreased")
-aic_change_apgar5 <- ifelse(diff_aic_apgar5 > 0, "increased", "decreased")
+apgar_model_3_features <- lm(apgar5 ~ bmi + prenatal_visits + prior_diabetes, data = data_mod)
 
-# Print statements for apgar5 model
-print(paste0("The adjusted R-squared value and AIC for the original apgar5 model is ", summary(apgar5_model)$adj.r.squared, " and ", AIC(apgar5_model), "."))
-print(paste("The top 5 features for the apgar5 model are:", paste(create_pvalue_tibble(apgar5_model)$variable[1:5], collapse = ", "), "."))
-print(paste0("The updated adjusted R-squared value and AIC for the updated apgar5 model is ", summary(updated_apgar5_model)$adj.r.squared, " and ", AIC(updated_apgar5_model), "."))
-print(paste0("The adjusted R-squared ", adj_r_squared_change_apgar5, " by ", abs(diff_adj_r_squared_apgar5), " and the AIC ", aic_change_apgar5, " by ", abs(diff_aic_apgar5), " from the original to the updated apgar5 model."))
 
-# Original and updated models for birth weight
+#birth weight
 birth_weight_model <- lm(birth_weight ~ mothers_race + mothers_education + prenatal_visits + prior_cig + cig_1st + 
   cig_2nd + cig_3rd + bmi + prior_diabetes + current_diabetes + fertility_drugs, data = data_mod)
-updated_birth_weight_model <- lm(birth_weight ~ current_diabetes + bmi + prenatal_visits + mothers_race + mothers_education, data = data_mod)
 
-# Calculating differences for birth weight model
-diff_adj_r_squared_birth_weight <- summary(updated_birth_weight_model)$adj.r.squared - summary(birth_weight_model)$adj.r.squared
-diff_aic_birth_weight <- AIC(updated_birth_weight_model) - AIC(birth_weight_model)
+birth_weight_model_5_features <- lm(birth_weight ~ current_diabetes + bmi + prenatal_visits + mothers_race + mothers_education, data = data_mod)
 
-# Conditional checks for increase or decrease in values
-adj_r_squared_change_birth_weight <- ifelse(diff_adj_r_squared_birth_weight > 0, "increased", "decreased")
-aic_change_birth_weight <- ifelse(diff_aic_birth_weight > 0, "increased", "decreased")
+birth_weight_model_3_features <- lm(birth_weight ~ current_diabetes + bmi + prenatal_visits, data = data_mod)
 
-# Print statements for birth weight model
-print(paste0("The adjusted R-squared value and AIC for the original birth weight model is ", 
-summary(birth_weight_model)$adj.r.squared, " and ", AIC(birth_weight_model), "."))
-print(paste("The top 5 features for the birth weight model are:", paste(create_pvalue_tibble(birth_weight_model)$variable[1:5], collapse = ", "), "."))
-print(paste0("The updated adjusted R-squared value and AIC for the updated birth weight model is ", summary(updated_birth_weight_model)$adj.r.squared, " and ", AIC(updated_birth_weight_model), "."))
-print(paste0("The adjusted R-squared ", adj_r_squared_change_birth_weight, " by ", abs(diff_adj_r_squared_birth_weight), " and the AIC ", aic_change_birth_weight, " by ", abs(diff_aic_birth_weight), " from the original to the updated birth weight model."))
+# Apgar5 Models
+apgar_models <- list(
+  original = apgar5_model,
+  model_5_features = apgar_model_5_features,
+  model_3_features = apgar_model_3_features
+)
+
+# Birth Weight Models
+birth_weight_models <- list(
+  original = birth_weight_model,
+  model_5_features = birth_weight_model_5_features,
+  model_3_features = birth_weight_model_3_features
+)
+
+# Function to calculate MMSE for a given model
+calculate_mmse <- function(model, data) {
+  predicted_values <- predict(model, newdata = data)
+  squared_residuals <- (data$apgar5 - predicted_values) ^ 2
+  mmse <- mean(squared_residuals)
+  return(mmse)
+}
+
+# Calculate MMSE for each Apgar5 model
+apgar5_mmse_values <- sapply(apgar_models, calculate_mmse, data = data_mod)
+# Calculate changes in MMSE for Apgar5 models
+apgar5_mmse_change <- c(0, diff(apgar5_mmse_values))
+
+# Calculate MMSE for each Birth Weight model
+birth_weight_mmse_values <- sapply(birth_weight_models, calculate_mmse, data = data_mod)
+# Calculate changes in MMSE for Birth Weight models
+birth_weight_mmse_change <- c(0, diff(birth_weight_mmse_values))
+
+# Modify the create_model_tibble function to include MMSE Change
+create_model_tibble <- function(model_list, feature_list, mmse_change) {
+  # Create basic tibble
+  tibble_data <- tibble(
+    `Number of Features` = c(length(strsplit(feature_list[1], ", ")[[1]]),
+                             length(strsplit(feature_list[2], ", ")[[1]]),
+                             length(strsplit(feature_list[3], ", ")[[1]])),
+    `Features (Selected by Highest P-value)` = feature_list,
+    `Adjusted R-Squared` = signif(sapply(model_list, function(model) summary(model)$adj.r.squared), 3),
+    `MMSE Change` = mmse_change
+  )
+
+  # Calculate changes in AIC
+  aic_values <- sapply(model_list, AIC)
+  aic_change <- signif(c(0, diff(aic_values)), 3)
+
+  # Add AIC Change column
+  tibble_data <- tibble_data %>%
+    mutate(`AIC Change` = aic_change)
+
+  return(tibble_data)
+}
+
+# Creating the tibbles with rounded MMSE Change (no scientific notation)
+apgar_tibble <- create_model_tibble(
+  apgar_models[c("model_3_features", "model_5_features", "original")],
+  c("bmi, prenatal_visits, prior_diabetes",
+    "bmi, prenatal_visits, prior_diabetes, fertility_drugsX, prior_cig",
+    "mothers_race, mothers_education, prenatal_visits, prior_cig, cig_1st, cig_2nd, cig_3rd, bmi, prior_diabetes, current_diabetes, fertility_drugs"),
+  apgar5_mmse_change
+)
+
+birth_weight_tibble <- create_model_tibble(
+  birth_weight_models,
+  c("mothers_race, mothers_education, prenatal_visits, prior_cig, cig_1st, cig_2nd, cig_3rd, bmi, prior_diabetes, current_diabetes, fertility_drugs",
+    "current_diabetes, bmi, prenatal_visits, mothers_race, mothers_education",
+    "current_diabetes, bmi, prenatal_visits"),
+  birth_weight_mmse_change
+)
+
+# Print the tables with rounded MMSE Change included
+apgar5_gt <- gt(apgar_tibble) |>
+  tab_header(
+    title = md("**Model for 5-minute Apgar Score Data**"),
+  ) 
+
+birth_weight_gt <- gt(birth_weight_tibble) |>
+  tab_header(
+    title = md("**Model for Birth Weight Data**"),
+  ) 
+
+print(apgar5_gt)
+print(birth_weight_gt)
+print(sqrt(apgar5_mmse_values))
+print(sqrt(birth_weight_mmse_values))
+summary(apgar_model_5_features)
 ```
 
 
