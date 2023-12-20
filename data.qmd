@@ -5,6 +5,7 @@ toc: true
 draft: false
 ---
 ![](images/cdc_photo.jpg)
+
 ### Data Discovery and Collection
 
 The [data](https://www.nber.org/research/data/vital-statistics-natality-birth-data) we discovered is Natality Data from the National Vital Statistics System of the National Center for Health Statistics. The data set itself was found on the page titled Vital Statistics Natality Birth Data on the website of the National Bureau of Economic Research. In essence, the data was collected in order to give both demographic and health data for births occurring in the United States annually. The data is based on a 100-percent sample of birth certificates from some states and on a 50-percent sample from the remaining states. 
@@ -30,7 +31,7 @@ In our [load_and_clean_data.R](/scripts/load_and_clean_data.R) file, we did not 
 To clean our data set, we followed these steps:
 
 
-###Part 1: Current Dataset
+### Part 1: Current Dataset
 
 1. We first read the csv file for 2021 data into a tibble, limiting the maximum number of rows to 1,000,000, due to the time constraints of creating plots with such a large data set. 
 
@@ -39,7 +40,7 @@ To clean our data set, we followed these steps:
 3. We also saved the new created csv as both an R and rds file, ensuring that any future analysis that requires those file types are ready to be used immediately. 
 
 
-###Part 2: Historical Dataset
+### Part 2: Historical Dataset
 
 1. We started by reading all the csv files for the years 2006-2020, similar to how we read the 2021 file. However, in this case, I limited the number of rows per year to 1000, in order to ensure the data would compile quickly. This can and will be changed when plots/models for specific years are made. 
 
