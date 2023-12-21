@@ -395,10 +395,8 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
   geom_line(aes(group = SmokingStatus), size = .5, linetype = "dashed") +
   scale_fill_brewer(palette = "Blues") +
   facet_wrap(~ SmokingStatus, scales = 'free_y') +
-  labs(title = "Figure 1: Distribution of birth weights for mothers who smoke \n 
-  and mothers who do not smoke
-",
-       subtitle = "Statistically significant difference between the mean birth weights (p-value < 0.05)",
+  labs(title = "Figure 1: Distribution of birth weights for mothers who smoke \nand mothers who do not smoke",
+  subtitle = "Statistically significant difference between the mean birth weights (p-value < 0.05)",
        x = "Birth Weight (grams)",
        y = "Proportion of Births (%)") +
   theme_minimal() +
@@ -768,7 +766,7 @@ As a result, we can conclude that based on a linear model, BMI is the most signi
 
 ---
 
-#### **Research Question 6: Are We Able to Predict Birth Weight Accurately?**
+#### **Research Question 7**: Are We Able to Predict Birth Weight Accurately?
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
