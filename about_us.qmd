@@ -23,18 +23,33 @@ This is a website for the final project for MA415 Data Science with R by Team 14
 The members of this team are below.
 
 ## Tianyu Wu
+
+I am a senior, majoring in Stats.
+
 https://github.com/tianyuwu2
 
 ## Aiganysh Ulanova
+
+I am a junior, double majoring in Data Science and Biochemistry & Molecular Biology.
+
 https://github.com/aulanova
 
 ## Rohan Anand
+
+I am a junior, majoring in Data Science and minoring in Math.
+
 https://github.com/rohan-anand21
 
 ## Jin Kyu (Jaden) Cho
+
+I am a senior, majoring in Data Science and minoring in Econ.
+
 https://github.com/jaden4034
 
 ## Seokhoon Shin
+
+I am a junior, majoring in Data Science and minoring in Graphic Design
+
 https://github.com/seokhoonshin
 
 
