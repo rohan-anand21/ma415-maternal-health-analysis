@@ -5,7 +5,7 @@ toc: true
 draft: false
 ---
 
-![](images/Baby.png)
+![](images/big_picture_final.jpg)
 
 
 #### **America's Ongoing Maternal Health Crisis: A Look Into Risk Factors Plaguing American Mothers and Their Babies In 2021**
@@ -200,7 +200,8 @@ overweight_trend_plot
 ```
 
 Figure 2 depicts the differences in obesity prevalence amongst different racial groups over the past decade. When classifying a mother as obese, we chose only to classify mothers as obese if their BMI score is larger than 30. For the following races, obesity among mothers has been steadily increasing: AIAN, Black, Hispanic, More than one race, and White. It's interesting to note that since 2018, the NHOPI race shows the highest proportion of overweight individuals, with above 50% of mothers classified as obese which is a staggering amount. This suggests that they could face more health risks during their pregnancy. 
-___
+
+---
 
 #### **Finding #4: The proportion of pre-term births in the US has been steadily on the rise since 2014**
 
@@ -253,7 +254,7 @@ preterm_plot <- ggplot(combined_df, aes(x = Race, y = Percentage, fill = Year)) 
   scale_fill_manual(values = custom_palette, name = "Year") +
   labs(title = "Figure 3: Proportion of births classified as pre-term (< 37 weeks gestation) \n by race",
        subtitle = "A look at 2014 and 2021 births ",
-       y = "Percentage of Births",
+       y = "Proportion of births (%)",
        x = "Mother’s Race") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),

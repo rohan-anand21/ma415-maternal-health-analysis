@@ -1,5 +1,5 @@
 ---
-title: "Analysis: Does Smoking Affect Maternal Outcomes?"
+title: "Analysis: Does Smoking Affect Infant Health Outcomes?"
 description: "An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States"
 toc: true
 draft: false
@@ -24,10 +24,9 @@ Thus, Group 14 was interested in taking a closer look into the current landscape
 3) There is a statistically significant difference between the birthweights of mothers who smoke and mothers who do not smoke. <br>
 4) There has been a consistent and considerable decline for the majority of races in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
 5) The average gestation period per state is greater in states with a higher percentage of mothers who smoked during pregnancy. <br>
-6) 
-7) APGAR Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
-8) BMI was the 8th most significant feature in predicting APGAR score, while cigarette use was the 4th through 7th.
-9) BMI was the second most significant feature in predicting APGAR score, while cigarette use in general did not prove to be significant at all.<hr>
+6) APGAR Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
+7) BMI was the 8th most significant feature in predicting APGAR score, while cigarette use was the 4th through 7th.
+8) BMI was the second most significant feature in predicting APGAR score, while cigarette use in general did not prove to be significant at all.<hr>
 
 
 #### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?
@@ -187,8 +186,13 @@ smoker_gt <- gt(smoker_data) |>
 smoker_gt
 ```
 
+In tandem with the results of the first table, we can see the percentage of mothers who smoke across all races differ. However, we sought to establish the regardless of race, smoking has negative consequences towards the baby, which, in this case, we measure through its birth weight and APGAR score, which the score of a test given to check the health of the baby after being born, ranging from 1 to 10. By comparing the birth weight of babies of smokers to the babies of non-smokers, we can see that across all races, the mean birth weight of babies of smokers was significant less, varying from 138 to 259 grams. 
 
-In tandem with the results of the first table, we can see the percentage of mothers who smoke across all races differ. However, we sought to establish the regardless of race, smoking has negative consequences towards the baby, which, in this case, we measure through its birth weight and APGAR score, which the score of a test given to check the health of the baby after being born, ranging from 1 to 10. By comparing the birth weight of babies of smokers to the babies of non-smokers, we can see that across all races, the mean birth weight of babies of smokers was significant less, varying from 138 to 259 grams. Similarly, the APGAR scores of the baby whose mother did not smoke were consistently greater, adding anywhere from 0.03 to 0.21, to the score. As a result, based on the table, we can establish an inverse relationship between a mother who smokes and the mean birth weight. That is, in each race, if a mother smokes, the mean birth weight will be lower. However, we cannot definitively establish that all variation in mean birth weight is solely due to smoke. In a mother's lifestyle, there are a number of different physical factors that determine birth weight such as BMI, amount of daily exercise or even mental factors such as the emotional support of the father. Similarly, we are assuming the sample of births are representative of the total population, which can be difficult to maintain for races with less populations. In order to definitively claim a relationship, we would need ideally validate that all data population is a representative sample. There are also interesting cross-race differences in the data. For example, the mean birth weight of a baby of an American Indian or Alaskan native mother who smokes is greater than the mean birth weight of a baby of an Asian mother who does not smoke. This is also reflected in the APGAR score, where the APGAR score of an AIAN baby from a mother who smokes is only, on average, 0.03 higher than its non-smoking mother counterpart. This begs the question whether there are lifestyle choices to overcome the negative effects of smoking, or if, through either genetics or historical environment, AIAN mothers are naturally immune to its effects. It could also be the case that AIAN babies simply weigh more, as genetically they are able to retain a greater number of nutrients from their mother. Further statistical analysis and causality testing will need to be applied to determine the root cause, but, in the meantime, we can claim that non-smokers produce healthier babies, both in birth weight and APGAR score, than smokers.
+Similarly, the APGAR scores of the baby whose mother did not smoke were consistently greater, adding anywhere from 0.03 to 0.21, to the score. As a result, based on the table, we can establish an inverse relationship between a mother who smokes and the mean birth weight. That is, in each race, if a mother smokes, the mean birth weight will be lower. However, we cannot definitively establish that all variation in mean birth weight is solely due to smoke. In a mother's lifestyle, there are a number of different physical factors that determine birth weight such as BMI, amount of daily exercise or even mental factors such as the emotional support of the father. Similarly, we are assuming the sample of births are representative of the total population, which can be difficult to maintain for races with less populations. In order to definitively claim a relationship, we would need ideally validate that all data population is a representative sample. 
+
+There are also interesting cross-race differences in the data. For example, the mean birth weight of a baby of an American Indian or Alaskan native mother who smokes is greater than the mean birth weight of a baby of an Asian mother who does not smoke. This is also reflected in the APGAR score, where the APGAR score of an AIAN baby from a mother who smokes is only, on average, 0.03 higher than its non-smoking mother counterpart. This begs the question whether there are lifestyle choices to overcome the negative effects of smoking, or if, through either genetics or historical environment, AIAN mothers are naturally immune to its effects. It could also be the case that AIAN babies simply weigh more, as genetically they are able to retain a greater number of nutrients from their mother. 
+
+Further statistical analysis and causality testing will need to be applied to determine the root cause, but, in the meantime, we can claim that non-smokers produce healthier babies, both in birth weight and APGAR score, than smokers.
 
 ---
 
@@ -421,6 +425,15 @@ print(combined_plot)
 
 ---
 
+#####**Research Question 4: What is the prevailing trend in the incidence of maternal smoking during pregnancy over the past eight years in the United States?**#####
+
+Our previous analysis (i.e. Research Questions 1-3) has demonstrated a strong association between smoking during pregnancy on the birthweight of the infant and their APGAR scores five minutes after birth. Therefore, we were curious to explore what the overall trend has been like over the past 8 years on the prevalence of smoking during pregnancy for different racial groups. In particular, we were interested in determining if there is an upward or downward trend. If there were an increase in the incidence of maternal smoking during pregnancy, this would underscore the urgency for enhanced health policies and preventive initiatives, imperative to minimize the escalating prevalence of this behavior.
+
+In this analysis, a mother has been classified as a smoker if she has smoked through all trimesters of her pregnancy. In Figure 2, we can examine how there has been a steady decrease in the proportion of mothers who smoked during pregnancy for all racial groups from 2014 - 2021. The largest decrease in the proportion of mothers who smoked during pregnancy is for the racial group ‘White’, followed by ‘More than one race’ and ‘AIAN’. The smallest change in the proportion of mothers who smoked during pregnancy is for ‘Asian’ and ‘Hispanic’ racial groups. This is expected as they were also the racial groups that had the overall least amount of mothers who smoked during pregnancy as found in Table 1. In terms of ramifications, the downward trend in the prevalence of smoking is a positive sign as it may indicate that mothers are becoming more aware of the detrimental effects of smoking during pregnancy. 
+
+As further analysis, it is worthwhile to explore and identify the underlying factors driving this decrease in the prevalence of smoking. In particular, it would be important to see whether the implementation of certain health policies correlates with the most significant reductions in the proportion of mothers engaging in smoking during pregnancy. Aligning the timeline of policy enactment with the periods exhibiting the most substantial declines would provide valuable insights into the effectiveness of these interventions.
+
+
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 
@@ -469,6 +482,18 @@ ggplot(result, aes(x = Race, y = PercentageSmokers, fill = Year)) +
         legend.key.width = unit(1, "cm"))
 
 ```
+
+---
+
+#####**Research Question 5: Is there an association between the proportion of mothers who smoke in a certain state and the average gestation period for that state?**#####
+
+Besides measuring the impact of smoking on infant health outcomes (i.e. APGAR score and birthweight), we were curious to explore if there were any associations between mothers who smoked and its impact on a maternal health outcome (such as gestation period). We wanted to determine if there was a relationship between the proportion of mothers who smoked in a certain state and the average gestation period of mothers in that state. The gestation period is defined as the time between conception and birth. Previous research has determined that smoking can lead to earlier birth in the infant (i.e. shorter gestation). This analysis for Research Question 5 would also provide visualization to determine what states in America have the highest proportion of smoking mothers, which can help with creating better-targeted health programs in these populations. 
+
+In Figure 3, the numbers on the states represent the average gestation period of the mothers in that state. The states are colored based on a gradient dependent on the proportion of mothers who smoked during pregnancy in that state. Overall, states which have a higher proportion of smoking mothers, have shorter gestation periods. As an example, West Virginia and Kentucky have the highest proportion of mothers who smoke and the shortest average gestation periods (38.1 weeks). Once again, we cannot make any causality statements between smoking during pregnancy and gestation periods. However, it would be worthwhile to look into other data sets showing the prevalence of other risk factors (proportion of mothers with diabetes or high blood pressure) in mothers in states like West Virginia that have the shortest gestation period; it is highly unlikely that only smoking during pregnancy is the contributor to low gestation periods. 
+
+It is also equally important to note that the differences in gestation periods between states, at a glance, seem only marginally different. For further analysis, hypothesis tests will be used to determine if there are statistically significant differences between the states. 
+
+
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 data_new <- read_csv(here::here('Natality_New_3.csv'))
 if (!requireNamespace("devtools", quietly = TRUE)) {
@@ -563,61 +588,10 @@ ggplot() +
 
 ```
 
+---
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
-# model looking at gestation
-filtered_data_model_2 <- data %>%
-  select(cig1_r, cig2_r, cig3_r, dbwt, oegest_comb) %>%
-  filter(
-    cig1_r != 6,
-    cig2_r != 6,
-    cig3_r != 6,
-    dbwt != 9999
-  ) %>%
-  mutate(Smoker = ifelse(cig1_r != 0 & cig2_r != 0 & cig3_r != 0, 1, 0))
+####Research Question 5: Are We Able to Predict Birth Weight Accurately?
 
-
-#filtered_data_model_2
-
-# Assuming you have filtered_data_model_2 from your previous code
-# Replace 'filtered_data_model_2' with the actual name of your data frame
-
-linear_model <- lm(dbwt ~ oegest_comb + Smoker, data = filtered_data_model_2)
-
-# Print the summary of the linear regression model
-#summary(linear_model)
-
-# Extract coefficients, standard errors, t-values, and p-values from the summary
-coef_table <- coef(summary(linear_model))
-
-# Create a data frame
-table_data <- as.data.frame(coef_table)
-
-# Add a row for the F-statistic with a different variable name
-table_data <- rbind(table_data, F_statistic = c(F_stat = linear_model$fstatistic[1], DF1 = linear_model$fstatistic[2], DF2 = linear_model$fstatistic[3]))
-
-# Rename the columns
-colnames(table_data) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
-
-# Print the data frame
-#table_data
-
-
-```
-## Note on Attribution
-
-In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
-
-
-If you are directly quoting from a source, please make that clear. You can show quotes using `>` like this
-
-```
-> To be or not to be.
-```
-
-> To be or not to be.
-
--------
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #recode race column in data
@@ -783,11 +757,43 @@ birth_weight_gt <- gt(birth_weight_tibble) |>
 apgar5_gt
 ```
 
-We choose MMSE to validate our model because 
+In order to predict APGAR score, we used a linear regression model with a number of features strictly related to both the mother's background and present conditions during pregnancy. These include the mother's race, education, prenatal visits, presence of diabetes, etc. Among these variables are smoking, including prior cigarette use and current cigarette use per trimester, and BMI. I broke the process down into three parts: first, I ran the model with all the features; next, I selected only the 5 best features, then only the 3 best features. I assumed that the data followed a linear trend. From my results, I found that the model had a worse performance when the number of features was limited. As a result, we can claim that the model accuracy is correlated with the number of features. 
+
+In order to validate our claim, we used two measures: MMSE (minimum mean squared error) and AIC (Akaike Information Criterion). MMSE was selected because it is sensitive to outliers due to its lack of square root. This means that from a change in features, we can see a steeper decrease in MMSE if the model is truly better. AIC was selected because it strikes a good balance between the fit for the model, avoiding overfitting, and selecting for an appropriate number of features. From the table above, we can see that both MMSE and AIC decreased as the model was ran with more features. MMSE decreased very slightly, with the actual change being close to 0, while AIC had a more significant shift, decreasing by around 200 first, then 20. 
+
+We can see the most important features by p-value are BMI, prenatal care, and prior diagnosis of diabetes, with BMI being the variable with the most significant p-value. As a result, we can see that the mother's lifestyle is the most important factor, surpassing both early care of the baby and even health issues incurred by the mother.
+
+Regardless of the improved accuracy with more features, the slight shift in MMSE, combined with the extremely small adjusted R-squared, tells us that a small amount of the variation, around 0.004, is explainable through the model. As a result, we can conclude that a linear model is not a good fit for the data. This could have a number of explanations: the data itself does not follow a linear pattern, the sheer amount of data makes it hard to form a trend line, the features themselves are not informative enough and, therefore, lack the predictive power, etc. In order to determine the underlying cause, more data exploration is needed, including a plot of each variable against APGAR score, to make sure a linear relationship is present.
+
+As a result, we can conclude that based on a linear model, BMI is the most significant variable in predicting APGAR score. But based on our metrics, a linear model should not be used in favor of an alternative model decided by analyzing the data farther. Based on this, we are unable to accurately predict birth weight. 
+
+---
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 birth_weight_gt
 ```
 
-Conclusion, 
+
+####Research Question 5: Are We Able to Predict Birth Weight Accurately?
+
+Similar to predicting APGAR score, in order to predict birth weight, we used a linear regression model with a number of features strictly related to both the mother's background and present conditions during pregnancy. These include the mother's race, education, prenatal visits, presence of diabetes, etc. From my results, I found that the model had a worse performance when the number of features was limited. As a result, we can claim that the model accuracy is correlated with the number of features. 
+
+In order to validate our claim, we used the same two measures as before. However, unlike the previous model, from the table above, we can see that both MMSE and AIC decreased as the model was ran with less features. MMSE decreased very slightly, much less than the previous model, with the actual change being extremely close to 0, while AIC had a more significant shift, decreasing by around 13 first, then 3, which is significant less than the previous model. However, the adjusted R-squared is much higher, around 0.5, which indicates that the model moderately explains the variation.
+
+We can see the most important features by p-value are currently having diabetes, BMI, and prenatal visits, with current diabetes being the variable with the most significant p-value. Regardless that BMI is not the most significant variable, we can still see that the mother's lifestyle is the most important factor, which surpasses prenatal visits in significance and is reflected in diabetes.
+
+Regardless of the improved accuracy with less features, the slight shift in both MMSE, and AIC tells us that the model does not improve significantly. However, this is not due to the model being linear, as based on the adjusted R-squared it does a decent job, and the relationship seems to be linear. Instead, this could be due to the features themselves not helping predict, or the data being too populated to draw more significant linear relationships. In order to fix this, a smaller sample could be used or introduce a new section in the data to collect more relevant, predictive features.
+
+As a result, we can conclude that based on a linear model, the mother's lifestyle accounts for two out of the three most significant variables in predicting birth weight. But based on our metrics, further data analysis and exploration should be done in order to improve the linear model. As a result, we can currently conclude that we can only moderately predict the birth weight of the baby.
+
+---
+
+####**Next Steps for Explorations**####
+
+Our key findings in this study underscore the pronounced association between maternal smoking and adverse outcomes such as reduced birthweight and lower APGAR scores post-birth. Moreover, our exploratory analysis has shed light on the declining rates of smoking during pregnancy in American mothers in all racial groups, identifying which states in America have the highest proportion of smoking mothers and its association with the mean gestation period of mothers in that state.
+
+Whilst our analysis has provided an in-depth examination of the current status of infant health outcomes as related to smoking during pregnancy, it is crucial to acknowledge the limitations inherent in our analysis. One key limitation is that the study lacks a comprehensive examination of socioeconomic and cultural factors that may influence both maternal smoking behavior and infant health outcomes. Moreover, while we have explored the impact on birthweight and APGAR scores, other potential infant health outcomes related to maternal smoking, such as respiratory issues or developmental delays, were not within the scope of this analysis. By including data that provided a diverse array of long-term infant health outcomes (such as the prevalence of childhood cancers) a more holistic analysis could have been executed. Smoking not only has short-term consequences (i.e. birth weight and APGAR score) but can lead to much more detrimental long-term effects. These long-term effects were not within the scope of our study. 
+
+Despite these limitations, our study underscores the urgency of continued research and the implementation of targeted interventions to address maternal smoking during pregnancy and enhance the well-being of both mothers and infants.
+
