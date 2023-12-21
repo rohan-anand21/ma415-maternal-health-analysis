@@ -774,9 +774,6 @@ As a result, we can conclude that based on a linear model, BMI is the most signi
 birth_weight_gt
 ```
 
-
-#### **Research Question 7: Are We Able to Predict Birth Weight Accurately?**
-
 Similar to predicting APGAR score, in order to predict birth weight, we used a linear regression model with a number of features strictly related to both the mother's background and present conditions during pregnancy. These include the mother's race, education, prenatal visits, presence of diabetes, etc. From my results, I found that the model had a worse performance when the number of features was limited. As a result, we can claim that the model accuracy is correlated with the number of features. 
 
 In order to validate our claim, we used the same two measures as before. However, unlike the previous model, from the table above, we can see that both MMSE and AIC decreased as the model was ran with less features. MMSE decreased very slightly, much less than the previous model, with the actual change being extremely close to 0, while AIC had a more significant shift, decreasing by around 13 first, then 3, which is significant less than the previous model. However, the adjusted R-squared is much higher, around 0.5, which indicates that the model moderately explains the variation.
