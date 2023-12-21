@@ -1,5 +1,5 @@
 ---
-title: Data
+title: Data Collection and Cleaning 
 description: We describe the sources of our data and the cleaning process.
 toc: true
 draft: false
