@@ -1,5 +1,5 @@
 ---
-title: "Insert catchy title here"
+title: "Big Picture"
 description: "Insert catchy description here"
 toc: true
 draft: false

@@ -23,11 +23,14 @@ Thus, Group 14 was interested in taking a closer look into the current landscape
 <hr>
 #### **Summary of key findings:**<br>
 1) The race with the highest proportion of mothers who smoke before pregnancy are AIAN (Amerian Indian and Alaskan natives). <br>
-2) Regardless of race, there is a negative correlation between mean birth weight and smoking/APGAR score
-3)
-2) There has been a consistent and considerable decline in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
-3) Additional key finding...<br>
-4) Another key finding...
+2) Regardless of race, there is a negative correlation between mean birth weight and smoking/APGAR score. <br>
+3) The greater proportion of mothers who do not smoke have a higher birth weight than the proportion of mothers who do smoke. <br>
+4) There has been a consistent and considerable decline for the majority of races in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
+5) The average gestation period per state is greater in states with a higher percentage of mothers who smoked during pregnancy. <br>
+6) 
+7) Apgar Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
+8) BMI was the 8th most significant feature in predicting Apgar score, while cigarette use was the 4th through 7th.
+9) BMI was the second most significant feature in predicting Apgar score, while cigarette use in general did not prove to be significant at all.
 
 <hr>
 #### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?

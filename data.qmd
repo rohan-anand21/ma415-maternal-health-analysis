@@ -88,6 +88,27 @@ To clean our data set, we followed these steps:
 Below is our function and code used to combine the data:
 
 ```{r}
+library(here)
+library(tidyverse)
+library(readr)
+
+#read csv data into variable, from years 2006 - 2021
+natality_csv_2021 <- read_csv(here('dataset-ignore/data-ignore', 'nat2021us.csv'), n_max = 500000, show_col_types = FALSE)
+natality_csv_2020 <- read_csv(here('dataset-ignore/data-ignore', 'nat2020us.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2019 <- read_csv(here('dataset-ignore/data-ignore', 'nat2019us.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2018 <- read_csv(here('dataset-ignore/data-ignore', 'nat2018us.csv'), n_max = 100000, show_col_types = FALSE)
+natality_csv_2017 <- read_csv(here('dataset-ignore/data-ignore', 'natl2017.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2016 <- read_csv(here('dataset-ignore/data-ignore', 'natl2016.csv'), n_max = 100000, show_col_types = FALSE)
+natality_csv_2015 <- read_csv(here('dataset-ignore/data-ignore', 'natl2015.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2014 <- read_csv(here('dataset-ignore/data-ignore', 'natl2014.csv'), n_max = 100000, show_col_types = FALSE)
+natality_csv_2013 <- read_csv(here('dataset-ignore/data-ignore', 'natl2013.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2012 <- read_csv(here('dataset-ignore/data-ignore', 'natl2012.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2011 <- read_csv(here('dataset-ignore/data-ignore', 'natl2011.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2010 <- read_csv(here('dataset-ignore/data-ignore', 'natl2010.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2009 <- read_csv(here('dataset-ignore/data-ignore', 'natl2009.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2008 <- read_csv(here('dataset-ignore/data-ignore', 'natl2008.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2007 <- read_csv(here('dataset-ignore/data-ignore', 'natl2007.csv'), n_max = 1000, show_col_types = FALSE)
+natality_csv_2006 <- read_csv(here('dataset-ignore/data-ignore', 'natl2006.csv'), n_max = 1000, show_col_types = FALSE)
 
 #combines data together (uses 2021 columns, removes incompatible columns, fills unknown values from 2021 columns with NA)
 
