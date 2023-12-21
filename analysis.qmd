@@ -395,7 +395,8 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
   geom_line(aes(group = SmokingStatus), size = .5, linetype = "dashed") +
   scale_fill_brewer(palette = "Blues") +
   facet_wrap(~ SmokingStatus, scales = 'free_y') +
-  labs(title = "Figure 1: Distribution of birth weights for mothers who smoke and mothers who do not smoke
+  labs(title = "Figure 1: Distribution of birth weights for mothers who smoke \n 
+  and mothers who do not smoke
 ",
        subtitle = "Statistically significant difference between the mean birth weights (p-value < 0.05)",
        x = "Birth Weight (grams)",
