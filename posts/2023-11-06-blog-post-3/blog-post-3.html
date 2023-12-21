@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu">
-<meta name="dcterms.date" content="2023-10-30">
+<meta name="dcterms.date" content="2023-11-06">
 
-<title>Group_14 Final Project - Loading and Cleaning our Data</title>
+<title>Group_14 Final Project - Equitablity of Our Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,8 +107,8 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Loading and Cleaning our Data</h1>
-            <p class="subtitle lead">Data Cleaning</p>
+      <h1 class="title">Equitablity of Our Data</h1>
+            <p class="subtitle lead">Data Equity</p>
                       </div>
   </div>
     
@@ -125,14 +125,14 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 30, 2023</p>
+        <p class="date">November 6, 2023</p>
       </div>
     </div>
     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 30, 2023</p>
+        <p class="date-modified">November 6, 2023</p>
       </div>
     </div>
       
@@ -149,10 +149,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>As our data set is very large, the initial step is creating a .rds file that contains a subset of our cleaned data that is manageable to work with. In this file, our cleaned and appropriately-sized data will be in a "load_and_clean_data.R" file. The size of our data set is 1.75 GB, meaning that we will, most likely, only use a subset of our data for downstream analysis. Once we have solidified the key questions that we want to explore, we can further subset the data.</p>
-<p>As an initial step in our data cleaning process, we will be removing all entries that have missing values. We will only keep entries that have zero missing values for each of the variables (i.e.&nbsp;columns) we will be using for analysis.</p>
-<p>As our data has over 200 columns and 3,669,928 observations spanning a wide array of variables related to natality such as birth weight, race of the father, type of delivery the mother had, APGAR score for the health of the baby mother's habits during the pregnancy (e.g smoking) etc., we carefully filtered and assessed which variables would be important to keep and which ones could be removed for the time being. One column was the "Reporting Flag" describing if an entry was present for a particular variable. This compounded unnecessary columns for our data. We have not yet arrived at our completely clean version. Some other columns that we removed are the "recoded" columns. For instance, there were numerous variables like mother's race and age that were "recoded" - i.e.&nbsp;there were multiple columns for the same variable but they were grouped differently. However, we don't need 3 columns all describing race. We kept the variable/columns for race that provided the biggest diversity in the possibilities for race.&nbsp;</p>
-<p>Since we don't have our questions solidified yet, we tried to keep as many of the columns as possible in order to have as much insight into our data for downstream analysis.&nbsp;</p>
+<p>In evaluating our data for equity, the first principle relating to our data set is transparency about the limits of our data. Although we can draw some potential relationships between the race of a mother and a baby's low APGAR score (result of preliminary health test), we need to emphasize that this is only a correlation. We cannot claim causation without further testing which is why we have to be transparent about the nature of the relationships we can easily draw from our data. In further projects, we will clearly state the correlative nature of our findings and avoid suggesting causality where none has been established and will include an accessible explanation of what APGAR scores represent and the potential multifactorial influences on these scores beyond the variables we have studied.</p>
+<p>In our large natality dataset, the principle of beneficence is paramount, demanding that the handling, analysis, and dissemination of data maximize benefits and minimize harm. Our findings have the potential to shape public health efforts, allocate maternal and child health resources, and inform policies that affect expectant individuals and infants. In keeping with beneficence, we approach data cleaning with diligence to avoid unintentionally sidelining vulnerable groups, particularly when eliminating records with missing information, which could lead to biases against those with lesser access to healthcare.</p>
+<p>Furthermore, integrating statistical methods that counteract bias, like multiple imputation, is critical to ensure the validity and relevance of our research. Our duty in managing data is to safeguard individual privacy; it is essential to secure comprehensive anonymization to protect those from smaller groups who might be identifiable. Vigilance is necessary when handling data that might not be entirely reflective of the population, as this could cause misinterpretations influencing public health policies to the detriment of underserved communities. The possibility of exploiting sensitive health data in discriminatory ways highlights the necessity of diligent data handling. Our dedication to conscientious and advantageous data analysis is unwavering, firmly rooted in the principle of beneficence.</p>
+<p>We acknowledge the limitations within our dataset, including the lack of information such as socio-economic status, educational background, and healthcare accessibility. For our studies, we aim to present the intricate nature of human health and avoid creating a bias against the populations which could be made out of overgeneralization. We are also aware that data can be misinterpreted, potentially imbuing harmful narratives or unjust policies. To mitigate this, we attempt to demonstrate our data with clear explanations to prevent misunderstandings that could damage communities. We are dedicated to broadening our research, seeking insights from experts in public health and epidemiology to ensure that our conclusions are supported by well-established research and best practices.</p>
 <p><br>
 </p>
 

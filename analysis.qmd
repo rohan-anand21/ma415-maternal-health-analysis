@@ -425,7 +425,7 @@ print(combined_plot)
 
 ---
 
-####**Research Question 4: What is the prevailing trend in the incidence of maternal smoking during pregnancy over the past eight years in the United States?**####
+####**Research Question 4**: What is the prevailing trend in the incidence of maternal smoking during pregnancy over the past eight years in the United States?
 
 Our previous analysis (i.e. Research Questions 1-3) has demonstrated a strong association between smoking during pregnancy on the birthweight of the infant and their APGAR scores five minutes after birth. Therefore, we were curious to explore what the overall trend has been like over the past 8 years on the prevalence of smoking during pregnancy for different racial groups. In particular, we were interested in determining if there is an upward or downward trend. If there were an increase in the incidence of maternal smoking during pregnancy, this would underscore the urgency for enhanced health policies and preventive initiatives, imperative to minimize the escalating prevalence of this behavior.
 
@@ -485,7 +485,7 @@ ggplot(result, aes(x = Race, y = PercentageSmokers, fill = Year)) +
 
 ---
 
-####**Research Question 5: Is there an association between the proportion of mothers who smoke in a certain state and the average gestation period for that state?**####
+####**Research Question 5**: Is there an association between the proportion of mothers who smoke in a certain state and the average gestation period for that state?
 
 Besides measuring the impact of smoking on infant health outcomes (i.e. APGAR score and birthweight), we were curious to explore if there were any associations between mothers who smoked and its impact on a maternal health outcome (such as gestation period). We wanted to determine if there was a relationship between the proportion of mothers who smoked in a certain state and the average gestation period of mothers in that state. The gestation period is defined as the time between conception and birth. Previous research has determined that smoking can lead to earlier birth in the infant (i.e. shorter gestation). This analysis for Research Question 5 would also provide visualization to determine what states in America have the highest proportion of smoking mothers, which can help with creating better-targeted health programs in these populations. 
 
@@ -590,7 +590,7 @@ ggplot() +
 
 ---
 
-####Research Question 5: Are We Able to Predict Birth Weight Accurately?
+####**Research Question 5: Are We Able to Predict Birth Weight Accurately?
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
@@ -757,7 +757,7 @@ birth_weight_gt <- gt(birth_weight_tibble) |>
 apgar5_gt
 ```
 
-####**Research Question 5: Are We Able to Predict APGAR Score Accurately?**####
+####**Research Question 5: Are We Able to Predict APGAR Score Accurately?
 
 In order to predict APGAR score, we used a linear regression model with a number of features strictly related to both the mother's background and present conditions during pregnancy. These include the mother's race, education, prenatal visits, presence of diabetes, etc. Among these variables are smoking, including prior cigarette use and current cigarette use per trimester, and BMI. I broke the process down into three parts: first, I ran the model with all the features; next, I selected only the 5 best features, then only the 3 best features. I assumed that the data followed a linear trend. From my results, I found that the model had a worse performance when the number of features was limited. As a result, we can claim that the model accuracy is correlated with the number of features. 
 
@@ -777,7 +777,7 @@ birth_weight_gt
 ```
 
 
-####**Research Question 6: Are We Able to Predict Birth Weight Accurately?**####
+####**Research Question 6: Are We Able to Predict Birth Weight Accurately?**
 
 Similar to predicting APGAR score, in order to predict birth weight, we used a linear regression model with a number of features strictly related to both the mother's background and present conditions during pregnancy. These include the mother's race, education, prenatal visits, presence of diabetes, etc. From my results, I found that the model had a worse performance when the number of features was limited. As a result, we can claim that the model accuracy is correlated with the number of features. 
 
@@ -791,7 +791,7 @@ As a result, we can conclude that based on a linear model, the mother's lifestyl
 
 ---
 
-####**Next Steps for Explorations**####
+####**Next Steps for Exploration**
 
 Our key findings in this study underscore the pronounced association between maternal smoking and adverse outcomes such as reduced birthweight and lower APGAR scores post-birth. Moreover, our exploratory analysis has shed light on the declining rates of smoking during pregnancy in American mothers in all racial groups, identifying which states in America have the highest proportion of smoking mothers and its association with the mean gestation period of mothers in that state.
 

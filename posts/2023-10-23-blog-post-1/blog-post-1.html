@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu">
-<meta name="dcterms.date" content="2023-10-30">
+<meta name="dcterms.date" content="2023-10-23">
 
-<title>Group_14 Final Project - Loading and Cleaning our Data</title>
+<title>Group_14 Final Project - Consideration of Datasets</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,8 +107,8 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Loading and Cleaning our Data</h1>
-            <p class="subtitle lead">Data Cleaning</p>
+      <h1 class="title">Consideration of Datasets</h1>
+            <p class="subtitle lead">Description for our three dataset</p>
                       </div>
   </div>
     
@@ -125,14 +125,14 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 30, 2023</p>
+        <p class="date">October 23, 2023</p>
       </div>
     </div>
     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 30, 2023</p>
+        <p class="date-modified">October 23, 2023</p>
       </div>
     </div>
       
@@ -149,12 +149,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>As our data set is very large, the initial step is creating a .rds file that contains a subset of our cleaned data that is manageable to work with. In this file, our cleaned and appropriately-sized data will be in a "load_and_clean_data.R" file. The size of our data set is 1.75 GB, meaning that we will, most likely, only use a subset of our data for downstream analysis. Once we have solidified the key questions that we want to explore, we can further subset the data.</p>
-<p>As an initial step in our data cleaning process, we will be removing all entries that have missing values. We will only keep entries that have zero missing values for each of the variables (i.e.&nbsp;columns) we will be using for analysis.</p>
-<p>As our data has over 200 columns and 3,669,928 observations spanning a wide array of variables related to natality such as birth weight, race of the father, type of delivery the mother had, APGAR score for the health of the baby mother's habits during the pregnancy (e.g smoking) etc., we carefully filtered and assessed which variables would be important to keep and which ones could be removed for the time being. One column was the "Reporting Flag" describing if an entry was present for a particular variable. This compounded unnecessary columns for our data. We have not yet arrived at our completely clean version. Some other columns that we removed are the "recoded" columns. For instance, there were numerous variables like mother's race and age that were "recoded" - i.e.&nbsp;there were multiple columns for the same variable but they were grouped differently. However, we don't need 3 columns all describing race. We kept the variable/columns for race that provided the biggest diversity in the possibilities for race.&nbsp;</p>
-<p>Since we don't have our questions solidified yet, we tried to keep as many of the columns as possible in order to have as much insight into our data for downstream analysis.&nbsp;</p>
-<p><br>
-</p>
+<p>The first dataset considered for analysis is from the IPUMS CPS website. The IPUMS CPS provides data such as demographic information, rich employment data, program participation and supplemental data on topics such as fertility, tobacco use, volunteer activities, voter registration, computer and internet use, food security, and more based on census and survey data collected by the U.S. Bureau of Labor Statistics. The primary purpose of collecting such data is to gather monthly labor force statistics for the U.S. population to provide up-to-date labor force status of the civilian non-institutionalized population. The dataset consists of 4,117,037 rows and 21 columns. The columns include survey year, household serial number, month, age, sex, total personal income, insurance type, medicare coverage etc. These variables offer the ability to take an in-depth look into the correlation between medicare, socioeconomic status, and demographic information and see if there are racial disparities. The main questions we hope to address are how is race correlated with medicare as primary coverage, do certain states show more pronounced racial disparities in healthcare coverage than others, and has there been a change in the proportion of primary coverage for each race between 2010 and 2013?. Due to the large size of the dataset, there may be computational challenges when performing certain statistical operations. As a result, the multifactorial influences on healthcare coverage (for example, race interacting with income or primary coverage) might require sophisticated modeling techniques.</p>
+<p>The second dataset considered for analysis is from the U.S. Chronic Disease Indicators (CDI) database provided by the Centers for Disease Control and Prevention (CDC). The link for the dataset is: The link for the dataset is: https://chronicdata.cdc.gov/Chronic-Disease-Indicators/U-S-Chronic-Disease-Indicators-CDI-/g4ie-h725/data The U.S. CDI data is primarily collected to monitor and track the prevalence and impact of chronic diseases across the United States. The dataset consists of 1,185,676 rows and 30 columns. Although the dataset is provided from the U.S. government database and comes tidied, we plan to conduct further cleaning to ensure the data meets our specific requirements and analytical needs. To investigate the prevalence and disparities in chronic diseases in the U.S., we extracted the dataset using various variables: race, sex, questions related to alcohol consumption, chronic diseases, and mortality, year (collected from 2010-2019), states, and other relevant variables. These variables would demonstrate the correlation between chronic diseases, socioeconomic status, and demographic information and investigate the association between chronic diseases and their risk factors. This analysis could then guide us in formulating inquiries regarding the influence of socioeconomic factors on chronic disease prevalence, as well as drawing potential racial disparities within these health outcomes. The main questions we hope to address are: what associations can be observed between risk factors like alcohol consumption and the prevalence of certain chronic diseases?, how does sex influence the prevalence and type of chronic diseases and mortality rates?, how have the trends in chronic disease prevalence evolved over the years between 2010 and 2019?, and what correlations can be established between chronic diseases and mortality rates?. While the dataset is vast, it might cause a lack of granularity in specific areas. Furthermore, the relationship between demographics, chronic disease prevalence, and some socioeconomic factors of socioeconomic might be challenging to interpret the dataset with accuracy.</p>
+<p>The third dataset we have chosen comes from the National Center for Health Statistics and provides observations from 2021 births based on a 100% sample of birth certificates from some states and a 50% sample of birth certificates from the remaining states. The link is: https://www.nber.org/research/data/vital-statistics-natality-birth-data. There are 3,669,928 rows and 225 columns. The columns consist of three main types of data: demographic data such as date of birth, age of mother, marital status, race, sex, etc., health data such as birth weight, infections present in mother, prenatal care, presence of birth defects, etc., and geographic data such as birth state. The purpose is to have an aggregated record of the circumstances surrounding U.S. births. We are able to load and clean the data. The data is a downloadable csv file from the website which can be imported in R studio. The main questions that we would like to address are whether race is correlated with cigarette use in each trimester, differences in prenatal care and apgar score by race, differences in rates of gestation for different races, and how does the payment source for delivery in 2020 vary by region and by race? Some challenges that I foresee are reading and doing time efficient analysis because the csv has an extreme number of observations. However, there are packages such as data.table that contains functions such as fread, which reads a large csv faster, and memory.limit() which allows the entire csv to be loaded at once. Also, another challenge would be selecting columns which have a high correlation coefficient so our analysis will uncover the present disparities.</p>
 
 
 

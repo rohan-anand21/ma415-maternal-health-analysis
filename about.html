@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu">
-<meta name="dcterms.date" content="2023-10-30">
 
-<title>Group_14 Final Project - Loading and Cleaning our Data</title>
+<title>Group_14 Final Project - About Our Team</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,22 +23,21 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -62,7 +59,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -72,7 +69,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Group_14 Final Project</span>
     </a>
   </div>
@@ -82,19 +79,19 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">
+    <a class="nav-link active" href="./about.html" aria-current="page">
  <span class="menu-text">About Our Team</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../big_picture.html">
+    <a class="nav-link" href="./big_picture.html">
  <span class="menu-text">America’s Maternal Health is Headed in the Wrong Direction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../analysis.html">
+    <a class="nav-link" href="./analysis.html">
  <span class="menu-text">Analysis: Does Smoking Affect Infant Health Outcomes?</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../data.html">
+    <a class="nav-link" href="./data.html">
  <span class="menu-text">Data Collection and Cleaning</span></a>
   </li>  
 </ul>
@@ -104,61 +101,63 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Loading and Cleaning our Data</h1>
-            <p class="subtitle lead">Data Cleaning</p>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">October 30, 2023</p>
-      </div>
-    </div>
-    
-      <div>
-      <div class="quarto-title-meta-heading">Modified</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 30, 2023</p>
-      </div>
-    </div>
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<div class="quarto-about-jolla">
+ <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">About Our Team</h1>
+</div>
+<div class="quarto-title-meta">
+  </div>
+</header><main class="content" id="quarto-document-content">
+<p><img src="images/data_scientists.jpg" class="img-fluid"></p>
+<p>This is a website for the final project for MA415 Data Science with R by Team 14. The members of this team are below.</p>
+<section id="tianyu-wu" class="level2">
+<h2 data-anchor-id="tianyu-wu">Tianyu Wu</h2>
+<p>I am a senior, majoring in Stats.</p>
+<p>https://github.com/tianyuwu2</p>
+</section>
+<section id="aiganysh-ulanova" class="level2">
+<h2 data-anchor-id="aiganysh-ulanova">Aiganysh Ulanova</h2>
+<p>I am a junior, double majoring in Data Science and Biochemistry &amp; Molecular Biology.</p>
+<p>https://github.com/aulanova</p>
+</section>
+<section id="rohan-anand" class="level2">
+<h2 data-anchor-id="rohan-anand">Rohan Anand</h2>
+<p>I am a junior, majoring in Data Science and minoring in Math.</p>
+<p>https://github.com/rohan-anand21</p>
+</section>
+<section id="jin-kyu-jaden-cho" class="level2">
+<h2 data-anchor-id="jin-kyu-jaden-cho">Jin Kyu (Jaden) Cho</h2>
+<p>I am a senior, majoring in Data Science and minoring in Econ.</p>
+<p>https://github.com/jaden4034</p>
+</section>
+<section id="seokhoon-shin" class="level2">
+<h2 data-anchor-id="seokhoon-shin">Seokhoon Shin</h2>
+<p>I am a junior, majoring in Data Science and minoring in Graphic Design</p>
+<p>https://github.com/seokhoonshin</p>
+<!-- Please leave in the information below -->
+<section id="about-this-template." class="level3">
+<h3 data-anchor-id="about-this-template.">About this Template.</h3>
+<p>This is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463).</p>
 
 
-
-
-<p>As our data set is very large, the initial step is creating a .rds file that contains a subset of our cleaned data that is manageable to work with. In this file, our cleaned and appropriately-sized data will be in a "load_and_clean_data.R" file. The size of our data set is 1.75 GB, meaning that we will, most likely, only use a subset of our data for downstream analysis. Once we have solidified the key questions that we want to explore, we can further subset the data.</p>
-<p>As an initial step in our data cleaning process, we will be removing all entries that have missing values. We will only keep entries that have zero missing values for each of the variables (i.e.&nbsp;columns) we will be using for analysis.</p>
-<p>As our data has over 200 columns and 3,669,928 observations spanning a wide array of variables related to natality such as birth weight, race of the father, type of delivery the mother had, APGAR score for the health of the baby mother's habits during the pregnancy (e.g smoking) etc., we carefully filtered and assessed which variables would be important to keep and which ones could be removed for the time being. One column was the "Reporting Flag" describing if an entry was present for a particular variable. This compounded unnecessary columns for our data. We have not yet arrived at our completely clean version. Some other columns that we removed are the "recoded" columns. For instance, there were numerous variables like mother's race and age that were "recoded" - i.e.&nbsp;there were multiple columns for the same variable but they were grouped differently. However, we don't need 3 columns all describing race. We kept the variable/columns for race that provided the biggest diversity in the possibilities for race.&nbsp;</p>
-<p>Since we don't have our questions solidified yet, we tried to keep as many of the columns as possible in order to have as much insight into our data for downstream analysis.&nbsp;</p>
-<p><br>
-</p>
-
-
-
-</main> <!-- /main -->
+</section>
+</section>
+</main> 
+  <hr class="about-sep">
+   <div class="about-links">
+  <a href="https://github.com/sussmanbu/" class="about-link">
+    <i class="bi bi-github"></i>
+     <span class="about-link-text">Github</span>
+  </a>
+</div>
+</div>
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -179,13 +178,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const clipboard = new window.ClipboardJS('.code-copy-button', {
     target: function(trigger) {
       return trigger.previousElementSibling;

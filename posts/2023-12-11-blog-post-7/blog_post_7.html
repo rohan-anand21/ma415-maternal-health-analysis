@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu">
-<meta name="dcterms.date" content="2023-10-30">
+<meta name="author" content="Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu">
+<meta name="dcterms.date" content="2023-12-11">
 
-<title>Group_14 Final Project - Loading and Cleaning our Data</title>
+<title>Group_14 Final Project - Developing a Thesis and Preparing Plots for Presentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,8 +107,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Loading and Cleaning our Data</h1>
-            <p class="subtitle lead">Data Cleaning</p>
+      <h1 class="title">Developing a Thesis and Preparing Plots for Presentation</h1>
                       </div>
   </div>
     
@@ -118,21 +117,21 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu </p>
+               <p>Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu </p>
             </div>
     </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 30, 2023</p>
+        <p class="date">December 11, 2023</p>
       </div>
     </div>
     
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 30, 2023</p>
+        <p class="date-modified">December 11, 2023</p>
       </div>
     </div>
       
@@ -149,12 +148,16 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>As our data set is very large, the initial step is creating a .rds file that contains a subset of our cleaned data that is manageable to work with. In this file, our cleaned and appropriately-sized data will be in a "load_and_clean_data.R" file. The size of our data set is 1.75 GB, meaning that we will, most likely, only use a subset of our data for downstream analysis. Once we have solidified the key questions that we want to explore, we can further subset the data.</p>
-<p>As an initial step in our data cleaning process, we will be removing all entries that have missing values. We will only keep entries that have zero missing values for each of the variables (i.e.&nbsp;columns) we will be using for analysis.</p>
-<p>As our data has over 200 columns and 3,669,928 observations spanning a wide array of variables related to natality such as birth weight, race of the father, type of delivery the mother had, APGAR score for the health of the baby mother's habits during the pregnancy (e.g smoking) etc., we carefully filtered and assessed which variables would be important to keep and which ones could be removed for the time being. One column was the "Reporting Flag" describing if an entry was present for a particular variable. This compounded unnecessary columns for our data. We have not yet arrived at our completely clean version. Some other columns that we removed are the "recoded" columns. For instance, there were numerous variables like mother's race and age that were "recoded" - i.e.&nbsp;there were multiple columns for the same variable but they were grouped differently. However, we don't need 3 columns all describing race. We kept the variable/columns for race that provided the biggest diversity in the possibilities for race.&nbsp;</p>
-<p>Since we don't have our questions solidified yet, we tried to keep as many of the columns as possible in order to have as much insight into our data for downstream analysis.&nbsp;</p>
-<p><br>
-</p>
+<p>Generalized Thesis</p>
+<p>Our thesis is exploring the impact of the mother smoking on the health of the baby. Our first plot explores this by graphing maternal age groups with groups of cigarettes smoked. We found that the number of cigarettes smoked is positively correlated with birth weight. We incorporated historical data by looking at cigarette consumption by race before pregnancy from 2014 to 2021. We found that although some races smoke less than others, there is a positive trend in the number of cigarettes smoked. Our thesis expands by including external factors such as BMI, prenatal care start date, race of the mother in order to predict the birth weight of the baby. Our linear regression found that smoking status, as expected, was extremely statistically significant, while mothers’ race was not. Similarly, we used the same features for a logistic regression model, achieving an AUC = 0.59, meaning it is able to predict birth weight by more than random chances, indicating the features are good predictors.</p>
+<p>Polishing Plots</p>
+<p>We first want to make titles of each plot to only include key information for a more organized look, such as illustrating the variables like “Preterm Percentage by Mother’s Race”. We also have to ensure the titles are concise and informative. For example, “Average Birth Weight by Maternal Age and Smoking Status.” Then, more specific information will be included in the subtitles. For example, we can add years and races we used for that plot since we do not use continuous years for our visualization, and we recode race categories for only grouping by major races.</p>
+<p>We will either use “annotate()” to add a note on the plot, like the significant trend, or “scale_fill_manual” to highlight key groups using different colors.</p>
+<p>We will set our plots to the same color by adding “scale_fill_brewer(palette =”Set3”)”. This kind of color is more distinct for our data, since years and more than one percentage variable need to be shown in one plot.</p>
+<p>We will also add more plots having at least one same variable as other plots to make our storyline more cohesive and consistent. Since the plots we have all include different variables and it seems like there are no straightforward relationships between each plot.</p>
+<p>We will also try to standardize the variables we are using since the RMSE value we get for now is 500&lt;, and standardizing the variable can help us solve this issue.</p>
+<p>We received the feedback that treating a continuous variable as a binary outcome can reduce the amount of information, so we will probably try to use logistic regression for further analysis.</p>
+<p>We need to adjust the x-axis text degree for some plots as they have some labels overlapped. We also need to set a consistent axis value range to provide a better look at the relationship of variables when analyzing two plots together.</p>
 
 
 
