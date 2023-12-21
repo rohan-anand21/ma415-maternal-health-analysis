@@ -780,6 +780,14 @@ birth_weight_gt <- gt(birth_weight_tibble) |>
     title = md("**Model for Birth Weight Data**"),
   ) 
 
-print(apgar5_gt)
-print(birth_weight_gt)
+apgar5_gt
 ```
+
+We choose MMSE to validate our model because 
+
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
+birth_weight_gt
+```
+
+Conclusion, 
