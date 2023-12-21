@@ -817,7 +817,6 @@ summary(apgar_model_5_features)
 
 You will
 
-
 * Introduce what motivates your Data Analysis (DA)
   * Which variables and relationships are you most interested in?
   * What questions are you interested in answering?
