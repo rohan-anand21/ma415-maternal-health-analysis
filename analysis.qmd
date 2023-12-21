@@ -425,7 +425,7 @@ print(combined_plot)
 
 ---
 
-####**Research Question 4**: What is the prevailing trend in the incidence of maternal smoking during pregnancy over the past eight years in the United States?
+#### **Research Question 4**: What is the prevailing trend in the incidence of maternal smoking during pregnancy over the past eight years in the United States?
 
 Our previous analysis (i.e. Research Questions 1-3) has demonstrated a strong association between smoking during pregnancy on the birthweight of the infant and their APGAR scores five minutes after birth. Therefore, we were curious to explore what the overall trend has been like over the past 8 years on the prevalence of smoking during pregnancy for different racial groups. In particular, we were interested in determining if there is an upward or downward trend. If there were an increase in the incidence of maternal smoking during pregnancy, this would underscore the urgency for enhanced health policies and preventive initiatives, imperative to minimize the escalating prevalence of this behavior.
 
@@ -590,7 +590,7 @@ ggplot() +
 
 ---
 
-#### **Research Question 6: Are We Able to Predict APGAR Score Accurately?
+#### **Research Question 6**: Are We Able to Predict APGAR Score Accurately?
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
