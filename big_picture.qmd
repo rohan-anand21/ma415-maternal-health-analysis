@@ -261,7 +261,6 @@ Stemming from this point, our group focuses on scrutinizing the correlation betw
 You will
 
 
-
 * Title
   * Your big picture page should have a creative/click-bait-y title/headline that provides a hint about your thesis.
 * Clarity of Explanation

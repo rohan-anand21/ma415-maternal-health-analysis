@@ -122,4 +122,3 @@ write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality
 
 
 
-
