@@ -1,41 +1,36 @@
 ---
-title: Analysis
-description: Here we provide a detailed analysis using more sophisticated statistics techniques.
+title: "Analysis: Does Smoking Affect Maternal Outcomes?"
+description: "An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States"
 toc: true
 draft: false
 ---
 
 ![](images/analysis_baby.jpeg)
 
-## **Maternal Smoking During Pregnancy: America's Ongoing Crisis** 
-### An in-depth look at the impact of maternal lifestyle choices on APGAR scores and birth weights in the United States
-
 <hr>
-#### **Motivations for the exploration:**
+#### **Motivations For Exploration:**
 <div style="text-align: left; width: 800px; margin: 0 auto;">
 
-As noted by Yang et al. (2014), maternal smoking is a significant health concern in the United States. Smoking during pregnancy has ramifications at both the individual level and at the societal level. From an individualistic perspective, smoking is known to be one of the most serious risk factors for poor pregnancy outcomes—having consequences for both the mother and the child. On a large-scale societal level, maternal smoking has been determined to increase economic costs. In 1994, the CDC reported that smoking during pregnancy led to more than $366 M in neonatal expenditures; this cost equates to approximately 704 dollars per maternal smoker. Maternal smoking during pregnancy is a highly preventable risk factor, despite its widespread prevalence. 
+As noted by [Yang et al.(2014)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4029363/#:~:text=Descriptive%20statistics&text=However%2C%20this%20percentage%20varies%20greatly,Asian%20women%20(2%20percent).), maternal smoking is a significant health concern in the United States. Smoking during pregnancy has ramifications at both the individual level and at the societal level. From an individualistic perspective, smoking is known to be one of the most serious risk factors for poor pregnancy outcomes—having consequences for both the mother and the child. On a large-scale societal level, maternal smoking has been determined to increase economic costs. In 1994, the CDC reported that smoking during pregnancy led to more than $366M in neonatal expenditures; this cost equates to approximately 704 dollars per maternal smoker. Maternal smoking during pregnancy is a highly preventable risk factor, despite its widespread prevalence. 
 
-Thus, Group 14 was interested in taking a closer look into the current landscape of maternal smoking in the United States through the lens of health outcomes for the infant—specifically exploring birth weight and APGAR scores as metrics. Beyond smoking as a risk factor, we also explored a wealth of other variables that relate to infant health outcomes—such as the BMI of the mother. As a result, we aim to look at cigarette use, both pre-pregnancy and during each trimester, BMI and their correlation with birth weight and APGAR score.
+Thus, Group 14 was interested in taking a closer look into the current landscape of maternal smoking in the United States through the lens of health outcomes for the infant—specifically exploring birth weight and APGAR scores as metrics. Beyond smoking as a risk factor, we also explored a wealth of other variables that relate to infant health outcomes—such as the BMI of the mother. As a result, we aim to look at cigarette use, both pre-pregnancy and during each trimester and other significant lifestyle choices of mothers and their correlation with birth weight and APGAR score.
 
 </div>
 
 <hr>
-#### **Summary of key findings:**<br>
-1) The race with the highest proportion of mothers who smoke before pregnancy are AIAN (Amerian Indian and Alaskan natives). <br>
-2) Regardless of race, there is a negative correlation between mean birth weight and smoking/APGAR score. <br>
-3) The greater proportion of mothers who do not smoke have a higher birth weight than the proportion of mothers who do smoke. <br>
+#### **Summary of Key Findings:**<br>
+1) The race with the highest proportion of mothers who smoke before pregnancy and during pregnancy (all trimesters) are AIAN (American Indian and Alaskan natives). <br>
+2) Regardless of race, there is an inverse relationship between mean birth weight/APGAR score and smoking. <br>
+3) There is a statistically significant difference between the birthweights of mothers who smoke and mothers who do not smoke. <br>
 4) There has been a consistent and considerable decline for the majority of races in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
 5) The average gestation period per state is greater in states with a higher percentage of mothers who smoked during pregnancy. <br>
 6) 
-7) Apgar Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
-8) BMI was the 8th most significant feature in predicting Apgar score, while cigarette use was the 4th through 7th.
-9) BMI was the second most significant feature in predicting Apgar score, while cigarette use in general did not prove to be significant at all.
+7) APGAR Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
+8) BMI was the 8th most significant feature in predicting APGAR score, while cigarette use was the 4th through 7th.
+9) BMI was the second most significant feature in predicting APGAR score, while cigarette use in general did not prove to be significant at all.<hr>
 
-<hr>
+
 #### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?
-
-There are racial disparities in ...
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 options(repos = c(CRAN = "https://cloud.r-project.org"))
@@ -135,6 +130,13 @@ table_gt
 
 ```
 
+Since smoking habits are not consistent during the entire pregnancy (and, presumably, mothers are aware that smoking is much more detrimental to the infant in a later trimester), it was worthwhile to investigate if there were any major differences in the percentage of mothers who smoked during certain trimesters of the pregnancy, organized by race. As noted in the literature, racial disparities do exist in maternal smoking and, thus, we wanted to more closely explore what those differences looked like for mothers in the US in 2021. This particular analysis revealed that the ‘AIAN’ and ‘More than one race’ racial categories had the highest percentage of mothers who smoked during the entire duration of the pregnancy. However, the percentage of mothers who smoked during Trimester 2 and Trimester 3 decreased, which is expected. In fact, for all races, the percentage of mothers who smoked during the latter stages of the pregnancy decreased. The racial groups with the smallest proportion of mothers who smoked during all trimesters are the ‘Asian’ and ‘Hispanic’ races. 
+
+---
+
+#### **Research Question 2**: Does smoking affect the birth weight and APGAR score of babies regardless of race?
+
+
 ```{r echo = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
 #| echo: FALSE
 smoker_data <- data |>
@@ -150,8 +152,7 @@ smoker_data <- data |>
   filter(dbwt != 9999, apgar5 != 99, cig_0 != 99, cig_1 != 99, cig_2 != 99, cig_3 != 99) |>
   group_by(mrace) |>
   summarise(
-    proportion_who_smoke = round(mean(cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0, na.rm = TRUE) * 100),
-    proportion_who_do_not_smoke = round(mean(cig_0 == 0 & cig_1 == 0 & cig_2 == 0 & cig_3 == 0, na.rm = TRUE) * 100),
+    proportion_who_smoke = round(mean(cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0, na.rm = TRUE) * 100, 2), # Rounded to two decimal points
     average_birthweight_of_smokers = round(mean(dbwt[cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0], na.rm = TRUE)),
     average_birthweight_of_non_smokers = round(mean(dbwt[cig_0 == 0 & cig_1 == 0 & cig_2 == 0 & cig_3 == 0], na.rm = TRUE)),
     average_apgar_score_of_smokers = round(mean(apgar5[cig_0 > 0 & cig_1 > 0 & cig_2 > 0 & cig_3 > 0], na.rm = TRUE), 2),
@@ -160,15 +161,14 @@ smoker_data <- data |>
   rename(
     `Race` = mrace,
     `Smoker During Pregnancy (%)` = proportion_who_smoke,
-    `Non-Smoker During Pregnancy (%)` = proportion_who_do_not_smoke,
     `Mean Birthweight of Smokers` = average_birthweight_of_smokers,
     `Mean Birthweight of Non-Smokers` = average_birthweight_of_non_smokers,
-    `Mean Apgar Score of Smokers` = average_apgar_score_of_smokers,
-    `Mean Apgar Score of Non-Smokers` = average_apgar_score_of_non_smokers
+    `Mean APGAR Score of Smokers` = average_apgar_score_of_smokers,
+    `Mean APGAR Score of Non-Smokers` = average_apgar_score_of_non_smokers
   ) |>
   mutate(
-    `Mean Apgar Score of Non-Smokers` = paste0(`Mean Apgar Score of Non-Smokers`, 
-                                               " (+ ", round(`Mean Apgar Score of Non-Smokers` - `Mean Apgar Score of Smokers`, 2), ")"),
+    `Mean APGAR Score of Non-Smokers` = paste0(`Mean APGAR Score of Non-Smokers`, 
+                                               " (+ ", round(`Mean APGAR Score of Non-Smokers` - `Mean APGAR Score of Smokers`, 2), ")"),
     `Mean Birthweight of Non-Smokers` = paste0(`Mean Birthweight of Non-Smokers`, 
                                                " ( + ", round(`Mean Birthweight of Non-Smokers` - `Mean Birthweight of Smokers`), ")")
   )
@@ -180,15 +180,41 @@ smoker_data <- smoker_data |>
 
 smoker_gt <- gt(smoker_data) |>
   tab_header(
-    title = md("**Table 2: Proportion of Smokers by Race and Corresponding Average Birth Weight and Apgar5 Score**"),
-    subtitle = "Higher Apgar Score/Birth Weight = Healthier Baby"
+    title = md("**Table 2: Proportion of Smokers by Race and Corresponding Average Birth Weight and APGAR Score**"),
+    subtitle = "Higher APGAR Score/Birth Weight = Healthier Baby"
   ) 
 
 smoker_gt
 ```
 
 
+In tandem with the results of the first table, we can see the percentage of mothers who smoke across all races differ. However, we sought to establish the regardless of race, smoking has negative consequences towards the baby, which, in this case, we measure through its birth weight and APGAR score, which the score of a test given to check the health of the baby after being born, ranging from 1 to 10. By comparing the birth weight of babies of smokers to the babies of non-smokers, we can see that across all races, the mean birth weight of babies of smokers was significant less, varying from 138 to 259 grams. Similarly, the APGAR scores of the baby whose mother did not smoke were consistently greater, adding anywhere from 0.03 to 0.21, to the score. As a result, based on the table, we can establish an inverse relationship between a mother who smokes and the mean birth weight. That is, in each race, if a mother smokes, the mean birth weight will be lower. However, we cannot definitively establish that all variation in mean birth weight is solely due to smoke. In a mother's lifestyle, there are a number of different physical factors that determine birth weight such as BMI, amount of daily exercise or even mental factors such as the emotional support of the father. Similarly, we are assuming the sample of births are representative of the total population, which can be difficult to maintain for races with less populations. In order to definitively claim a relationship, we would need ideally validate that all data population is a representative sample. There are also interesting cross-race differences in the data. For example, the mean birth weight of a baby of an American Indian or Alaskan native mother who smokes is greater than the mean birth weight of a baby of an Asian mother who does not smoke. This is also reflected in the APGAR score, where the APGAR score of an AIAN baby from a mother who smokes is only, on average, 0.03 higher than its non-smoking mother counterpart. This begs the question whether there are lifestyle choices to overcome the negative effects of smoking, or if, through either genetics or historical environment, AIAN mothers are naturally immune to its effects. It could also be the case that AIAN babies simply weigh more, as genetically they are able to retain a greater number of nutrients from their mother. Further statistical analysis and causality testing will need to be applied to determine the root cause, but, in the meantime, we can claim that non-smokers produce healthier babies, both in birth weight and APGAR score, than smokers.
 
+---
+
+#### **Research Question 3**: What do the distributions of birth weights look like for mothers who smoke and mothers who do not smoke? Are the differences statistically significant?
+
+Now that we’ve established that there is a negative correlation between a mother’s smoking status and birth weight (i.e if a mother smokes, her infant is likely to have a lower birth weight), we were curious to not only see the distributions of the two samples but also determine if there is a statistically significant difference between them. Figure 1 shows the distribution of birth weights for smoking mothers and non-smoking mothers. Both seem to follow an expected bell-shaped curve (i.e. a normal distribution); however, there is a slight negative skew for both distributions. 
+
+The mean birth weight for mothers who do not smoke was:
+
+> 3276 g 
+
+With a 
+> standard deviation of 599 g
+
+The mean birth weight for mothers who smoked was:
+
+> 3127 g 
+
+With 
+> standard deviation of 605 g
+
+To determine if the mean birth weights of the two samples can be considered statistically significant, an independent samples t-test was conducted that yielded:
+
+> p-value = 0.05
+
+The alpha threshold value for the hypothesis test was set at 0.05. Thus, the mean birth weights for mothers who smoke and who do not smoke can be considered statistically significant. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
@@ -241,8 +267,6 @@ result <- all_data %>%
   group_by(Year, Race) %>%
   summarize(PercentageSmokers = mean(smoker) * 100)
 ```
-
-
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
 #| echo: FALSE
 is_smoker <- function(cig) {
@@ -369,9 +393,9 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
   geom_line(aes(group = SmokingStatus), size = .5, linetype = "dashed") +
   scale_fill_brewer(palette = "Blues") +
   facet_wrap(~ SmokingStatus, scales = 'free_y') +
-  labs(title = "Birth Weight Proportion by Smoking Status",
-       x = "Midpoint of Birth Weight Range (grams)",
-       y = "Proportion of Births") +
+  labs(title = "Birth Weight by Proportion of Births, Smoker vs. Non-Smoker",
+       x = "Birth Weight (grams)",
+       y = "Proportion of Births (%)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 12),
         axis.text.y = element_text(size = 12, color = "#333333"),
@@ -392,6 +416,10 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
 
 print(combined_plot)
 ```
+
+#####**Statistically significant difference between the mean birth weights (p-value < 0.05)**#####
+
+---
 
 
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
@@ -535,74 +563,7 @@ ggplot() +
 
 ```
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results='hide'}
-options(repos = c(CRAN = "https://cloud.r-project.org"))
 
-library(broom)
-library(tidyverse)
-```
-
-
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis', results = 'hide'}
-
-filtered_data_smoking <- data %>%
-  select(cig0_r, cig1_r, cig2_r, cig3_r, dbwt) %>%
-  filter(
-    cig0_r != 6,
-    cig1_r != 6,
-    cig3_r != 6,
-    dbwt != 9999
-  ) %>%
-  
-  # Yes_cigarettes_ is cigarettes for trimester 3, it's labelled like this so it makes sense in the final output of the model
-  rename(
-    Before_Pregnancy = cig0_r,
-    Trimester_One = cig1_r,
-    Trimester_Two = cig2_r,
-    Yes_cigarettes_ = cig3_r,
-    Birthweight_KG = dbwt
-  ) %>%
-  mutate(across(c(Before_Pregnancy, Trimester_One, Trimester_Two, Yes_cigarettes_), ~ case_when(
-    . == 0 ~ "0",
-    . == 1 ~ "1-5",
-    . == 2 ~ "6-10",
-    . == 3 ~ "11-20",
-    . %in% c(4, 5) ~ "21-40",
-    TRUE ~ as.character(.)
-  ) %>%
-  factor(levels = c("0", "1-5", "6-10", "11-20", "21-40"))))
-```
-
-```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
-library(gt)
-# Fit the linear regression model
-model <- lm(Birthweight_KG ~ Yes_cigarettes_, data = filtered_data_smoking)
-
-model_output <- tidy(model)
-
-output_table_gt <- gt(model_output) %>%
-  fmt_number(
-    columns = vars(estimate, std.error, statistic, p.value),
-    decimals = 2
-  ) %>%
-  tab_header(
-    title = "Table 2: Multivariate analysis of smoking and birth weight of infants"
-  ) %>%
-  tab_spanner(
-    label = "Model parameters",
-    columns = c(estimate, std.error, statistic, p.value)
-  ) %>%
-  cols_label(
-    term = "Predictor",
-    estimate = "Esimtate",
-    std.error = "Standard error",
-    statistic = "t-statistic",
-    p.value = "p-value"
-  )
-
-# Print the gt table
-print(output_table_gt)
-```
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 # model looking at gestation
 filtered_data_model_2 <- data %>%
@@ -821,7 +782,4 @@ birth_weight_gt <- gt(birth_weight_tibble) |>
 
 print(apgar5_gt)
 print(birth_weight_gt)
-print(sqrt(apgar5_mmse_values))
-print(sqrt(birth_weight_mmse_values))
-summary(apgar_model_5_features)
 ```
