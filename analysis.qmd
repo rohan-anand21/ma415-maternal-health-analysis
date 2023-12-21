@@ -24,9 +24,9 @@ Thus, Group 14 was interested in taking a closer look into the current landscape
 3) There is a statistically significant difference between the birthweights of mothers who smoke and mothers who do not smoke. <br>
 4) There has been a consistent and considerable decline for the majority of races in the proportion of mothers who smoke during pregnancy for all race groups examined from 2014 to 2021. <br>
 5) The average gestation period per state is shorter in states with a higher percentage of mothers who smoked during pregnancy. <br>
-6) APGAR Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite
-7) BMI was the 8th most significant feature in predicting APGAR score, while cigarette use was the 4th through 7th.
-8) BMI was the second most significant feature in predicting APGAR score, while cigarette use in general did not prove to be significant at all.<hr>
+6) APGAR Score required a greater number of features in order to minimize MMSE, while birth weight was the opposite. <br>
+7) BMI was the 8th most significant feature in predicting APGAR score, while cigarette use was the 4th through 7th. <br>
+8) BMI was the second most significant feature in predicting APGAR score, while cigarette use in general did not prove to be significant at all.<br>
 
 
 #### **Research Question 1**: What race has the highest proportion of mothers who smoke before pregnancy and during pregnancy (by trimester)?
@@ -204,24 +204,19 @@ The mean birth weight for mothers who do not smoke was:
 
 > 3276 g 
 
-With a 
-> standard deviation of 599 g
 
 The mean birth weight for mothers who smoked was:
 
 > 3127 g 
 
-With 
-> standard deviation of 605 g
 
 To determine if the mean birth weights of the two samples can be considered statistically significant, an independent samples t-test was conducted that yielded:
 
-> p-value = 0.05
+> p-value < 0.05
 
 The alpha threshold value for the hypothesis test was set at 0.05. Thus, the mean birth weights for mothers who smoke and who do not smoke can be considered statistically significant. 
 
 
-**Figure 1: Distribution of birth weights for mothers who smoke and mothers who do not smoke**
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
@@ -400,7 +395,9 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
   geom_line(aes(group = SmokingStatus), size = .5, linetype = "dashed") +
   scale_fill_brewer(palette = "Blues") +
   facet_wrap(~ SmokingStatus, scales = 'free_y') +
-  labs(title = "Birth Weight by Proportion of Births, Smoker vs. Non-Smoker",
+  labs(title = "Figure 1: Distribution of birth weights for mothers who smoke and mothers who do not smoke
+",
+       subtitle = "Statistically significant difference between the mean birth weights (p-value < 0.05)",
        x = "Birth Weight (grams)",
        y = "Proportion of Births (%)") +
   theme_minimal() +
@@ -423,8 +420,6 @@ combined_plot <- ggplot(combined_data, aes(x = BirthWeightMidpoint, y = Proporti
 
 print(combined_plot)
 ```
-
-**Statistically significant difference between the mean birth weights (p-value < 0.05)**
 
 ---
 
