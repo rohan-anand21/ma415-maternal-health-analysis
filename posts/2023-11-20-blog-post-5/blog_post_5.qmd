@@ -1,5 +1,5 @@
 ---
-title: "Blog Post 5"
+title: "Considering Extension Datasets"
 subtitle: "Dataset Extension"
 author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
 date: "2023-11-20"

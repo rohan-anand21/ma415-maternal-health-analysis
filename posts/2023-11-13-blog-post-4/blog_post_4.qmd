@@ -1,5 +1,5 @@
 ---
-title: "Blog Post 4"
+title: "Preliminary Data Visualization and Modeling"
 subtitle: "Data Visualization and Modeling"
 author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
 date: "2023-11-13"

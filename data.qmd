@@ -18,10 +18,49 @@ The overarching goal of The National Center for Health Statistics is to collect 
 
 We first used the only the csv available for the year 2021. Although for further data analysis, we plan to incorporate data from other years such as before the 2000s. It would be intriguing to analyze how birth rates or certain conditions surrounding births compare in two different years. For 2021, the csv file had approximately 3,669,928 entries and over 200 columns containing various attributes related to the birth of a child in the United States. 
 
-We will not be using all the variables for our analysis. Some important variables that we will specifically be looking at are the APGAR score of the child (health score given to the child within 5-10 minutes of being born), the race of the mother and father, the mother’s characteristics (BMI, weight, height), maternal morbidity, various health factors that could have affected the health of the baby when it was born (smoking in the 3rd trimesters, substance abuse), health insurance of  mothers, demographic data about the mother and the father of the infant. 
+We will not be using all the variables for our analysis. Some important variables that we will specifically be looking at are the APGAR score of the child (health score given to the child within 5-10 minutes of being born), the race of the mother and father, the mothers' characteristics (BMI, weight, height), maternal morbidity, various health factors that could have affected the health of the baby when it was born (smoking in the 3rd trimesters, substance abuse), health insurance of  mothers, demographic data about the mother and the father of the infant. 
 
-There are many other variables that are included in the over 200 columns in the dataset that we will not be including (and thus will be removed in the data cleaning process). These variables could include variables that have been “recoded”, but we will use the original version of the variable. Moreover, we will be removing variables such as the “Imputed Flags” or “Reporting Flags” for variables. An important file that guided us as we explored the different variables in our data set was the following file, which is the User Guide to the 2021 Natality Public Use File. This is a comprehensive [file](https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/DVS/natality/UserGuide2021.pdf) that includes descriptions of every variable included in the data set, what it means, and how it was scored/computed/collected. This helped in the evaluation of which variables to keep and which ones could be appropriately discarded. 
+There are many other variables that are included in the over 200 columns in the dataset that we will not be including (and thus will be removed in the data cleaning process). These variables could include variables that have been “recoded”, but we will use the original version of the variable. Moreover, we will be removing variables such as the “Imputed Flags” or “Reporting Flags” for variables. An important file that guided us as we explored the different variables in our data set was the following file, which is the User Guide to the 2021 Natality Public Use File. This is a comprehensive [file](https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/DVS/natality/UserGuide2021.pdf) that includes descriptions of every variable included in the data set, what it means, and how it was scored/computed/collected. This helped in the evaluation of which variables to keep and which ones could be appropriately discarded.
 
+We decided to conduct statistical analysis in order to determine the extent of the effect of maternal smoking on the child's birth weight and Apgar 5 score. As a result, these are the variables we used in our analysis:
+
+### Big Picture
+
+    1. Mother's race (mrace, mracehisp (with hispanic))- singular race ranging from White only, Black only, and Asian only, etc., including a category for Multiple Races and Hispanic
+    
+    2. Cigarette usage - cig_0 represents number of cigarettes smoked per day, while the numbers in cig_1 - cig_3 correspond to each trimester
+    
+    3. BMI (bmi) - body mass index, used in this case to classify mother's in terms of their health based on weight, ranges from Underweight to Extreme Obesity 3
+    
+    4. Year (dob_yy) - year the baby was born
+    
+    5. Gestation (oegest_comb) - gestation is the period the baby is inside the womb. The variable is reclassified to describe pregnancy as pre-term, full-term, late-term
+
+### Analysis
+
+    All the variables in Big Picture were used with additional ones:
+
+    1. Apgar (apgar5, apgar10) - a score given within 5 or 10 minutes of a baby's birth indicating its health, higher score = better health
+    
+    2. Birth weight (dbwt) - birth weight of the baby in grams
+    
+    3. BMI (bmi) - body mass index, used in this case to classify mother's in terms of their health based on weight, ranges from Underweight to Extreme Obesity 3
+    
+    4. Year (dob_yy) - year the baby was born
+    
+    5. Gestation (oegest_comb) - gestation is the period the baby is inside the womb. The variable is reclassified to describe pregnancy as pre-term, full-term, late-term
+
+    6. Mother's education (meduc) - education level of mother ranging from middle school or below to doctorate
+    
+    7. Pre-natal care (previs) - the number of prenatal visits to the hospital
+    
+    8. Pre-pregnancy diabetes (rf_pdiab) - binary value indicating whether the mother was diagnosed with diabetes prior to pregnancy
+    
+    9. Gestational diabetes (rf_gdiab) - binary value indicating whether the mother had diabetes while pregnant
+    
+    10. Fertility drugs (rf_fedrg) - binary value indicating whether the mother took fertility enhancing drugs
+    
+    
 ---
 
 ### Creating the Datasets
@@ -45,6 +84,42 @@ To clean our data set, we followed these steps:
 1. We started by reading all the csv files for the years 2006-2020, similar to how we read the 2021 file. However, in this case, I limited the number of rows per year to 1000, in order to ensure the data would compile quickly. This can and will be changed when plots/models for specific years are made. 
 
 2. We wrote a function in order to combine the data for all the years. In order to normalize the columns, we used the columns in the 2021 data set as the baseline. For all incompatible columns in previous years, I removed them as they were different recodes of race, age etc. that could be done manually if needed. If there were columns not found in the previous years, I simply added them and filled them with NAs. By doing so, we were able to retain the pertinent data and conduct our analysis without limitations.
+
+Below is our function and code used to combine the data:
+
+```{r}
+
+#combines data together (uses 2021 columns, removes incompatible columns, fills unknown values from 2021 columns with NA)
+
+combine_data <- function(data, reference) {
+  tibbles <- lapply(data, function(tibble) {
+    tibble <- tibble[, names(tibble) %in% names(reference), drop = FALSE]
+    missing_cols <- setdiff(names(reference), names(tibble))
+    for (col in missing_cols) {
+      tibble[[col]] <- NA
+    }
+    tibble <- tibble[, names(reference), drop = FALSE]
+    return(tibble)
+  })
+  combined <- bind_rows(tibbles)
+  return(combined)
+}
+
+
+#create a list of all datasets that need to be combined 
+
+list <- list(natality_csv_2020, natality_csv_2019, natality_csv_2018, natality_csv_2017, natality_csv_2016, 
+             natality_csv_2015, natality_csv_2014, natality_csv_2013, natality_csv_2012, natality_csv_2011,
+             natality_csv_2010, natality_csv_2009, natality_csv_2008, natality_csv_2007, natality_csv_2006)
+
+
+#create historical natality data
+natality_csv_historical <- combine_data(list, natality_csv_2021)
+
+#create cleaned csv for analysis use
+write_csv(natality_csv_historical, file = here::here("dataset-ignore", "natality_data_historical.csv"))
+```
+
 
 
 

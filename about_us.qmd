@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "About Our Team"
 # image: profile.jpg
 about:
   template: jolla
@@ -17,13 +17,12 @@ about:
 ---
 
 
-This comes from the file `about.qmd`.
+![](images/data_scientists.jpg)
 
-This is a website for the final project for MA[46]15 Data Science with R by Team 14.
+This is a website for the final project for MA415 Data Science with R by Team 14.
 The members of this team are below.
 
 ## Tianyu Wu
-
 https://github.com/tianyuwu2
 
 ## Aiganysh Ulanova

@@ -64,7 +64,7 @@ filtered_data_smoking <- data %>%
     mracehisp != 8,
     dbwt != 9999
   ) %>%
-  rename(Before_Pregnancy = cig0_r, Trimester_One = cig1_r, Trimester_Two = cig2_r, Trimester_Three = cig3_r, APGAR_FIVE = apgar5, APGAR_10 = apgar10, Birthweight_KG = dbwt) %>%
+  rename(Before_Pregnancy = cig0_r, Trimester_One = cig1_r, Trimester_Two = cig2_r, Trimester_Three = cig3_r, APGAR_FIVE = apgar5, APGAR_10 = apgar10, Birthweight_G = dbwt) %>%
   
   mutate_at(vars(Before_Pregnancy, Trimester_One, Trimester_Two, Trimester_Three), ~case_when(
     . == 0 ~ "Nonsmoker",
@@ -88,8 +88,6 @@ filtered_data_smoking <- data %>%
     Race == 7 ~ "Hispanic (only)",
     TRUE ~ as.character(Race)
   ))%>%
-
-  mutate(Birthweight_KG = Birthweight_KG / 1000)
 ```
 ```{r, echo=FALSE, message = FALSE, warning = FALSE, results='asis'}
 #| echo: FALSE

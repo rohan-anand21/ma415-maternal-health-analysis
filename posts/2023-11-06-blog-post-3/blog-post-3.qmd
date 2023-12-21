@@ -1,5 +1,5 @@
 ---
-title: "Blog Post 3"
+title: "Equitablity of Our Data"
 subtitle: "Data Equity"
 author: "Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
 date: "2023-11-06"

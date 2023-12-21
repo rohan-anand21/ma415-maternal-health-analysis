@@ -1,5 +1,5 @@
 ---
-title: "Data Exploration and Preliminary Visualization"
+title: "Polished Visualization and Statistical Modeling"
 author: "Aiganysh Ulanova, Jin Kyu Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
 date: "2023-12-04"
 date-modified: "2023-12-04"

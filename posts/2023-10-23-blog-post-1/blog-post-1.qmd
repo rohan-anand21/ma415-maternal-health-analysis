@@ -1,5 +1,5 @@
 ---
-title: "Blog Post 1"
+title: "Consideration of Datasets"
 subtitle: "Description for our three dataset"
 author: "Aiganysh Ulanova, Jin Kyu (Jaden) Cho, Rohan Anand, Seokhoon Shin, Tianyu Wu"
 date: "2023-10-23"
