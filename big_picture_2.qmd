@@ -1,11 +1,10 @@
 ---
-title: "America's Maternal Health is Headed  in the Wrong Direction"
-description: "The Unhealthy Lifestyles of Mothers are Harming Future Generations"
+title: "Big Picture"
+description: "A 538/Upshot style article about the data."
 toc: true
 draft: false
 ---
-
-![](images/Baby.png)
+#![](images/Baby.png)
 
 ## **America's Ongoing Maternal Health Crisis: A Look Into Risk Factors Plaguing American Mothers and Their Babies In 2021**
 
@@ -285,3 +284,24 @@ Overall, this exploratory study has provided a snapshot of the current state of 
 Further study needs to examine what underlying societal conditions are fueling racial disparities in specific risk factors and to understand the reasons behind the escalating prevalence of certain health risks. This deeper investigation can serve as a foundation for refining and implementing more effective practices or programs, ultimately paving the way for improved health outcomes for both mothers and their infants.
 
 Our further exploration looked more closely at the impact of smoking on the birth weight of infants and the APGAR score 5 minutes after birth (which is a measure of the baby's health). To read further about this study, click on the 'Analysis' page!
+
+
+
+## Rubric: On this page
+
+You will
+
+
+
+* Title
+  * Your big picture page should have a creative/click-bait-y title/headline that provides a hint about your thesis.
+* Clarity of Explanation
+  * You should have a clear thesis/goal for this page. What are you trying to show? Make sure that you explain your analysis in detail but don't go into top much mathematics or statistics. The audience for this page is the general public (to the extent possible). Your thesis should be a statement, not a question.
+  * Each figure should be very polished and also not too complicated. There should be a clear interpretation of the figure so the figure has a clear purpose. Even something like a histogram can be difficult to interpret for non-experts.
+* Creativity
+  * Do your best to make things interesting. Think of a story. Think of how each part of your analysis supports the previous part or provides a different perspective.
+* This page should be self-contained.
+  
+**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`.  
+
+
